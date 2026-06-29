@@ -14,7 +14,7 @@ Hey {{firstName}},
 
 Most owners wonder what they'd get if they ever sold, but never actually find out.
 
-We help {{audience_descriptor}} answer that quietly. Our president has done this for 27 years.
+We help {{audience_descriptor}} answer that quietly. Our president has done this for 28 years.
 
 {{signal_anchor}}
 

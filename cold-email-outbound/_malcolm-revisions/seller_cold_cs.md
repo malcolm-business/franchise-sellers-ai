@@ -14,7 +14,7 @@ Hey {{firstName}},
 
 Most owners in {{industry_lower}} have never had a clear sense of what their business is worth.
 
-That's what we do, quietly and with 27 years behind it.
+That's what we do, quietly and with 28 years behind it.
 
 {{signal_anchor}}
 

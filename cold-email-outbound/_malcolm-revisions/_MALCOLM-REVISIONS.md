@@ -8,7 +8,7 @@ unless a flagged item below needs your call.
 
 ## What changed in all three streams
 
-1. **Removed the unprovable "sold for more than they expected / thought possible" claim** (the Playbook's #1 pre-launch fix). Replaced with credibility we can stand behind: Eric's confirmed 27 years + confidentiality. — fs_niche S1, cs S1.
+1. **Removed the unprovable "sold for more than they expected / thought possible" claim** (the Playbook's #1 pre-launch fix). Replaced with credibility we can stand behind: Eric's confirmed 28 years + confidentiality. — fs_niche S1, cs S1.
 2. **Stripped every em dash** (voice-rule break). They were in all three STEP 3s, fs_broad S1, fs_niche S1, cs S1.
 3. **Reader-first openers.** STEP 1 no longer opens "We help…". Each now opens on the owner and leads with valuation curiosity ("what's it worth / what comes next"), not "do you want to sell."
 4. **Confidentiality named early** in every STEP 1 — defuses the owner's #1 silent fear.
@@ -43,4 +43,5 @@ After the first pass, tightened every email for read time and added light spin z
 2. **Subject-line merge gating.** Several new subjects use `{{company}}`. Confirm a clean company name renders (not a messy legal string) and a generic fallback fires when it's missing/messy.
 3. **CS `{{industry_lower}}` quality.** "another owner in home care" reads fine; "hvac services" reads like a typo and a blank reads awkward. Need the clean CS industry-label list before this ships, or a fallback.
 4. **A/B the subjects.** Three per stream are loaded as variants — worth testing the no-merge exit-themed line vs. the `{{company}}` line per the Playbook.
-5. **Still waiting on Eric's ICP** for the `{{signal_anchor}}` data and per-brand FS-vs-CS language. Until then the signal line stays stripped (correct).
+5. **Eric's ICP landed (locked 2026-06-29)** and is now encoded in the qualification engine ($1M floor both brands; CS $1-10M, avoid construction/education/retail/real-estate; FS systems 50-1000 locations, $1-5M). Eric's #1 angle is "trust" — which the credibility-over-claims direction already matches. **Next copy step:** sharpen per-segment FS-vs-CS language now that the ICP defines each audience. The `{{signal_anchor}}` data sourcing (which real signals we can actually fill) is still open.
+6. **Eric's confirmed experience is now 28 years** (Ted updated both copy guides in the ICP commit). Synced in these templates. Note: Ted's other files (RESUME, Zor framework, copy-pack script, referral_partner_zor) still say "27 years" — worth having Ted reconcile to one number across the repo.
