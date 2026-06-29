@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Go-Live Checklist — First Cold Email Campaign</title>
+<style>
+  @page { size: letter portrait; margin: 0.45in; }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{ font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#0f172a; font-size:11px; line-height:1.4; }
+  .head{ display:flex; align-items:flex-start; gap:14px; margin-bottom:10px; }
+  .head h1{ font-size:20px; font-weight:800; letter-spacing:-.02em; }
+  .head .sub{ font-size:11px; color:#475569; margin-top:2px; }
+  .head .brands{ margin-left:auto; display:flex; gap:6px; flex-shrink:0; }
+  .pill{ font-size:9px; font-weight:800; padding:3px 9px; border-radius:20px; color:#fff; }
+  .pill.fs{ background:#dc2626; } .pill.cs{ background:#3b82f6; }
+  .legend{ display:flex; gap:14px; align-items:center; font-size:10px; color:#475569; margin-bottom:14px; flex-wrap:wrap; }
+  .own{ font-size:8.5px; font-weight:800; padding:2px 7px; border-radius:5px; text-transform:uppercase; letter-spacing:.03em; }
+  .own.m{ background:#fef3c7; color:#b45309; } .own.t{ background:#ede9fe; color:#6d28d9; }
+  .own.c{ background:#e2e8f0; color:#475569; } .own.v{ background:#ccfbf1; color:#0f766e; }
+  .sec{ margin-bottom:13px; }
+  .sec-h{ font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#0f172a; border-bottom:2px solid #e2e8f0; padding-bottom:4px; margin-bottom:7px; }
+  /* done foundation block */
+  .done-grid{ columns:2; column-gap:20px; }
+  .done-grid .d{ break-inside:avoid; display:flex; gap:7px; align-items:flex-start; margin-bottom:5px; font-size:10.5px; color:#334155; }
+  .done-grid .d .chk{ color:#16a34a; font-weight:800; flex:0 0 auto; }
+  /* todo rows */
+  .row{ display:flex; gap:9px; align-items:flex-start; padding:5px 0; border-bottom:1px solid #f1f5f9; }
+  .row:last-child{ border-bottom:none; }
+  .box{ width:13px; height:13px; border:1.6px solid #94a3b8; border-radius:3px; flex:0 0 auto; margin-top:1px; }
+  .row .txt{ flex:1; font-size:11px; } .row .txt b{ color:#0f172a; }
+  .row .txt .d2{ color:#64748b; font-size:10px; }
+  .row .o{ flex:0 0 auto; }
+  .gate{ background:#f5f3ff; border:1px solid #ddd6fe; border-radius:8px; padding:9px 12px; margin-top:6px; font-size:10px; color:#4c1d95; }
+  .gate b{ color:#5b21b6; }
+  .foot{ margin-top:10px; border-top:1px solid #e2e8f0; padding-top:7px; font-size:9.5px; color:#475569; }
+  .foot b{ color:#0f172a; }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div>
+      <h1>Go-Live Checklist · First Cold Email Campaign</h1>
+      <div class="sub">Everything that must be true before we flip the switch. Target: <b>EOD Thursday, July 2.</b></div>
+    </div>
+    <div class="brands"><span class="pill fs">Franchise Sellers</span><span class="pill cs">Company Sellers</span></div>
+  </div>
+
+  <div class="legend">
+    <span><b>Owners:</b></span>
+    <span class="own m">Malcolm</span><span class="own t">Theodore</span><span class="own c">Claude</span><span class="own v">Verify</span>
+    <span style="margin-left:auto">☐ to do &nbsp; ✓ already done</span>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">✓ Already in place (the foundation)</div>
+    <div class="done-grid">
+      <div class="d"><span class="chk">✓</span><span>Engine built and dry-run gated. Nothing sends until the master switch is flipped.</span></div>
+      <div class="d"><span class="chk">✓</span><span>1,429 leads qualified and in the database (815 CS, 614 FS).</span></div>
+      <div class="d"><span class="chk">✓</span><span>86 warmed cold mailboxes ready (~2,580/day ceiling).</span></div>
+      <div class="d"><span class="chk">✓</span><span>Cold-domain allow-list enforced. Never the two main brand domains or staff inboxes.</span></div>
+      <div class="d"><span class="chk">✓</span><span>Open and link tracking OFF (2026 deliverability posture).</span></div>
+      <div class="d"><span class="chk">✓</span><span>CAN-SPAM footer (mailing address + opt-out) auto-added to every email.</span></div>
+      <div class="d"><span class="chk">✓</span><span>MillionVerifier wired for fresh pre-send verification.</span></div>
+      <div class="d"><span class="chk">✓</span><span>Deliverability monitor running daily (SPF/DKIM/DMARC, blacklist, warmup).</span></div>
+      <div class="d"><span class="chk">✓</span><span>Pre-send safety gate coded (hard-blocks a bad send).</span></div>
+      <div class="d"><span class="chk">✓</span><span>Dashboard, simulator, and copy playbook delivered to Malcolm.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h">☐ Still to do before go-live</div>
+
+    <div class="row"><div class="box"></div><div class="txt"><b>Pick the first segment.</b> <span class="d2">One brand, one segment (a named franchise system for FS, or a top industry for CS).</span></div><div class="o"><span class="own t">Theodore</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Confirm the segment's targeting is right.</b> <span class="d2">This clears the gate's "ICP confirmed." Eric's full ICP only sharpens later, it does not block this.</span></div><div class="o"><span class="own t">Theodore</span></div></div>
+
+    <div class="row"><div class="box"></div><div class="txt"><b>Write the 3-email sequence fresh.</b> <span class="d2">Built from the Broker Playbook, not by polishing old drafts.</span></div><div class="o"><span class="own m">Malcolm</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Copy passes the rules.</b> <span class="d2">No em dashes, one soft CTA, credibility not claims, confidentiality named, free valuation framed as an opinion not an appraisal, honest subject, soft seller breakup.</span></div><div class="o"><span class="own m">Malcolm</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Approve the copy.</b> <span class="d2">This clears the gate's "copy approved."</span></div><div class="o"><span class="own t">Theodore</span></div></div>
+
+    <div class="row"><div class="box"></div><div class="txt"><b>Pull the qualified leads</b> for the chosen segment.</div><div class="o"><span class="own c">Claude</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Fresh-verify the send list</b> through MillionVerifier. <span class="d2">Confirm projected bounce is well under 3%.</span></div><div class="o"><span class="own c">Claude</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Trim to the first small batch</b> (~200 to 300 contacts).</div><div class="o"><span class="own c">Claude</span></div></div>
+
+    <div class="row"><div class="box"></div><div class="txt"><b>Sending domains green</b> on the mailboxes this campaign uses. <span class="d2">SPF/DKIM/DMARC pass, warmup healthy, none blacklisted.</span></div><div class="o"><span class="own v">Verify</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Reconnect any errored mailbox</b> before it is included.</div><div class="o"><span class="own v">Verify</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Cross-brand suppression confirmed.</b> <span class="d2">An opt-out from one brand also suppresses the other (one shared list).</span></div><div class="o"><span class="own v">Verify</span></div></div>
+
+    <div class="row"><div class="box"></div><div class="txt"><b>Build the campaign in Instantly (dry-run).</b> <span class="d2">Load approved copy + verified leads, attach approved lookalike mailboxes only, set 30/mailbox/day with jitter.</span></div><div class="o"><span class="own c">Claude</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Run the pre-send gate.</b> <span class="d2">Every must-pass item green.</span></div><div class="o"><span class="own c">Claude</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Agree who watches replies</b> for the first batch. <span class="d2">Positives go to Lelia to schedule, unsubscribes go to suppression.</span></div><div class="o"><span class="own t">Theodore</span></div></div>
+
+    <div class="row"><div class="box"></div><div class="txt"><b>Final review of the staged campaign.</b> <span class="d2">The exact emails, the list, the mailboxes.</span></div><div class="o"><span class="own t">Theodore</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Flip CEO_DRY_RUN to false</b> on the small batch, one brand only.</div><div class="o"><span class="own t">Theodore</span></div></div>
+    <div class="row"><div class="box"></div><div class="txt"><b>Watch for 48 hours.</b> <span class="d2">Bounce under 3%, unsub under 2%, replies sane. If clean, ramp next week.</span></div><div class="o"><span class="own t">Theodore</span></div></div>
+  </div>
+
+  <div class="gate"><b>The pre-send gate is the backstop.</b> It will not let a campaign send unless tracking is off, SPF/DKIM/DMARC pass, no domain is blacklisted, warmup is healthy, last bounce is under 3%, the footer has an address + opt-out, and the two human sign-offs (copy approved + ICP confirmed) are checked. The list above is how we get every one of those to green.</div>
+
+  <div class="foot"><b>The blockers that are genuinely ours this week:</b> Malcolm's fresh copy, the segment pick + targeting confirm, and the lead verify. Everything else is built or a quick check. &nbsp;·&nbsp; Franchise Sellers / Company Sellers · 2026-06-28</div>
+</body>
+</html>

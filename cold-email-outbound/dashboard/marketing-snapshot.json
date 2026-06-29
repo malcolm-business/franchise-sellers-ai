@@ -1,0 +1,540 @@
+{
+  "generated_at": "2026-06-08T15:59:37.365891Z",
+  "mode": "DRY-RUN",
+  "pool": {
+    "tier_a_fs": 10206,
+    "tier_a_cs": 160700,
+    "tier_a_ambiguous": 16585,
+    "tier_b_reverify": 155498,
+    "tier_c_referral": 5774,
+    "tier_d_suppression": 56935,
+    "canonical_total": 405698,
+    "tier_a_total": 187491
+  },
+  "analytics": {
+    "brand_split": {
+      "FS": 10206,
+      "CS": 160699,
+      "Ambiguous": 16585
+    },
+    "top_fs_systems": [
+      [
+        "home instead",
+        181
+      ],
+      [
+        "cruise planners",
+        166
+      ],
+      [
+        "caring transitions",
+        119
+      ],
+      [
+        "comforcare",
+        116
+      ],
+      [
+        "right at home",
+        112
+      ],
+      [
+        "comfort keepers",
+        99
+      ],
+      [
+        "brightstar",
+        97
+      ],
+      [
+        "sylvan",
+        64
+      ],
+      [
+        "bricks 4 kidz",
+        60
+      ],
+      [
+        "puroclean",
+        60
+      ],
+      [
+        "senior helpers",
+        56
+      ],
+      [
+        "homewatch",
+        56
+      ]
+    ],
+    "top_cs_industries": [
+      [
+        "No Industry",
+        38132
+      ],
+      [
+        "Consumer Services",
+        17777
+      ],
+      [
+        "Wellness and Fitness Services",
+        13997
+      ],
+      [
+        "Manufacturing",
+        10469
+      ],
+      [
+        "Food and Beverage Services",
+        9135
+      ],
+      [
+        "Motor Vehicle Manufacturing",
+        4541
+      ],
+      [
+        "Medical Equipment Manufacturing",
+        4435
+      ],
+      [
+        "Appliances, Electrical, and Electronics Manufacturing",
+        4383
+      ],
+      [
+        "Automotive Service & Collision Repair",
+        4282
+      ],
+      [
+        "Health, Wellness and Fitness",
+        4125
+      ],
+      [
+        "Restaurants",
+        3802
+      ],
+      [
+        "Retail",
+        2842
+      ]
+    ],
+    "top_states": [
+      [
+        "Texas",
+        200
+      ],
+      [
+        "Florida",
+        200
+      ],
+      [
+        "California",
+        198
+      ],
+      [
+        "Georgia",
+        99
+      ],
+      [
+        "Pennsylvania",
+        91
+      ],
+      [
+        "North Carolina",
+        75
+      ],
+      [
+        "New Jersey",
+        72
+      ],
+      [
+        "New York",
+        71
+      ],
+      [
+        "Michigan",
+        70
+      ],
+      [
+        "Arizona",
+        62
+      ]
+    ],
+    "coverage": {
+      "FS": {
+        "with_email": 10206,
+        "with_linkedin": 3283,
+        "with_phone": 3504,
+        "personal_domain": 263,
+        "pct_linkedin": 32
+      },
+      "CS": {
+        "with_email": 160699,
+        "with_linkedin": 105213,
+        "with_phone": 4364,
+        "personal_domain": 7472,
+        "pct_linkedin": 65
+      }
+    },
+    "geo_known_pct": 1
+  },
+  "channels": [
+    {
+      "name": "email",
+      "available": true,
+      "status": "live",
+      "setup": "Live \u2014 Instantly connected."
+    },
+    {
+      "name": "linkedin",
+      "available": true,
+      "status": "live",
+      "setup": "Live \u2014 HeyReach connected."
+    },
+    {
+      "name": "ads",
+      "available": false,
+      "status": "needs setup",
+      "setup": "ACTION NEEDED (Malcolm): set up Google Ads Customer Match + Meta Custom Audiences. Google: create a Customer Match user list in Google Ads, get a developer token + OAuth client + customer ID. Meta: create a Custom Audience in Ads Manager, get a Marketing API access token + audience ID. Add the keys to .env, then ads touches go live (prospects in a sequence start seeing our ads)."
+    },
+    {
+      "name": "postcard",
+      "available": false,
+      "status": "needs setup",
+      "setup": "Later \u2014 pick a print-mail vendor (Lob or PostGrid), add POSTCARD_API_KEY."
+    }
+  ],
+  "channel_health": {
+    "instantly": {
+      "ok": false,
+      "needs_rest_key": true,
+      "note": "stored key is the MCP token, not a REST API key \u2014 create one in Instantly for sending"
+    },
+    "heyreach": {
+      "ok": true,
+      "linkedin_accounts": 3
+    }
+  },
+  "sequences": [
+    {
+      "name": "seller_cold_fs_niche",
+      "brand": "FS",
+      "description": "Email-led 3-step + LinkedIn touch + ad retargeting for named-system franchisees.",
+      "n_touches": 6,
+      "channels": [
+        "ads",
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 0,
+          "channel": "ads",
+          "action": "add_to_audience"
+        },
+        {
+          "day": 1,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 2,
+          "channel": "linkedin",
+          "action": "connect"
+        },
+        {
+          "day": 5,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 7,
+          "channel": "linkedin",
+          "action": "message"
+        },
+        {
+          "day": 11,
+          "channel": "email",
+          "action": "send_email"
+        }
+      ]
+    },
+    {
+      "name": "seller_cold_fs_broad",
+      "brand": "FS",
+      "description": "Email 3-step + LinkedIn + ads for long-tail franchisees.",
+      "n_touches": 5,
+      "channels": [
+        "ads",
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 0,
+          "channel": "ads",
+          "action": "add_to_audience"
+        },
+        {
+          "day": 1,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 3,
+          "channel": "linkedin",
+          "action": "connect"
+        },
+        {
+          "day": 5,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 11,
+          "channel": "email",
+          "action": "send_email"
+        }
+      ]
+    },
+    {
+      "name": "seller_cold_cs",
+      "brand": "CS",
+      "description": "Email 3-step + LinkedIn + ads for independent business owners.",
+      "n_touches": 5,
+      "channels": [
+        "ads",
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 0,
+          "channel": "ads",
+          "action": "add_to_audience"
+        },
+        {
+          "day": 1,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 3,
+          "channel": "linkedin",
+          "action": "connect"
+        },
+        {
+          "day": 5,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 11,
+          "channel": "email",
+          "action": "send_email"
+        }
+      ]
+    },
+    {
+      "name": "referral_partner_advisor",
+      "brand": "CS",
+      "description": "Email 2-step + LinkedIn connect for CPAs/advisors.",
+      "n_touches": 4,
+      "channels": [
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 1,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 2,
+          "channel": "linkedin",
+          "action": "connect"
+        },
+        {
+          "day": 6,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 8,
+          "channel": "linkedin",
+          "action": "message"
+        }
+      ]
+    },
+    {
+      "name": "referral_partner_zor",
+      "brand": "FS",
+      "description": "Email 2-step + LinkedIn for franchisor partnerships.",
+      "n_touches": 3,
+      "channels": [
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 1,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 2,
+          "channel": "linkedin",
+          "action": "connect"
+        },
+        {
+          "day": 6,
+          "channel": "email",
+          "action": "send_email"
+        }
+      ]
+    },
+    {
+      "name": "event_pre",
+      "brand": "FS",
+      "description": "Single email + LinkedIn touch ahead of an event.",
+      "n_touches": 2,
+      "channels": [
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 0,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 1,
+          "channel": "linkedin",
+          "action": "connect"
+        }
+      ]
+    },
+    {
+      "name": "event_post",
+      "brand": "FS",
+      "description": "Email 2-step + LinkedIn after an event.",
+      "n_touches": 3,
+      "channels": [
+        "email",
+        "linkedin"
+      ],
+      "touches": [
+        {
+          "day": 0,
+          "channel": "email",
+          "action": "send_email"
+        },
+        {
+          "day": 1,
+          "channel": "linkedin",
+          "action": "connect"
+        },
+        {
+          "day": 4,
+          "channel": "email",
+          "action": "send_email"
+        }
+      ]
+    }
+  ],
+  "campaign_readiness": [
+    {
+      "stream": "seller_cold_fs_niche",
+      "brand": "FS",
+      "sample": 1000,
+      "icp_eligible_pct": 65,
+      "after_suppression_pct": 65,
+      "email_reach_pct": 65,
+      "linkedin_reach_pct": 52
+    },
+    {
+      "stream": "seller_cold_fs_broad",
+      "brand": "FS",
+      "sample": 1000,
+      "icp_eligible_pct": 65,
+      "after_suppression_pct": 65,
+      "email_reach_pct": 65,
+      "linkedin_reach_pct": 52
+    },
+    {
+      "stream": "seller_cold_cs",
+      "brand": "CS",
+      "sample": 1000,
+      "icp_eligible_pct": 62,
+      "after_suppression_pct": 62,
+      "email_reach_pct": 62,
+      "linkedin_reach_pct": 62
+    },
+    {
+      "stream": "referral_partner_advisor",
+      "brand": "REFERRAL",
+      "sample": 1000,
+      "icp_eligible_pct": 100,
+      "after_suppression_pct": 99,
+      "email_reach_pct": 99,
+      "linkedin_reach_pct": 0
+    }
+  ],
+  "segments": [
+    {
+      "name": "cs_auto_test",
+      "brand": "CS",
+      "tier": "A",
+      "industry": [
+        "Automotive"
+      ],
+      "states": [],
+      "min_icp": 60,
+      "limit": 50
+    },
+    {
+      "name": "cs_automotive",
+      "brand": "CS",
+      "tier": "A",
+      "industry": [
+        "Automotive"
+      ],
+      "states": [],
+      "min_icp": 60,
+      "limit": 2000
+    }
+  ],
+  "offers": [
+    {
+      "id": "oov",
+      "cta": "If you're curious about selling, we'd be happy to provide a complimentary, no-obligation business opinion of value."
+    },
+    {
+      "id": "comparable_sales",
+      "cta": "I just pulled the last several {{industry}} businesses that sold in your area \u2014 happy to send the report if it's useful."
+    },
+    {
+      "id": "exit_readiness",
+      "cta": "I help owners gauge how 'sale-ready' their business is before they go to market \u2014 open to a quick check?"
+    },
+    {
+      "id": "buyer_match",
+      "cta": "We're tracking active buyers in your space right now. If you'd ever consider an offer, would it be worth a quick conversation?"
+    },
+    {
+      "id": "strategy_call",
+      "cta": "Worth a 15-minute conversation about how owners in your industry are thinking about exits in 2026?"
+    },
+    {
+      "id": "succession",
+      "cta": "Helping owners think through succession \u2014 whether that's selling, transitioning to family, or stepping back gradually. Open to a brief conversation?"
+    }
+  ],
+  "dry_run_simulated_calls": 16023,
+  "brands": {
+    "FS": "Franchise Sellers",
+    "CS": "Company Sellers"
+  },
+  "copy_pack_available": true
+}

@@ -1,0 +1,32 @@
+{
+  "_comment": "Human-readable mirror of the suppression + cooldown config in engine/config.py. Source of truth is config.py; update both together. Confirm cooldowns with Theodore before go-live.",
+  "cooldowns": {
+    "no_reply_days": 60,
+    "closed_lost_months": 12,
+    "soft_bounce_limit": 3,
+    "out_of_office_retry_buffer_days": 1
+  },
+  "permanent_suppression_flags": [
+    "franchisee_block_list",
+    "airtable_archived",
+    "airtable_master_archived",
+    "unsubscribed",
+    "hard_bounced",
+    "complaint",
+    "in_crm"
+  ],
+  "circuit_breakers": {
+    "bounce_halt_pct": 5.0,
+    "bounce_warn_pct": 2.0,
+    "unsub_halt_pct": 5.0
+  },
+  "suppression_sources": {
+    "tier_d_emails": "data/dedup-output/tier-d-suppression.csv (the Franchisee Block List + Airtable Archived union)",
+    "crm_snapshot": "crm-snapshot/crm-master.json (read-only; never pull GHL directly)",
+    "runtime_flags": "set on contacts at reply time (unsubscribed, replied_not_interested, etc.)"
+  },
+  "open_decisions": [
+    "Confirm no_reply_days = 60 with Theodore",
+    "Confirm closed_lost_months = 12 with Theodore"
+  ]
+}

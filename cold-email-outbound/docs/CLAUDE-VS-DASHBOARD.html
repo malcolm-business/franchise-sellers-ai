@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Cold Email — Long-Term: Claude + Dashboard vs Dashboard-Only</title>
+<style>
+  @page { size: letter landscape; margin: 0.42in; }
+  *{ box-sizing:border-box; margin:0; padding:0; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{ font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif; color:#0f172a; font-size:11px; line-height:1.4; }
+  .head{ display:flex; align-items:flex-start; gap:16px; margin-bottom:10px; }
+  .head .t h1{ font-size:19px; font-weight:800; letter-spacing:-.02em; }
+  .head .t .sub{ font-size:11px; color:#64748b; margin-top:2px; }
+  .head .brands{ margin-left:auto; display:flex; gap:6px; align-items:center; flex-shrink:0; }
+  .pill{ font-size:9.5px; font-weight:800; padding:3px 9px; border-radius:20px; color:#fff; }
+  .pill.fs{ background:#dc2626; } .pill.cs{ background:#3b82f6; }
+  /* answer callout */
+  .answer{ border:1.5px solid #7c3aed; background:#f5f3ff; border-radius:10px; padding:10px 14px; margin-bottom:11px; display:flex; gap:14px; align-items:center; }
+  .answer .q{ font-weight:800; color:#7c3aed; font-size:11px; flex:0 0 auto; max-width:300px; }
+  .answer .a{ font-size:11px; color:#1e293b; }
+  .answer .a b{ color:#7c3aed; }
+  /* table */
+  table{ width:100%; border-collapse:collapse; }
+  th{ text-align:left; font-size:9px; text-transform:uppercase; letter-spacing:.05em; color:#64748b; padding:6px 9px; border-bottom:2px solid #e2e8f0; }
+  td{ padding:6px 9px; border-bottom:1px solid #eef2f7; vertical-align:middle; }
+  tr:nth-child(even) td{ background:#f8fafc; }
+  .task{ font-weight:700; font-size:11px; }
+  .now{ color:#475569; font-size:10.5px; }
+  .goal{ color:#0f172a; font-size:10.5px; font-weight:600; }
+  .v{ white-space:nowrap; font-weight:800; font-size:9.5px; padding:3px 9px; border-radius:7px; display:inline-block; }
+  .v.full{ background:#dcfce7; color:#166534; }
+  .v.gate{ background:#fef3c7; color:#92400e; }
+  .v.claude{ background:#ede9fe; color:#6d28d9; }
+  .colmark{ width:30px; text-align:center; font-weight:800; }
+  /* legend + bottom */
+  .legend{ display:flex; gap:16px; margin-top:9px; font-size:10px; color:#475569; flex-wrap:wrap; }
+  .legend b{ padding:2px 8px; border-radius:6px; }
+  .bl{ margin-top:11px; border-radius:10px; background:#0f172a; color:#e2e8f0; padding:11px 15px; font-size:11px; display:flex; gap:10px; align-items:center; }
+  .bl .lbl{ font-weight:800; color:#a78bfa; flex:0 0 auto; }
+  .bl b{ color:#fff; }
+  .foot{ margin-top:8px; font-size:9px; color:#94a3b8; text-align:right; }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="t">
+      <h1>Cold Email — Long-Term Operating Model</h1>
+      <div class="sub">Phase 1 (Claude + Dashboard) &nbsp;→&nbsp; End state (run it from the Dashboard)</div>
+    </div>
+    <div class="brands"><span class="pill fs">Franchise Sellers</span><span class="pill cs">Company Sellers</span></div>
+  </div>
+
+  <div class="answer">
+    <div class="q">Q: Long-term, can we build, run &amp; test campaigns <u>fully</u> in the dashboard?</div>
+    <div class="a"><b>Yes — no architectural blocker.</b> The dashboard already has the backend it needs. About <b>80% of the routine loop becomes one-click.</b> A thin slice (the go-live flip, brand-new copy, strategy, and novel debugging) stays Claude-assisted <b>on purpose</b> — that is safety and judgment, not a missing feature.</div>
+  </div>
+
+  <table>
+    <thead><tr>
+      <th style="width:22%">Campaign task</th>
+      <th style="width:31%">Phase 1 — today (Claude + Dashboard)</th>
+      <th style="width:31%">End state — Dashboard-only</th>
+      <th style="width:16%">Dashboard-only?</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="task">Pull qualified leads</td><td class="now">Claude runs a pull command</td><td class="goal">One-click "Pull leads" button</td><td><span class="v full">✓ Full button</span></td></tr>
+      <tr><td class="task">Qualify a new batch (paid AI)</td><td class="now">Claude runs the batch</td><td class="goal">Button + spend cap &amp; confirm</td><td><span class="v gate">⚙ Gated</span></td></tr>
+      <tr><td class="task">Verify emails (MillionVerifier)</td><td class="now">Claude runs verify</td><td class="goal">Automatic on pull, or a button</td><td><span class="v full">✓ Full button</span></td></tr>
+      <tr><td class="task">Build / segment the audience</td><td class="now">Already in the dashboard (Audience Builder)</td><td class="goal">Same — already done</td><td><span class="v full">✓ Today</span></td></tr>
+      <tr><td class="task">Preview the campaign copy</td><td class="now">Copy preview pack (live now)</td><td class="goal">Same — already done</td><td><span class="v full">✓ Today</span></td></tr>
+      <tr><td class="task">Generate / rewrite copy</td><td class="now">Claude writes + self-critiques</td><td class="goal">"Regenerate" button — calls Claude behind it</td><td><span class="v claude">🧠 Claude-powered</span></td></tr>
+      <tr><td class="task">Set up the A/B test</td><td class="now">Claude sets the challenger offer</td><td class="goal">Pick the challenger in the UI</td><td><span class="v full">✓ Full button</span></td></tr>
+      <tr><td class="task">Pre-send safety gate</td><td class="now">Runs in the engine; dashboard shows it</td><td class="goal">Same — already shown</td><td><span class="v full">✓ Today</span></td></tr>
+      <tr><td class="task">Launch / go live</td><td class="now">Theodore flips the engine switch</td><td class="goal">Gated "Go live" button (strong auth + confirm)</td><td><span class="v gate">⚙ Gated by design</span></td></tr>
+      <tr><td class="task">Send + monitor deliverability</td><td class="now">Engine paces; monitor + dashboard watch</td><td class="goal">Same — already watched</td><td><span class="v full">✓ Today</span></td></tr>
+      <tr><td class="task">Read the analytics</td><td class="now">Dashboard</td><td class="goal">Same — already done</td><td><span class="v full">✓ Today</span></td></tr>
+      <tr><td class="task">Maintenance call (hold / scale / pause)</td><td class="now">Dashboard shows data; you decide</td><td class="goal">Same, with guardrail prompts</td><td><span class="v full">✓ Full button</span></td></tr>
+      <tr><td class="task">Strategy · ICP · brand-new segments</td><td class="now">Claude + you + Eric / Malcolm</td><td class="goal">Human judgment — not a button</td><td><span class="v claude">🧠 Stays human</span></td></tr>
+      <tr><td class="task">Debug anomalies / new edge cases</td><td class="now">Claude</td><td class="goal">Claude on call (escalation)</td><td><span class="v claude">🧠 Stays Claude</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="legend">
+    <span><b class="v full">✓ Full button</b> becomes a normal dashboard click</span>
+    <span><b class="v gate">⚙ Gated</b> a button, but deliberately fenced (cost or safety)</span>
+    <span><b class="v claude">🧠 Claude-powered</b> stays Claude / human by design, not a limitation</span>
+  </div>
+
+  <div class="bl">
+    <span class="lbl">THE PLAN</span>
+    <span><b>Month 1:</b> refine the whole system with Claude in the loop. &nbsp;→&nbsp; <b>Then:</b> harden every proven step into a dashboard button. &nbsp;→&nbsp; <b>End state:</b> Malcolm runs the daily loop from the dashboard; Claude stays the strategist + safety net, not the daily operator.</span>
+  </div>
+
+  <div class="foot">Franchise Sellers / Company Sellers · Cold Email Operating Model · 2026-06-28</div>
+</body>
+</html>

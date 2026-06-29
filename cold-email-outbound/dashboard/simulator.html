@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Campaign Simulator (Sandbox) — Marketing Platform</title>
+<style>
+  /* ---- theme variables (copied verbatim from index.html so look matches 1:1) ---- */
+  :root{
+    --bg:#0b0f15;--panel:#15202f;--panel2:#1a2738;--border:#22324a;--border2:#2c4061;
+    --text:#e8eef7;--dim:#94a3b8;--dimmer:#64748b;--header:#0e141d;
+    --fs:#dc2626;--cs:#3b82f6;--ok:#10b981;--warn:#f59e0b;--bad:#ef4444;--accent:#8b5cf6;
+    --help-bg:#2c4061;--help-fg:#cbd5e1;--tip-bg:#0e141d;--tip-fg:#e8eef7;--shadow:rgba(0,0,0,.35);
+    --mock:#f59e0b;
+  }
+  html[data-theme="light"]{
+    --bg:#eef2f7;--panel:#ffffff;--panel2:#f5f8fc;--border:#e2e8f0;--border2:#cbd5e1;
+    --text:#0f172a;--dim:#5b6b80;--dimmer:#94a3b8;--header:#ffffff;
+    --accent:#7c3aed;--help-bg:#e2e8f0;--help-fg:#475569;--tip-bg:#0f172a;--tip-fg:#f8fafc;--shadow:rgba(15,23,42,.10);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14px;line-height:1.5;transition:background .2s,color .2s;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px 80px;}
+  /* header */
+  .topbar{position:sticky;top:0;z-index:30;background:var(--header);border-bottom:1px solid var(--border);}
+  .topbar-in{max-width:1080px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .brand{display:flex;flex-direction:column;gap:1px;}
+  .brand a.back{color:var(--dimmer);text-decoration:none;font-size:11px;font-weight:600;}
+  .brand a.back:hover{color:var(--accent);}
+  .brand h1{font-size:17px;margin:0;font-weight:800;letter-spacing:-.02em;}
+  .spacer{flex:1;}
+  .ctrls{display:flex;align-items:center;gap:10px;}
+  .iconbtn{background:transparent;border:1px solid var(--border2);color:var(--dim);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  .iconbtn:hover{color:var(--text);border-color:var(--accent);}
+  .badge{display:inline-block;padding:4px 11px;border-radius:20px;font-size:11.5px;font-weight:800;letter-spacing:.02em;background:rgba(245,158,11,.16);color:#fbbf24;}
+  /* sandbox banner */
+  .sandbox-banner{display:flex;align-items:center;gap:9px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.34);color:#fbbf24;border-radius:10px;padding:9px 14px;font-size:12.5px;font-weight:700;margin:18px 0 16px;}
+  .sandbox-banner .dot{width:8px;height:8px;border-radius:50%;background:var(--mock);flex:0 0 auto;box-shadow:0 0 0 4px rgba(245,158,11,.18);}
+  /* progress rail */
+  .simrail{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:20px;}
+  .simrail .r{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:6px 10px;font-size:11.5px;font-weight:700;color:var(--dim);cursor:pointer;transition:.15s;}
+  .simrail .r:hover{color:var(--text);border-color:var(--accent);}
+  .simrail .r .n{width:18px;height:18px;border-radius:5px;background:var(--panel2);color:var(--dim);display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:800;flex:0 0 auto;}
+  .simrail .r.active{border-color:var(--accent);color:var(--text);background:rgba(139,92,246,.12);}
+  .simrail .r.active .n{background:var(--accent);color:#fff;}
+  .simrail .r.done .n{background:var(--ok);color:#06121f;}
+  /* cards + components (copied) */
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:18px 20px;box-shadow:0 1px 3px var(--shadow);}
+  .card + .card{margin-top:14px;}
+  .col-h{font-size:11.5px;font-weight:700;margin:0 0 10px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);}
+  h2.step-t{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:2px 0 4px;}
+  .step-sub{color:var(--dim);font-size:13.5px;margin:0 0 16px;max-width:680px;}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
+  .tile{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 15px;box-shadow:0 1px 3px var(--shadow);}
+  .tile .n{font-size:24px;font-weight:800;letter-spacing:-.02em;} .tile .l{color:var(--dim);font-size:11.5px;margin-top:3px;} .tile .sub{color:var(--dimmer);font-size:10.5px;margin-top:2px;}
+  .tile.accent{border-left:3px solid var(--accent);} .tile.fs{border-left:3px solid var(--fs);} .tile.cs{border-left:3px solid var(--cs);}
+  .tile.ok{border-left:3px solid var(--ok);} .tile.warn{border-left:3px solid var(--warn);} .tile.bad{border-left:3px solid var(--bad);}
+  .help{display:inline-flex;width:15px;height:15px;border-radius:50%;background:var(--help-bg);color:var(--help-fg);font-size:10px;font-weight:800;align-items:center;justify-content:center;cursor:help;position:relative;margin-left:6px;flex-shrink:0;vertical-align:middle;}
+  .help:hover::after{content:attr(data-tip);position:absolute;left:50%;bottom:150%;transform:translateX(-50%);background:var(--tip-bg);color:var(--tip-fg);padding:9px 11px;border-radius:9px;width:240px;font-size:11.5px;font-weight:400;line-height:1.45;text-transform:none;letter-spacing:0;z-index:40;box-shadow:0 8px 24px var(--shadow);}
+  .mockbadge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.14);color:#fbbf24;border:1px solid rgba(245,158,11,.3);padding:3px 10px;border-radius:7px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;}
+  .funnel-bar{height:30px;border-radius:7px;display:flex;align-items:center;padding:0 12px;font-size:12.5px;font-weight:600;color:#06121f;margin-bottom:7px;white-space:nowrap;overflow:hidden;transition:width .6s ease;}
+  .hbar{display:flex;align-items:center;gap:10px;margin-bottom:7px;font-size:12.5px;}
+  .hbar .lbl{width:62px;color:var(--dim);text-align:right;flex-shrink:0;}
+  .hbar .track{flex:1;background:var(--panel2);border-radius:6px;height:18px;overflow:hidden;}
+  .hbar .fill{height:100%;border-radius:6px;transition:width .6s ease;}
+  .hbar .val{width:66px;color:var(--text);font-weight:600;flex-shrink:0;}
+  .brand-tag{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:6px;}
+  .brand-tag.FS{background:rgba(220,38,38,.18);color:#fca5a5;} .brand-tag.CS{background:rgba(59,130,246,.18);color:#93c5fd;}
+  .check{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--border);}
+  .check:last-child{border-bottom:none;}
+  .check .ic{width:21px;height:21px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px;transition:.2s;}
+  .check .ic.pass{background:rgba(16,185,129,.18);color:#34d399;} .check .ic.fail{background:rgba(239,68,68,.18);color:#f87171;} .check .ic.pend{background:rgba(245,158,11,.18);color:#fbbf24;}
+  .check .ct{font-size:13px;font-weight:600;} .check .cs{font-size:11.5px;color:var(--dim);margin-top:1px;}
+  .switch{width:64px;height:34px;border-radius:20px;background:var(--panel2);border:1px solid var(--border2);position:relative;flex-shrink:0;cursor:pointer;transition:.2s;}
+  .switch .knob{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--warn);transition:.2s;}
+  .switch.armed{background:rgba(245,158,11,.25);} .switch.armed .knob{left:35px;background:var(--mock);}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:80px;margin-top:4px;}
+  .sbar{flex:1;background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;opacity:.85;transition:height .3s;}
+  .btn{display:inline-flex;align-items:center;gap:7px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;font-weight:700;text-decoration:none;font-size:13.5px;border:none;cursor:pointer;font-family:inherit;transition:.15s;}
+  .btn:hover{opacity:.92;} .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn.ghost{background:transparent;border:1px solid var(--border2);color:var(--dim);} .btn.ghost:hover{color:var(--text);border-color:var(--accent);}
+  .btn.warn{background:var(--warn);color:#06121f;} .btn.amber{background:transparent;border:1px solid rgba(245,158,11,.5);color:#fbbf24;}
+  .note{font-size:12.5px;color:var(--dim);line-height:1.55;}
+  .pill{font-size:10.5px;padding:2px 9px;border-radius:12px;font-weight:700;}
+  .pill.ok{background:rgba(16,185,129,.16);color:#34d399;} .pill.warn{background:rgba(245,158,11,.16);color:#fbbf24;} .pill.bad{background:rgba(239,68,68,.16);color:#f87171;}
+  /* form controls */
+  .seg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .seg button{background:var(--panel2);border:1px solid var(--border2);color:var(--dim);padding:9px 16px;border-radius:9px;font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;}
+  .seg button:hover{color:var(--text);}
+  .seg button.on{border-color:var(--accent);color:#fff;background:var(--accent);}
+  .seg button.on.fs{background:var(--fs);border-color:var(--fs);} .seg button.on.cs{background:var(--cs);border-color:var(--cs);}
+  select,input[type=range]{font-family:inherit;}
+  select{background:var(--panel2);color:var(--text);border:1px solid var(--border2);border-radius:9px;padding:9px 12px;font-size:13.5px;width:100%;max-width:420px;}
+  .field{margin-bottom:14px;} .field label{display:block;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--dim);margin-bottom:6px;}
+  input[type=range]{width:100%;max-width:420px;accent-color:var(--accent);}
+  /* where-panel */
+  .where{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-top:16px;}
+  .where > div{padding:13px 15px;}
+  .where .w-claude{background:rgba(139,92,246,.07);border-right:1px solid var(--border);}
+  .where .w-dash{background:var(--panel2);}
+  .where .wh{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--dimmer);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+  .where code{display:block;background:var(--tip-bg);color:#a5b4fc;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;padding:8px 10px;border-radius:7px;margin-top:6px;white-space:pre-wrap;word-break:break-word;line-height:1.5;}
+  .where .wn{font-size:12px;color:var(--dim);line-height:1.5;}
+  /* email render */
+  .emailcard{background:var(--panel2);border:1px solid var(--border);border-radius:11px;padding:14px 16px;font-size:13px;line-height:1.6;white-space:pre-wrap;}
+  .emailcard .subj{font-weight:800;color:var(--text);margin-bottom:8px;font-size:13px;}
+  .emailcard .ftr{margin-top:12px;padding-top:10px;border-top:1px dashed var(--border2);color:var(--dimmer);font-size:11.5px;white-space:pre-wrap;}
+  .emstep{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--dimmer);margin:0 0 6px;display:flex;align-items:center;gap:8px;}
+  .variant{background:var(--panel2);border:1px solid var(--border);border-radius:9px;padding:9px 12px;font-size:12.5px;}
+  .meter{height:9px;border-radius:6px;background:var(--panel2);overflow:hidden;margin:4px 0;} .meter > span{display:block;height:100%;background:var(--ok);border-radius:6px;}
+  /* mailbox grid */
+  .mbox-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(13px,1fr));gap:3px;margin-top:10px;}
+  .mbox{aspect-ratio:1;border-radius:3px;background:var(--panel2);transition:background .3s;}
+  .mbox.act{background:var(--accent);} .mbox.done{background:var(--ok);}
+  /* option cards */
+  .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;}
+  .opt{background:var(--panel2);border:1px solid var(--border2);border-radius:11px;padding:14px;cursor:pointer;transition:.15s;}
+  .opt:hover{border-color:var(--accent);}
+  .opt.on{border-color:var(--accent);background:rgba(139,92,246,.1);}
+  .opt.danger.on{border-color:var(--bad);background:rgba(239,68,68,.1);}
+  .opt h4{margin:0 0 5px;font-size:14px;} .opt p{margin:0;font-size:12px;color:var(--dim);line-height:1.5;}
+  .opt.disabled{opacity:.4;pointer-events:none;}
+  /* loop diagram */
+  .loop{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:6px 0;}
+  .loop .lp{background:var(--panel2);border:1px solid var(--border2);border-radius:20px;padding:7px 14px;font-size:12px;font-weight:700;}
+  .loop .ar{color:var(--dimmer);font-weight:800;}
+  /* footer nav */
+  .nav{position:sticky;bottom:0;background:linear-gradient(to top,var(--bg) 70%,transparent);padding:16px 0 8px;margin-top:22px;display:flex;align-items:center;gap:12px;}
+  .nav .prog{flex:1;color:var(--dimmer);font-size:12px;text-align:center;}
+  footer{margin-top:18px;color:var(--dimmer);font-size:11.5px;text-align:center;}
+  @media(max-width:760px){.where{grid-template-columns:1fr;} .where .w-claude{border-right:none;border-bottom:1px solid var(--border);}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <a href="index.html" class="back">← Marketing Platform</a>
+      <h1>Campaign Simulator</h1>
+    </div>
+    <div class="spacer"></div>
+    <div class="ctrls">
+      <span class="badge">SANDBOX</span>
+      <button class="iconbtn" id="theme" title="Toggle light / dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="sandbox-banner"><span class="dot"></span>
+    <span>Simulated sandbox — every number is illustrative and <b>no emails are sent</b>. Walk the whole campaign lifecycle, try inputs, get a feel for the system before go-live.</span>
+  </div>
+  <div class="simrail" id="rail"></div>
+  <div id="stage"></div>
+  <div class="nav">
+    <button class="btn ghost" id="back">← Back</button>
+    <span class="prog" id="prog"></span>
+    <button class="btn" id="next">Next →</button>
+  </div>
+  <footer>Marketing Platform · Campaign Simulator · sandbox build — no live connection, no sends, no data written.</footer>
+</div>
+
+<script>
+/* ============================================================= helpers */
+const fmt = n => (n==null?'—':Number(n).toLocaleString());
+const $ = id => document.getElementById(id);
+function initTheme(){
+  const urlTheme=new URLSearchParams(location.search).get('theme');
+  const saved=urlTheme||localStorage.getItem('mktg_theme');
+  const sysDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  setTheme((saved==='dark'||saved==='light')?saved:(sysDark?'dark':'light'));
+}
+function setTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('mktg_theme',t);$('theme').textContent=t==='dark'?'🌙':'☀️';}
+$('theme').addEventListener('click',()=>setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
+
+/* ============================================================= baked mock data (real numbers) */
+const MOCK = {
+  pool:{canonical:405693,tierA:187490,fs:10206,cs:160699,ambiguous:16585,tierB:155498,tierC:5774,tierD:56931},
+  qualRate:0.71,
+  qualified:{total:1429,cs:815,fs:614},
+  segments:{
+    FS:[
+      {id:'home_instead',label:'Home Instead (home care)',count:181},
+      {id:'caring_transitions',label:'Caring Transitions',count:119},
+      {id:'comforcare',label:'ComForCare (home care)',count:116},
+      {id:'comfort_keepers',label:'Comfort Keepers',count:99},
+      {id:'puroclean',label:'PuroClean (restoration)',count:60},
+      {id:'all_fs',label:'All FS franchise owners',count:10206},
+    ],
+    CS:[
+      {id:'consumer_services',label:'Consumer Services',count:17777},
+      {id:'wellness_fitness',label:'Wellness & Fitness',count:13997},
+      {id:'manufacturing',label:'Manufacturing',count:10469},
+      {id:'food_bev',label:'Food & Beverage',count:9135},
+      {id:'auto_service',label:'Automotive Service',count:4282},
+      {id:'all_cs',label:'All CS business owners',count:160699},
+    ],
+  },
+  offers:[
+    {id:'oov',label:'Opinion of Value (free valuation)',control:true,cta:"If you're curious what it could sell for, I'd be glad to put together a free opinion of value. No obligation."},
+    {id:'comparable_sales',label:'Comparable sales report',cta:"I can pull what comparable businesses in your space have recently sold for, if that's useful."},
+    {id:'exit_readiness',label:'Exit-readiness assessment',cta:"Happy to share a quick read on how sale-ready your business looks today."},
+    {id:'buyer_match',label:'Active buyer match',cta:"We're tracking active buyers in your space right now. I can tell you what they're looking for."},
+    {id:'strategy_call',label:'15-minute strategy call',cta:"Worth a quick 15 minutes on what your options look like, even if a sale is years off?"},
+    {id:'succession',label:'Succession planning',cta:"Glad to help you think through succession and timing, no pressure either way."},
+  ],
+  sequence:{emailDays:[1,5,11],steps:3},
+  spintax:{raw:"{{RANDOM | Last note | One more then I'll stop | Closing the loop}}",options:["Last note","One more then I'll stop","Closing the loop"],floor:0.50},
+  sending:{mailboxes:86,perMailbox:30,perDay:2580,wk1Daily:300,
+    ramp:[["Week 1","~300 / week","prove deliverability (one segment)"],["Week 2","~500–800 / week","hold if clean, add a 2nd segment"],["Week 3–4","~1,000–1,500 / week","bring 2nd brand on, first A/B"],["Week 5–8","~2,000–2,600 / week","full cadence, double down on winners"]]},
+  compliance:{address:"1001 Bannock St., Suite 475, Denver, CO 80204",optout:"Not interested? Just reply and I'll take you off my list."},
+  gate:[
+    ["Open + link tracking OFF","Tracking pixels hurt inbox placement in 2026, so both are disabled.",true],
+    ["Compliance footer present","Physical mailing address + one-click opt-out on every email (CAN-SPAM).",true],
+    ["Cold-domain allow-list enforced","Only approved lookalike domains can cold-send — never franchisesellers.com / companysellers.com or staff inboxes.",true],
+    ["SPF / DKIM / DMARC pass","Every sending domain authenticated; the daily monitor confirms it.",true],
+    ["Warmup healthy + no blacklist","All 86 mailboxes above the warmup floor, none on a DNS blacklist.",true],
+    ["Bounce under hard-stop (3%)","Last batch bounce well under the 3% halt line.",true],
+    ["Spintax variation ≥ 50%","Enough wording variation that 10k sends aren't byte-identical.",true],
+    ["Copy approved","Human sign-off from Malcolm on the sequence. (Pending in real life.)",true],
+    ["ICP confirmed","Eric's ideal-customer profile locked per brand. (Pending in real life.)",true],
+  ],
+  breakers:{bounceWarn:2.0,bounceHalt:3.0,unsubHalt:5.0},
+  /* cumulative %, 14 days, opens OFF. email sends land on days 1/5/11 -> reply bumps */
+  analytics:{
+    days:14,
+    reply:[0.8,1.6,2.1,2.4,2.7,3.2,3.5,3.7,3.8,3.9,4.0,4.1,4.15,4.2],
+    positive:[0.2,0.4,0.55,0.65,0.72,0.85,0.92,0.98,1.02,1.05,1.07,1.09,1.1,1.1],
+    bounce:[1.1,1.35,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4,1.4],
+    unsub:[0.05,0.1,0.13,0.16,0.18,0.22,0.24,0.26,0.27,0.28,0.29,0.3,0.3,0.3],
+  },
+  scenarioBounce:3.2,
+  cooldownDays:60,
+};
+
+/* ============================================================= state */
+const sim = { step:0, brand:null, segment:null, segCount:0, minIcp:60, offer:'oov',
+              challenger:null, gateMode:'pass', launched:false, day:7, scenario:false,
+              decision:null, _timers:[] };
+function clearTimers(){ sim._timers.forEach(t=>clearInterval(t)); sim._timers=[]; }
+function offerById(id){ return MOCK.offers.find(o=>o.id===id); }
+function curSeg(){ return sim.brand ? MOCK.segments[sim.brand].find(s=>s.id===sim.segment) : null; }
+function sampleIndustry(){ const s=curSeg(); if(!s) return 'your industry'; if(sim.brand==='FS') return s.label; return s.label.toLowerCase().replace(' & ',' and '); }
+
+/* ============================================================= where-panel helper */
+function where(claudeLabel, code, dashLabel, dashNote){
+  return `<div class="where">
+    <div class="w-claude"><div class="wh">⌨ In Claude Code</div><div class="wn">${claudeLabel}</div>${code?`<code>${code}</code>`:''}</div>
+    <div class="w-dash"><div class="wh">🖥 On the dashboard</div><div class="wn">${dashNote}</div><div style="margin-top:6px"><span class="pill ok">${dashLabel}</span></div></div>
+  </div>`;
+}
+
+/* ============================================================= steps */
+const STEPS = [
+/* 0 ---------------------------------------------------------- intro */
+{ id:'start', label:'Start', title:'Run a full campaign — start to finish',
+  sub:'This sandbox walks the exact lifecycle the real system runs: pick who to email, qualify them, write and test the copy, pass the safety gate, launch, watch the results come in, then decide what to do next. Nothing here leaves the page.',
+  render(){
+    const phases=[['1','Pick audience'],['2','Qualify'],['3','Write + vary copy'],['4','A/B test'],['5','Safety gate'],['6','Launch (dry-run)'],['7','Send'],['8','Read results'],['9','Decide'],['10','Loop']];
+    return `<div class="card">
+      <div class="col-h">The lifecycle you're about to run</div>
+      <div class="simrail" style="margin:0">${phases.map(([n,t])=>`<div class="r"><span class="n">${n}</span>${t}</div>`).join('')}</div>
+      <p class="note" style="margin-top:14px">Two surfaces run this in real life: <b>Claude Code</b> (the engine room — you or I run a command) and the <b>Marketing dashboard</b> (the cockpit — Malcolm monitors). Each step below shows which is which.</p>
+      <div style="margin-top:12px"><button class="btn" onclick="goto(1)">Start the walkthrough →</button></div>
+    </div>`;
+  } },
+/* 1 ---------------------------------------------------------- audience */
+{ id:'audience', label:'Audience', title:'1 · Pick the audience',
+  sub:'Choose a brand and a segment. The real targeting walls FS prospects to FS mailboxes and CS to CS, then filters the qualified pool down to the slice you want.',
+  render(){
+    const segs = sim.brand?MOCK.segments[sim.brand]:[];
+    return `<div class="card">
+      <div class="field"><label>Brand</label>
+        <div class="seg">
+          <button class="${sim.brand==='FS'?'on fs':''}" onclick="pickBrand('FS')">Franchise Sellers (FS)</button>
+          <button class="${sim.brand==='CS'?'on cs':''}" onclick="pickBrand('CS')">Company Sellers (CS)</button>
+        </div></div>
+      ${sim.brand?`<div class="field"><label>Segment <span class="help" data-tip="FS segments are named franchise systems — naming the prospect's system in the opener is the strongest hook we have. CS segments are industries, ranked by how many owners we have in each.">?</span></label>
+        <select id="segsel" onchange="pickSeg(this.value)">
+          <option value="">— choose a segment —</option>
+          ${segs.map(s=>`<option value="${s.id}" ${sim.segment===s.id?'selected':''}>${s.label} (${fmt(s.count)} owners)</option>`).join('')}
+        </select></div>
+      <div class="field"><label>Minimum ICP score: <span id="icpval" style="color:var(--text)">${sim.minIcp}</span> <span class="help" data-tip="ICP = ideal-customer-profile fit, 0–100. Records at or above the threshold get sequenced. 60 is the live default.">?</span></label>
+        <input type="range" min="0" max="100" value="${sim.minIcp}" oninput="sim.minIcp=+this.value;document.getElementById('icpval').textContent=this.value">
+      </div>`:''}
+      ${curSeg()?`<div class="tiles" style="margin-top:6px"><div class="tile ${sim.brand==='FS'?'fs':'cs'}"><div class="n">${fmt(curSeg().count)}</div><div class="l">owners in <b>${curSeg().label}</b> <span class="brand-tag ${sim.brand}">${sim.brand}</span></div><div class="sub">before qualifying + verifying</div></div></div>`:''}
+    </div>
+    ${where('Pull this segment from the qualified pool in the database.',
+            "db.pull_qualified(brand='"+(sim.brand||'CS')+"',\n  limit=1000, min_confidence=0.5)",
+            'Audience builder','Malcolm previews segment size live (Preview button) before staging anything.')}`;
+  },
+  canNext(){ return !!curSeg(); } },
+/* 2 ---------------------------------------------------------- qualify */
+{ id:'qualify', label:'Qualify', title:'2 · Qualify the list',
+  sub:'Qualifying is a cheap-to-expensive funnel: free filters, then a company lookup, then an AI judge that confirms current owner, US-based, right brand, no private equity, and the size/age fit. About 71% survive.',
+  render(){
+    const seg=curSeg(); const base=Math.min(seg.count, 1000);
+    const qualified=Math.round(base*MOCK.qualRate);
+    const afterSupp=Math.round(qualified*0.94);
+    const reach=Math.round(afterSupp*0.97);
+    return `<div class="card">
+      <div class="col-h">Funnel on a ${fmt(base)}-lead pull <span class="mockbadge" style="margin-left:6px">● simulated</span></div>
+      <div id="funnel">
+        ${[['Pulled from segment',base,'#475569'],['Qualified (~71% pass)',qualified,'var(--accent)'],['After suppression',afterSupp,'#3b82f6'],['Deliverable email',reach,'var(--ok)']]
+          .map(([l,n,c])=>`<div class="funnel-bar" style="width:0;background:${c}" data-w="${Math.max(n/base*100,22)}">${l}: ${fmt(n)}</div>`).join('')}
+      </div>
+      <div class="tiles" style="margin-top:14px">
+        <div class="tile accent"><div class="n">${fmt(base)}</div><div class="l">Judged</div></div>
+        <div class="tile ok"><div class="n">${fmt(qualified)}</div><div class="l">Qualified</div></div>
+        <div class="tile"><div class="n">71%</div><div class="l">Pass rate</div></div>
+      </div>
+      <p class="note" style="margin-top:12px">Top reasons leads drop (from the real first batch of ~2,000): <b>not current owner</b> 350 · <b>PE-backed</b> 115 · <b>owner not US</b> 43 · <b>too many employees (CS)</b> 23. Our whole qualified pool today is <b>${fmt(MOCK.qualified.total)}</b> (${fmt(MOCK.qualified.cs)} CS · ${fmt(MOCK.qualified.fs)} FS).</p>
+    </div>
+    ${where('Run the paid qualification batch (free filters → LeadMagic company lookup → AI judge), then it writes results to the database.',
+            "qualification.qualify_batch(\n  batch, live_enrich=True, save=True)",
+            'Leads & qualifying','The funnel + pass-rate + drop reasons render automatically from the latest batch.')}`;
+  },
+  mount(){ setTimeout(()=>document.querySelectorAll('#funnel .funnel-bar').forEach((b,i)=>setTimeout(()=>b.style.width=b.dataset.w+'%',i*180)),120); } },
+/* 3 ---------------------------------------------------------- copy */
+{ id:'copy', label:'Copy', title:'3 · Write and vary the copy',
+  sub:'Each email is built from an approved template with light personalization. The system never fakes a personal detail — if there is no real signal, that line is simply removed. Wording is varied so no two sends are identical.',
+  render(){
+    const o=offerById(sim.offer); const ind=sampleIndustry();
+    const fn='Maria', co='Brightwater Co.', sender='Theodore Baird', brandName=(sim.brand==='FS'?'Franchise Sellers':'Company Sellers');
+    const ftr=`--\n${sender}, ${brandName}\n${MOCK.compliance.address}\n${MOCK.compliance.optout}`;
+    const e1=`Hey ${fn},\n\nWe help business owners value and sell their businesses. We recently helped another owner in ${ind} sell for more than they expected — clean process, fully confidential.\n\n${o.cta}\n\nWorth a quick conversation?\n\n${sender}\n${brandName}\n\nIf this is not relevant to you, simply reply with 'no'`;
+    const e2=`Hey ${fn},\n\nAs a business owner, I know emails get buried — bumping this up.\n\nIf you've ever wondered what ${co} could be worth, a complimentary opinion of value is a no-pressure way to find out. No obligation, fully confidential.\n\nWant to take a look?\n\n${sender}\n${brandName}`;
+    return `<div class="card">
+      <div class="field"><label>Offer (the one variable line) <span class="help" data-tip="The call-to-action line. Everything else in the email is held constant; the offer is what we A/B test in the next step.">?</span></label>
+        <select onchange="sim.offer=this.value;renderStep()">
+          ${MOCK.offers.map(of=>`<option value="${of.id}" ${sim.offer===of.id?'selected':''}>${of.label}${of.control?' — control':''}</option>`).join('')}
+        </select></div>
+      <div class="col-h">Rendered sequence — ${brandName} · emails on day 1, 5, 11 <span class="mockbadge" style="margin-left:6px">● sample contact</span></div>
+      <div class="emstep"><span class="brand-tag ${sim.brand||'CS'}">${sim.brand||'CS'}</span> EMAIL 1 · day 1</div>
+      <div class="emailcard"><div class="subj">Subject: Quick question ${fn}</div>${e1}<div class="ftr">${ftr}</div></div>
+      <p class="note" style="margin-top:8px">↑ The template has a "recent signal" line here. We have no real signal for this contact, so the system <b>deletes that line rather than inventing one</b>. That's the no-fake-personalization rule in action.</p>
+      <div class="emstep" style="margin-top:14px"><span class="brand-tag ${sim.brand||'CS'}">${sim.brand||'CS'}</span> EMAIL 2 · day 5 (bump)</div>
+      <div class="emailcard"><div class="subj">Subject: ${fn}, thoughts?</div>${e2}<div class="ftr">${ftr}</div></div>
+      <div class="emstep" style="margin-top:14px"><span class="brand-tag ${sim.brand||'CS'}">${sim.brand||'CS'}</span> EMAIL 3 · day 11 (soft close, with spintax)</div>
+      <div id="spinhost"></div>
+      ${sim.brand==='FS'?`<p class="note" style="margin-top:10px">Note: the FS sequence also names the prospect's franchise system in the opener ("we specialise in <i>${curSeg()?curSeg().label.replace(/ \(.*\)/,''):'your system'}</i> resales specifically"). The mechanics are identical to the Company Sellers example shown.</p>`:''}
+    </div>
+    ${where('Render the full campaign sequence on real contacts to review before sending.',
+            "copy_gen.render(contact,\n  stream='seller_cold_"+(sim.brand==='FS'?'fs_niche':'cs')+"',\n  offer='"+sim.offer+"')",
+            'Campaign copy','Malcolm opens the Copy Preview Pack — every sequence rendered on real contacts — and approves it.')}`;
+  },
+  mount(){ renderSpin(); } },
+/* 4 ---------------------------------------------------------- A/B */
+{ id:'ab', label:'A/B', title:'4 · Set up the A/B test',
+  sub:'We test one thing at a time: the offer. The free Opinion of Value stays the control; you pick one challenger. Everything else (subject, opener, length, sender) is held identical so the result is clean.',
+  render(){
+    const challengers=MOCK.offers.filter(o=>!o.control);
+    return `<div class="card">
+      <div class="tiles" style="margin-bottom:14px">
+        <div class="tile accent"><div class="n">A</div><div class="l">Control — <b>Opinion of Value</b></div><div class="sub">always the baseline</div></div>
+        <div class="tile ${sim.challenger?'ok':'warn'}"><div class="n">B</div><div class="l">Challenger — <b>${sim.challenger?offerById(sim.challenger).label:'pick one →'}</b></div><div class="sub">the offer you're testing</div></div>
+      </div>
+      <div class="field"><label>Challenger offer (B)</label>
+        <select onchange="sim.challenger=this.value||null;renderStep()">
+          <option value="">— choose a challenger —</option>
+          ${challengers.map(o=>`<option value="${o.id}" ${sim.challenger===o.id?'selected':''}>${o.label}</option>`).join('')}
+        </select></div>
+      <div class="tiles">
+        <div class="tile"><div class="n">50 / 50</div><div class="l">Split</div></div>
+        <div class="tile"><div class="n">≥ 500</div><div class="l">Per variant <span class="help" data-tip="Minimum sample for a statistically meaningful read. Below this, a reply-rate gap could just be noise.">?</span></div><div class="sub">for a real signal</div></div>
+        <div class="tile"><div class="n">1</div><div class="l">Variable changed</div><div class="sub">offer only</div></div>
+      </div>
+      <p class="note" style="margin-top:12px">Tests are <b>sequential</b> — one challenger at a time. OOV stays the control; winners become the new baseline for the next test. (See the Testing &amp; Spintax SOP.)</p>
+    </div>
+    ${where('Run the same campaign with an alternate offer on half the list.',
+            "pipeline.run_campaign(stream,\n  test_offer='"+(sim.challenger||'comparable_sales')+"')",
+            'Campaign copy','The two variants show side by side; results split by variant in the analytics.')}`;
+  },
+  canNext(){ return !!sim.challenger; } },
+/* 5 ---------------------------------------------------------- gate */
+{ id:'gate', label:'Gate', title:'5 · Pass the pre-send safety gate',
+  sub:'A coded checklist that must be all-green before a single email can leave. If any must-pass item fails, the send is blocked automatically — there is no manual override.',
+  render(){
+    return `<div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <button class="btn" id="rungate" onclick="runGate()">Run the gate</button>
+        <button class="btn amber" onclick="sim.gateMode=(sim.gateMode==='fail'?'pass':'fail');renderStep()">${sim.gateMode==='fail'?'Show all-pass':'Show a failure'}</button>
+        <span id="gateverdict"></span>
+      </div>
+      <div id="gatelist" style="margin-top:8px"></div>
+    </div>
+    ${where('The gate runs automatically inside the campaign builder; it raises and stops if anything fails.',
+            "pipeline.run_campaign(stream)\n# → presend.check_gate() must pass",
+            'Pre-send gate','The 7+ checks render with pass / pending / fail icons; two human sign-offs (copy + ICP) are the last to clear.')}`;
+  },
+  mount(){ paintGate(false); } },
+/* 6 ---------------------------------------------------------- launch */
+{ id:'launch', label:'Launch', title:'6 · Launch (dry-run)',
+  sub:'The master switch is the single control that decides whether anything actually sends. In this sandbox it can only reach DRY-RUN — exactly like the real engine today, where it stays off until Theodore deliberately flips it on a small batch.',
+  render(){
+    return `<div class="card">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="switch ${sim.launched?'armed':''}" id="mastersw" onclick="toggleLaunch()"><div class="knob"></div></div>
+        <div>
+          <div style="font-weight:800;font-size:15px">Master send switch: <span id="swlabel" style="color:${sim.launched?'var(--mock)':'var(--dim)'}">${sim.launched?'DRY-RUN LAUNCH (accepted)':'OFF'}</span></div>
+          <div class="note" id="swnote">${sim.launched?'Campaign accepted into the engine. Nothing sends — this is a dry run.':'Flip to stage the campaign. The switch tops out at DRY-RUN here; it cannot reach LIVE.'}</div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:6px;color:var(--mock)"><b>This sandbox switch never reaches LIVE.</b> The real LIVE flip happens only in the engine (CEO_DRY_RUN), only by Theodore.</div>
+      <div class="col-h" style="margin-top:18px">Volume plan — conservative ramp</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+        ${MOCK.sending.ramp.map(([w,v,f])=>`<tr><td style="padding:7px 8px;border-bottom:1px solid var(--border);font-weight:700">${w}</td><td style="padding:7px 8px;border-bottom:1px solid var(--border)">${v}</td><td style="padding:7px 8px;border-bottom:1px solid var(--border);color:var(--dim)">${f}</td></tr>`).join('')}
+      </table>
+      <p class="note" style="margin-top:10px">Ceiling is ${MOCK.sending.mailboxes} mailboxes × ${MOCK.sending.perMailbox}/day = <b>${fmt(MOCK.sending.perDay)} sends/day</b>, but we start far below it and only scale on clean signal.</p>
+    </div>
+    ${where('Stage + activate the campaign in the engine — gated by the master dry-run switch.',
+            "pipeline.run_campaign(stream,\n  do_push=True, activate=True)\n# CEO_DRY_RUN=true → nothing sends",
+            'Send & monitor','The master-switch card shows DRY-RUN vs LIVE; flipping LIVE is engine-only, never a dashboard button.')}`;
+  },
+  canNext(){ return sim.launched; } },
+/* 7 ---------------------------------------------------------- send */
+{ id:'send', label:'Send', title:'7 · Sending across the mailboxes',
+  sub:'Campaigns send through Instantly across all warmed inboxes, slowly and spaced out (60–120s between sends), so the volume looks human. Here is day one of the ramp playing out.',
+  render(){
+    return `<div class="card">
+      <div class="tiles" style="margin-bottom:6px">
+        <div class="tile accent"><div class="n" id="sentn">0</div><div class="l">Sent today <span class="mockbadge" style="margin-left:6px">● simulated</span></div><div class="sub">target ~${fmt(MOCK.sending.wk1Daily)} (week-1 pace)</div></div>
+        <div class="tile"><div class="n">${MOCK.sending.mailboxes}</div><div class="l">Mailboxes active</div></div>
+        <div class="tile ok"><div class="n" id="brk">▦ healthy</div><div class="l">Circuit breakers <span class="help" data-tip="Auto-halt if bounce passes 3% or unsubscribes pass 5%. Green here means we're clear.">?</span></div><div class="sub">bounce &lt;3% · unsub &lt;5%</div></div>
+      </div>
+      <div class="col-h" style="margin-top:8px">86 mailboxes — filling at the daily cap</div>
+      <div class="mbox-grid" id="mgrid">${Array.from({length:MOCK.sending.mailboxes}).map(()=>'<div class="mbox"></div>').join('')}</div>
+      <div style="display:flex;gap:10px;margin-top:14px"><button class="btn ghost" id="ff" onclick="fastForward()">Fast-forward ⏩</button></div>
+    </div>
+    ${where('The orchestrator paces every send and the monitor cron watches deliverability all day.',
+            "orchestrator.run_multichannel_campaign(\n  campaign, audience, sequence)",
+            'Send & monitor','Live send counts + warmup + bounce render here; the health monitor pings Theodore only if something breaks.')}`;
+  },
+  mount(){ runSend(); } },
+/* 8 ---------------------------------------------------------- analytics */
+{ id:'results', label:'Results', title:'8 · Read the results',
+  sub:'Open-tracking is off (pixels hurt deliverability), so we steer by replies, not opens. Drag through the first two weeks and watch the numbers build as the day-5 and day-11 emails land.',
+  render(){
+    const a=MOCK.analytics; const d=sim.day-1;
+    const tiles=[['accent',a.reply[d]+'%','Reply rate','of delivered'],['ok',a.positive[d]+'%','Positive replies','interested sellers'],['',a.bounce[d]+'%','Bounce','halt at 3%'],['',a.unsub[d]+'%','Unsubscribe','halt at 5%']];
+    const mx=Math.max(...a.reply);
+    return `<div class="card">
+      <div class="field"><label>Day ${sim.day} of 14 <span class="mockbadge" style="margin-left:6px">● simulated</span></label>
+        <input type="range" min="1" max="14" value="${sim.day}" oninput="sim.day=+this.value;renderStep()"></div>
+      <div class="tiles">${tiles.map(([c,n,l,s])=>`<div class="tile ${c}"><div class="n">${n}</div><div class="l">${l}</div><div class="sub">${s}</div></div>`).join('')}</div>
+      <div class="col-h" style="margin-top:18px">Cumulative reply rate — first 14 days</div>
+      <div class="spark">${a.reply.map((v,i)=>`<div class="sbar" style="height:${v/mx*100}%;opacity:${i<sim.day?0.95:0.25}"></div>`).join('')}</div>
+      <p class="note" style="margin-top:10px">Replies step up right after each send (day 1, 5, 11). Bounce settles early and stays flat — a healthy, well-verified list. There are no opens to read because tracking is intentionally off.</p>
+    </div>
+    ${where('Pull the weekly campaign report — sends, replies, positive %, bounce, unsub, per campaign.',
+            "# skill: campaign-report.md\nengagement.circuit_breaker_check(stream)",
+            'Performance / Replies','The scoreboard tiles + reply routing populate from Instantly + the reply classifier.')}`;
+  } },
+/* 9 ---------------------------------------------------------- decide */
+{ id:'decide', label:'Decide', title:'9 · Decide what to do next',
+  sub:'The data is in. Now choose the maintenance move. Try the toggle to see how the right answer changes when a campaign starts bouncing.',
+  render(){
+    const bounce = sim.scenario ? MOCK.scenarioBounce : MOCK.analytics.bounce[13];
+    const hot = sim.scenario;
+    const opts=[
+      ['hold','Hold steady','Reply + bounce both healthy. Keep the campaign running as-is and let the sequence finish.',false,false],
+      ['adjust','Adjust the offer','Challenger (B) is winning — promote it to control and tee up the next A/B test.',false,false],
+      ['scale','Scale volume up','Raise daily volume toward the cap. Only safe while bounce stays under 2%.',false,hot],
+      ['pause','Pause + re-verify','Bounce crossed the line. Stop the campaign, re-verify the list, fix the source before resuming.',true,false],
+    ];
+    return `<div class="card">
+      <div class="tiles" style="margin-bottom:14px">
+        <div class="tile ${hot?'bad':'ok'}"><div class="n">${bounce}%</div><div class="l">Bounce rate</div><div class="sub">${hot?'OVER the 3% halt line':'under the 3% halt line'}</div></div>
+        <div class="tile accent"><div class="n">${MOCK.analytics.reply[13]}%</div><div class="l">Reply rate</div></div>
+        <div class="tile"><div class="n">${MOCK.analytics.positive[13]}%</div><div class="l">Positive replies</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <button class="btn amber" onclick="sim.scenario=!sim.scenario;sim.decision=null;renderStep()">${sim.scenario?'Reset to a healthy campaign':'What if bounce hits 3.2%?'}</button>
+        ${hot?`<span class="pill bad">circuit breaker tripped</span>`:''}
+      </div>
+      <div class="opts">
+        ${opts.map(([id,h,p,danger,disabled])=>`<div class="opt ${danger?'danger':''} ${sim.decision===id?'on':''} ${disabled?'disabled':''}" onclick="${disabled?'':`sim.decision='${id}';renderStep()`}"><h4>${h}</h4><p>${p}</p></div>`).join('')}
+      </div>
+      ${sim.decision?`<div class="card" style="margin-top:14px;border-color:${sim.decision==='pause'?'var(--bad)':'var(--accent)'}"><b>${decisionConsequence(sim.decision)}</b></div>`:''}
+      ${hot && sim.decision!=='pause'?`<p class="note" style="margin-top:10px;color:var(--bad)">With bounce over 3% the only safe move is <b>Pause + re-verify</b> — scaling or holding would keep burning sender reputation. The engine actually halts the campaign for you here.</p>`:''}
+    </div>
+    ${where('The weekly report flags the breaker; pausing stops the campaign and queues a fresh re-verify.',
+            "# skills: campaign-report.md, verify-pool.md\nengagement.circuit_breaker_check(stream)",
+            'Send & monitor','Bounce over 3% shows red; the campaign is halted automatically and surfaced for action.')}`;
+  },
+  canNext(){ return !!sim.decision; } },
+/* 10 ---------------------------------------------------------- loop */
+{ id:'loop', label:'Loop', title:'10 · Cooldown, re-engage, repeat',
+  sub:'A campaign is not a one-shot. Non-repliers rest, then come back. This is the weekly loop that turns ~130k qualified prospects into a year-plus of steady outreach.',
+  render(){
+    return `<div class="card">
+      <div class="tiles" style="margin-bottom:14px">
+        <div class="tile"><div class="n">${MOCK.cooldownDays} days</div><div class="l">No-reply cooldown <span class="help" data-tip="Emailed, no reply? They rest 60 days, then re-enter a fresh re-engagement sequence. Closed-lost rests 12 months.">?</span></div></div>
+        <div class="tile accent"><div class="n">~130k</div><div class="l">Qualified prospects in the pool</div></div>
+        <div class="tile ok"><div class="n">12–16 mo</div><div class="l">Runway before buying data</div><div class="sub">conservative pace</div></div>
+      </div>
+      <div class="col-h">The weekly loop</div>
+      <div class="loop">
+        ${['Pull qualified','Verify fresh','Stage + gate','Launch (dry-run→live)','Monitor','Read report','Cooldown','Re-engage'].map((t,i,arr)=>`<span class="lp">${t}</span>${i<arr.length-1?'<span class="ar">→</span>':''}`).join('')}
+        <span class="ar">↻</span>
+      </div>
+      <p class="note" style="margin-top:12px">Every week: pull a fresh batch, run it through this exact lifecycle, and feed last week's data back into the copy + offer. Non-repliers cycle back after their cooldown. That's the engine that keeps it going.</p>
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button class="btn" onclick="resetSim()">↻ Run another campaign</button>
+        <a class="btn ghost" href="index.html">Back to the dashboard</a>
+      </div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <div class="col-h">You just ran</div>
+      <p class="note">${recapLine()}</p>
+    </div>`;
+  } },
+];
+
+/* ============================================================= step-specific behaviour */
+function pickBrand(b){ if(sim.brand!==b){ sim.brand=b; sim.segment=null; sim.segCount=0; } renderStep(); }
+function pickSeg(id){ sim.segment=id||null; renderStep(); }
+
+function renderSpin(){
+  const host=$('spinhost'); if(!host) return;
+  const o=offerById(sim.offer);
+  const opts=MOCK.spintax.options;
+  const fn='Maria', sender='Theodore Baird', brandName=(sim.brand==='FS'?'Franchise Sellers':'Company Sellers');
+  const ftr=`--\n${sender}, ${brandName}\n${MOCK.compliance.address}\n${MOCK.compliance.optout}`;
+  const body = v=>`${fn},\n\n${v} — if selling isn't on your mind right now, no worries at all.\n\nWhenever it is, knowing your number ahead of time makes every decision easier. We're here when you want it.\n\n${sender}\n${brandName}`;
+  // pick a current variant deterministically-ish then show all three
+  host.innerHTML = `<div class="emailcard"><div class="subj">Subject: ${fn}, thinking about what's next?</div>${body(opts[sim._spin||0])}<div class="ftr">${ftr}</div></div>
+    <div style="margin-top:10px"><div class="col-h" style="margin-bottom:6px">Spintax — the first line rotates so sends aren't identical <span class="help" data-tip="Syntax in the template: {{RANDOM | a | b | c}}. Each contact deterministically gets one variant; across the batch we require at least 50% unique copies.">?</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">
+      ${opts.map((v,i)=>`<div class="variant" style="${i===(sim._spin||0)?'border-color:var(--accent)':''}">"${v}…"</div>`).join('')}
+    </div>
+    <div style="margin-top:8px;font-size:12px;color:var(--dim)">Batch variation: <b id="varpct">64%</b> unique <span class="pill ok">floor 50% ✓</span></div>
+    <div class="meter"><span style="width:64%"></span></div>
+    <button class="btn ghost" style="margin-top:8px" onclick="reroll()">↻ Re-roll a different contact</button></div>`;
+}
+function reroll(){ sim._spin=((sim._spin||0)+1)%MOCK.spintax.options.length;
+  const pcts=[64,58,71]; sim._varpct=pcts[sim._spin%3];
+  renderSpin();
+  const vp=$('varpct'); if(vp){ vp.textContent=sim._varpct+'%'; vp.parentElement.querySelector('.pill'); }
+  const m=document.querySelector('.meter > span'); if(m) m.style.width=sim._varpct+'%';
+}
+
+function paintGate(animate){
+  const host=$('gatelist'); if(!host) return;
+  const fail = sim.gateMode==='fail';
+  const rows = MOCK.gate.map((g,i)=>{
+    let st='pass';
+    if(animate) st='pend';
+    else if(fail && g[0]==='Copy approved') st='fail';
+    const ic={pass:'✓',fail:'✕',pend:'…'}[st];
+    return `<div class="check" data-i="${i}"><div class="ic ${st}">${ic}</div><div><div class="ct">${g[0]}</div><div class="cs">${g[1]}</div></div></div>`;
+  }).join('');
+  host.innerHTML=rows;
+  const v=$('gateverdict');
+  if(v) v.innerHTML = fail ? `<span class="pill bad">BLOCKED — copy not approved</span>` : (animate?'':`<span class="pill ok">all checks green</span>`);
+}
+function runGate(){
+  sim.gateMode='pass'; paintGate(true);
+  const rows=[...document.querySelectorAll('#gatelist .check')];
+  rows.forEach((r,i)=>{ const t=setTimeout(()=>{ const ic=r.querySelector('.ic'); ic.className='ic pass'; ic.textContent='✓'; if(i===rows.length-1){ const v=$('gateverdict'); if(v) v.innerHTML='<span class="pill ok">all checks green</span>'; } }, 220*(i+1)); sim._timers.push(t); });
+}
+
+function toggleLaunch(){ sim.launched=!sim.launched; renderStep(); }
+
+function runSend(){
+  const grid=$('mgrid'); if(!grid) return;
+  const cells=[...grid.querySelectorAll('.mbox')];
+  const target=MOCK.sending.wk1Daily; let sent=0;
+  const t=setInterval(()=>{
+    sent+=Math.round(target/40);
+    if(sent>=target){ sent=target; clearInterval(t); }
+    const n=$('sentn'); if(n) n.textContent=fmt(sent);
+    const frac=sent/target;
+    cells.forEach((c,i)=>{ const on=i/cells.length < frac; c.className='mbox '+(on?(frac>0.97?'done':'act'):''); });
+  },90);
+  sim._timers.push(t);
+}
+function fastForward(){ clearTimers(); const grid=$('mgrid'); if(grid) grid.querySelectorAll('.mbox').forEach(c=>c.className='mbox done'); const n=$('sentn'); if(n) n.textContent=fmt(MOCK.sending.wk1Daily); }
+
+function decisionConsequence(d){
+  return {
+    hold:'Holding. The sequence finishes on schedule; you review again next week. Low risk, steady output.',
+    adjust:'Promoting challenger B to control. The next campaign uses it as the new baseline and tests a fresh challenger against it.',
+    scale:'Scaling up — daily volume steps toward the cap. The rule still holds: never raise volume on a campaign over 2% bounce.',
+    pause:'Paused. The campaign stops, the list goes back through MillionVerifier, and you fix the source before resuming. Reputation protected.',
+  }[d];
+}
+function recapLine(){
+  const seg=curSeg();
+  return `<b>${sim.brand||'CS'}</b> · segment <b>${seg?seg.label:'—'}</b> · control <b>Opinion of Value</b> vs challenger <b>${sim.challenger?offerById(sim.challenger).label:'—'}</b> · passed the safety gate · launched in <b>dry-run</b> · read 14 days of results · chose <b>${sim.decision?({hold:'Hold steady',adjust:'Adjust the offer',scale:'Scale volume',pause:'Pause + re-verify'})[sim.decision]:'—'}</b>. In real life, the only thing left is Theodore flipping the live switch on a small batch.`;
+}
+function resetSim(){ Object.assign(sim,{step:0,brand:null,segment:null,segCount:0,minIcp:60,offer:'oov',challenger:null,gateMode:'pass',launched:false,day:7,scenario:false,decision:null,_spin:0}); goto(0); }
+
+/* ============================================================= render engine */
+function renderRail(){
+  $('rail').innerHTML = STEPS.map((s,i)=>`<div class="r ${i===sim.step?'active':''} ${i<sim.step?'done':''}" onclick="goto(${i})"><span class="n">${i<sim.step?'✓':i}</span>${s.label}</div>`).join('');
+}
+function renderStep(){
+  const s=STEPS[sim.step];
+  $('stage').innerHTML = `<h2 class="step-t">${s.title}</h2><p class="step-sub">${s.sub||''}</p>` + s.render();
+  renderRail();
+  // nav
+  $('back').style.visibility = sim.step===0?'hidden':'visible';
+  const nx=$('next'); const last=sim.step===STEPS.length-1;
+  nx.style.visibility = last?'hidden':'visible';
+  const ok = s.canNext?s.canNext():true;
+  nx.disabled=!ok;
+  nx.textContent = sim.step===0?'Start →':'Next →';
+  $('prog').textContent = `Step ${sim.step} of ${STEPS.length-1}`;
+  if(s.mount) s.mount();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goto(i){ clearTimers(); sim.step=Math.max(0,Math.min(STEPS.length-1,i)); renderStep(); }
+$('back').addEventListener('click',()=>goto(sim.step-1));
+$('next').addEventListener('click',()=>{ const s=STEPS[sim.step]; if(s.canNext && !s.canNext()) return; goto(sim.step+1); });
+
+/* boot (supports deep-link: ?step=3&brand=CS&seg=manufacturing&offer=comparable_sales) */
+(function boot(){
+  initTheme();
+  const sp=new URLSearchParams(location.search);
+  const b=sp.get('brand'); if(b==='FS'||b==='CS') sim.brand=b;
+  if(sp.get('seg')) sim.segment=sp.get('seg');
+  if(sp.get('offer') && offerById(sp.get('offer'))) sim.offer=sp.get('offer');
+  const st=parseInt(sp.get('step')||'0',10);
+  goto(isNaN(st)?0:st);
+})();
+</script>
+</body>
+</html>

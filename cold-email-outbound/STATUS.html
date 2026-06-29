@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cold Email System — Build Status &amp; Roadmap</title>
+<style>
+  :root{
+    --bg:#0b0f15; --panel:#141b26; --panel2:#1b2433; --border:#26324a; --border2:#324466;
+    --ink:#e8eef7; --dim:#9aa7bd; --dimmer:#64748b;
+    --teal:#14b8a6; --fs:#dc2626; --cs:#3b82f6; --ok:#10b981; --warn:#f59e0b; --purple:#8b5cf6; --red:#ef4444;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -200px,#14253a 0%,var(--bg) 60%);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:14.5px;line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:34px 22px 80px;}
+  header{text-align:center;margin-bottom:10px;}
+  .eyebrow{color:var(--teal);font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;}
+  h1{font-size:30px;margin:8px 0 6px;font-weight:850;letter-spacing:-0.02em;}
+  .sub{color:var(--dim);font-size:14.5px;max-width:660px;margin:0 auto;}
+  .pill{display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:30px;font-size:12.5px;font-weight:700;margin-top:14px;}
+  .pill.dry{background:rgba(245,158,11,.14);color:#fbbf24;border:1px solid rgba(245,158,11,.3);}
+  h2{font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:38px 0 14px;
+     display:flex;align-items:center;gap:10px;}
+  h2::after{content:"";flex:1;height:1px;background:var(--border);}
+  .lead{color:var(--dim);font-size:13.5px;margin:-4px 0 14px;}
+  /* progress */
+  .prog-wrap{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-top:22px;}
+  .prog-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;font-size:13.5px;}
+  .prog-head b{font-size:15px;}
+  .prog-track{height:13px;background:var(--panel2);border-radius:8px;overflow:hidden;display:flex;}
+  .prog-seg{height:100%;}
+  .prog-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:11px;font-size:12px;color:var(--dim);}
+  .prog-legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:6px;vertical-align:middle;}
+  /* tiles */
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;}
+  .tile{background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:16px 17px;}
+  .tile .n{font-size:25px;font-weight:850;letter-spacing:-.02em;}
+  .tile .l{color:var(--dim);font-size:12px;margin-top:3px;}
+  .tile.teal{border-left:3px solid var(--teal);} .tile.fs{border-left:3px solid var(--fs);}
+  .tile.cs{border-left:3px solid var(--cs);} .tile.ok{border-left:3px solid var(--ok);} .tile.warn{border-left:3px solid var(--warn);}
+  /* pipeline */
+  .flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;}
+  .node{flex:1 1 110px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:13px 11px;text-align:center;}
+  .node.q{border-color:var(--teal);background:linear-gradient(180deg,rgba(20,184,166,.12),transparent);}
+  .node .ic{font-size:21px;}
+  .node .t{font-weight:700;font-size:12.5px;margin-top:5px;}
+  .node .s{color:var(--dimmer);font-size:10.5px;margin-top:2px;line-height:1.3;}
+  .arrow{align-self:center;color:var(--border2);font-size:18px;font-weight:800;flex:0 0 auto;}
+  @media(max-width:720px){.arrow{transform:rotate(90deg);}}
+  /* qualification funnel */
+  .funnel{display:flex;flex-direction:column;gap:9px;}
+  .fstage{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:13px 16px;position:relative;}
+  .fstage .num{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--panel2);display:flex;align-items:center;justify-content:center;font-weight:850;font-size:14px;color:var(--teal);}
+  .fstage .mid{flex:1;}
+  .fstage .nm{font-weight:800;font-size:14px;}
+  .fstage .ds{color:var(--dim);font-size:12.5px;margin-top:1px;}
+  .cost{flex:0 0 auto;font-size:11px;font-weight:800;padding:4px 11px;border-radius:20px;}
+  .cost.free{background:rgba(16,185,129,.16);color:#34d399;} .cost.cheap{background:rgba(59,130,246,.16);color:#93c5fd;}
+  .cost.ai{background:rgba(139,92,246,.16);color:#c4b5fd;} .cost.short{background:rgba(245,158,11,.16);color:#fbbf24;}
+  .fnarrow{margin:0 auto;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:9px solid var(--border2);}
+  /* rule groups */
+  .rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;}
+  .rg{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:15px 17px;}
+  .rg h3{margin:0 0 4px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;}
+  .rg .who{font-size:11px;color:var(--dimmer);margin-bottom:10px;}
+  .rg .r{display:flex;align-items:flex-start;gap:9px;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px;}
+  .rg .r:last-child{border-bottom:none;}
+  .rg .r .k{color:var(--teal);font-weight:800;margin-top:1px;}
+  .rg.universal{border-left:3px solid var(--teal);} .rg.cs{border-left:3px solid var(--cs);} .rg.fs{border-left:3px solid var(--fs);} .rg.target{border-left:3px solid var(--purple);}
+  .clay-note{background:rgba(20,184,166,.07);border:1px solid rgba(20,184,166,.25);border-radius:12px;padding:13px 17px;margin-top:14px;font-size:13px;color:var(--ink);}
+  .clay-note b{color:var(--teal);}
+  /* component checklist */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:760px){.grid2{grid-template-columns:1fr;}}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:17px 19px;}
+  .card h3{margin:0 0 12px;font-size:14.5px;font-weight:800;display:flex;align-items:center;gap:8px;}
+  .item{display:flex;align-items:flex-start;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13.5px;}
+  .item:last-child{border-bottom:none;}
+  .badge{flex:0 0 auto;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;margin-top:1px;}
+  .b-done{background:rgba(16,185,129,.18);color:#34d399;} .b-prog{background:rgba(245,158,11,.18);color:#fbbf24;}
+  .b-todo{background:rgba(100,116,139,.22);color:#94a3b8;}
+  .item .x{flex:1;} .item .x small{color:var(--dimmer);display:block;font-size:11.5px;}
+  /* roadmap phases */
+  .phase{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:4px 20px 16px;margin-bottom:15px;position:relative;overflow:hidden;}
+  .phase::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;}
+  .phase.p1::before{background:var(--teal);} .phase.p2::before{background:var(--ok);} .phase.p3::before{background:var(--cs);} .phase.p4::before{background:var(--purple);}
+  .ph-head{display:flex;align-items:center;gap:12px;margin:16px 0 4px;}
+  .ph-num{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:850;font-size:15px;}
+  .p1 .ph-num{background:rgba(20,184,166,.16);color:#2dd4bf;} .p2 .ph-num{background:rgba(16,185,129,.16);color:#34d399;} .p3 .ph-num{background:rgba(59,130,246,.16);color:#93c5fd;} .p4 .ph-num{background:rgba(139,92,246,.16);color:#a78bfa;}
+  .ph-title{font-size:16.5px;font-weight:800;} .ph-goal{color:var(--dim);font-size:12.5px;}
+  .step{display:flex;align-items:flex-start;gap:11px;padding:9px 0;border-bottom:1px solid var(--border);}
+  .step:last-child{border-bottom:none;}
+  .own{flex:0 0 auto;font-size:10px;font-weight:800;padding:3px 8px;border-radius:6px;margin-top:1px;letter-spacing:.03em;}
+  .own.T{background:rgba(59,130,246,.16);color:#93c5fd;} .own.M{background:rgba(20,184,166,.16);color:#5eead4;} .own.B{background:rgba(139,92,246,.16);color:#c4b5fd;}
+  .step .body{flex:1;font-size:13.5px;} .step .body b{font-weight:700;} .step .body small{color:var(--dimmer);display:block;font-size:11.8px;margin-top:1px;}
+  .ownkey{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--dim);margin:-2px 0 14px;}
+  /* gate */
+  .gate{background:linear-gradient(180deg,rgba(245,158,11,.08),transparent);border:1px solid rgba(245,158,11,.3);border-radius:15px;padding:18px 22px;}
+  .gate h3{margin:0 0 6px;font-size:16px;color:#fbbf24;}
+  .gate ul{margin:8px 0 0;padding-left:20px;color:var(--ink);font-size:13.5px;} .gate li{margin:5px 0;}
+  footer{margin-top:42px;text-align:center;color:var(--dimmer);font-size:12px;border-top:1px solid var(--border);padding-top:18px;}
+  .chip{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:5px;}
+  .chip.FS{background:rgba(220,38,38,.18);color:#fca5a5;} .chip.CS{background:rgba(59,130,246,.18);color:#93c5fd;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Franchise Sellers · Company Sellers</div>
+    <h1>Cold Email System</h1>
+    <div class="sub">Where the seller cold-outbound engine stands today, and the path to handing Malcolm a system he can run himself. <b>Email channel only.</b></div>
+    <div class="pill dry">● SAFE MODE — DRY-RUN · nothing sends until we flip the switch</div>
+  </header>
+
+  <!-- Overall progress -->
+  <div class="prog-wrap">
+    <div class="prog-head"><span><b>Overall progress</b> — engine &amp; data are built; the qualification layer + go-live are the work ahead</span><span><b>~60%</b></span></div>
+    <div class="prog-track">
+      <div class="prog-seg" style="width:60%;background:linear-gradient(90deg,#10b981,#14b8a6)"></div>
+      <div class="prog-seg" style="width:28%;background:#2dd4bf;opacity:.5"></div>
+      <div class="prog-seg" style="width:12%;background:#8b5cf6;opacity:.4"></div>
+    </div>
+    <div class="prog-legend">
+      <span><i style="background:#10b981"></i>Built &amp; working</span>
+      <span><i style="background:#2dd4bf;opacity:.6"></i>Qualification layer + first live send (next)</span>
+      <span><i style="background:#8b5cf6;opacity:.5"></i>Self-serve for Malcolm + scale (later)</span>
+    </div>
+  </div>
+
+  <!-- At a glance -->
+  <h2>At a glance</h2>
+  <div class="tiles">
+    <div class="tile teal"><div class="n">187,491</div><div class="l">Raw sendable pool (Tier A)</div></div>
+    <div class="tile fs"><div class="n">10,206</div><div class="l">FS Tier A</div></div>
+    <div class="tile cs"><div class="n">160,700</div><div class="l">CS Tier A</div></div>
+    <div class="tile ok"><div class="n">88</div><div class="l">Live email mailboxes</div></div>
+    <div class="tile"><div class="n">~1,800</div><div class="l">Emails/day capacity</div></div>
+    <div class="tile warn"><div class="n">5-stage</div><div class="l">Qualification funnel (to build)</div></div>
+  </div>
+  <div class="sub" style="margin-top:12px;text-align:left;max-width:none">
+    Built from a <b>1.3M-row dedupe</b> across Clay, Airtable, Dropbox &amp; the FS master lists → 187K clean &amp; sendable. That 187K is the <b>raw</b> pool — the qualification layer narrows it to the leads we should actually email, under the correct brand. Two brands, one engine.
+  </div>
+
+  <!-- Pipeline -->
+  <h2>How the system works</h2>
+  <div class="lead">A lead flows left-to-right. <b>Qualification</b> is the gate that decides who we contact and under which brand — it's the next thing we build.</div>
+  <div class="flow">
+    <div class="node"><div class="ic">📇</div><div class="t">Lead Pool</div><div class="s">187K raw</div></div>
+    <div class="arrow">→</div>
+    <div class="node q"><div class="ic">🔍</div><div class="t">Qualify</div><div class="s">filter · brand · owner</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="ic">✅</div><div class="t">Verify Email</div><div class="s">LeadMagic→ZeroBounce</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="ic">✍️</div><div class="t">Personalize</div><div class="s">copy + spintax</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="ic">📧</div><div class="t">Email Sequence</div><div class="s">Instantly · multi-step</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="ic">💬</div><div class="t">Classify Reply</div><div class="s">interested / not / OOO…</div></div>
+    <div class="arrow">→</div>
+    <div class="node"><div class="ic">🤝</div><div class="t">Route to CRM</div><div class="s">GHL FS / CS</div></div>
+  </div>
+
+  <!-- Qualification layer -->
+  <h2>🔍 The Qualification Layer <span style="text-transform:none;letter-spacing:0;font-weight:600;color:var(--dimmer)">— rebuilds your Clay logic</span></h2>
+  <div class="lead">Three jobs: <b>FILTER</b> (who's eligible) · <b>TARGET</b> (slice a campaign) · <b>ROUTE</b> (which brand). Built as a cheap→expensive funnel so we never spend on a lead a free check already killed.</div>
+
+  <div class="funnel">
+    <div class="fstage"><div class="num">0</div><div class="mid"><div class="nm">Free filters</div><div class="ds">US business only · geography · drop already-excluded companies</div></div><span class="cost free">$0</span></div>
+    <div class="fnarrow"></div>
+    <div class="fstage"><div class="num">1</div><div class="mid"><div class="nm">Company enrichment <span style="color:var(--dimmer);font-weight:600;font-size:11.5px">(LeadMagic — already half-wired)</span></div><div class="ds">employees ≤ 50 · age ≥ 3 yrs · verified industry · first-pass brand</div></div><span class="cost cheap">cheap</span></div>
+    <div class="fnarrow"></div>
+    <div class="fstage"><div class="num">2</div><div class="mid"><div class="nm">AI judgment <span style="color:var(--dimmer);font-weight:600;font-size:11.5px">(the "Clay AI columns")</span></div><div class="ds"><b>current owner still active</b> · owner is US-based · franchise-vs-private (catch the DBA) · no PE / no public</div></div><span class="cost ai">~$0.003/lead</span></div>
+    <div class="fnarrow"></div>
+    <div class="fstage"><div class="num">3</div><div class="mid"><div class="nm">Hard data (short list only)</div><div class="ds">revenue ≤ $25M (CS) · franchise locations ≤ 25 (FS) — employee-count proxy first</div></div><span class="cost short">short list</span></div>
+    <div class="fnarrow"></div>
+    <div class="fstage"><div class="num">4</div><div class="mid"><div class="nm">Email verify — qualified only</div><div class="ds">LeadMagic → ZeroBounce · bounce rate &lt; 3%</div></div><span class="cost cheap">cheap</span></div>
+  </div>
+
+  <h2 style="margin-top:26px">The rules</h2>
+  <div class="rules">
+    <div class="rg universal">
+      <h3>🌐 Universal gates</h3><div class="who">both brands</div>
+      <div class="r"><span class="k">✓</span><div>Business is in the US</div></div>
+      <div class="r"><span class="k">✓</span><div>Owner is US-based <small style="color:var(--dimmer)">foreign owner of US biz = skip</small></div></div>
+      <div class="r"><span class="k">✓</span><div><b>Current owner</b> — not retired, didn't already sell</div></div>
+      <div class="r"><span class="k">✓</span><div>Privately held — no public co, no PE</div></div>
+      <div class="r"><span class="k">✓</span><div>Correct brand detected <small style="color:var(--dimmer)">franchise-with-DBA trap</small></div></div>
+    </div>
+    <div class="rg cs">
+      <h3><span class="chip CS">CS</span> Company Sellers qualifiers</h3><div class="who">the "bigger quality" private sellers</div>
+      <div class="r"><span class="k">≤</span><div>Revenue ≤ <b>$25M/yr</b></div></div>
+      <div class="r"><span class="k">≤</span><div>Employees ≤ <b>50</b></div></div>
+      <div class="r"><span class="k">≥</span><div>In business ≥ <b>3 years</b> <small style="color:var(--dimmer)">so they have real financials</small></div></div>
+      <div class="r"><span class="k">≤</span><div>Single owner / ≤ <b>3 owners</b></div></div>
+    </div>
+    <div class="rg fs">
+      <h3><span class="chip FS">FS</span> Franchise Sellers qualifier</h3><div class="who">any franchise is a fit, except…</div>
+      <div class="r"><span class="k">≤</span><div>Franchise locations ≤ <b>25</b></div></div>
+      <div class="r"><span class="k">✓</span><div>We have the Toolkit for any franchise <small style="color:var(--dimmer)">no size/age caps here</small></div></div>
+    </div>
+    <div class="rg target">
+      <h3>🎯 Targeting (slice a campaign)</h3><div class="who">not a filter — how we segment</div>
+      <div class="r"><span class="k">•</span><div>By <b>industry</b> (verified)</div></div>
+      <div class="r"><span class="k">•</span><div>By <b>location</b> — radius around a point <small style="color:var(--dimmer)">e.g. "a business for sale in SoCal"</small></div></div>
+    </div>
+  </div>
+  <div class="clay-note">
+    <b>No Clay reconnect needed.</b> Your May export already preserved the whole pipeline as columns — <code>Franchise Status</code>, <code>Qualified Lead Status (3 &amp; Final)</code>, <code>Employment_Status_Result</code> (current-owner check), <code>Owner US-Based</code>, <code>AI: Investigative Company Report</code>, the revenue + age gates, and the final franchise-vs-private campaign routing. We rebuild the exact logic from those files. <i>(One open item: Clay's gate read Revenue &lt; $20M; current rule is ≤ $25M.)</i>
+  </div>
+
+  <!-- What's built -->
+  <h2>What's built</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>📊 Data &amp; engine</h3>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">Full dedupe — 1.3M rows → 187K sendable, zero data loss</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">Tiering: A sendable · B re-verify · C referral · D suppress</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">3-layer suppression (do-not-contact · in-CRM · cooldowns)</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">ICP scoring + copy engine (sequences, spintax, per-brand voice)</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">Reply classifier + CRM routing · <b>master safety switch</b></div></div>
+      <div class="item"><span class="badge b-prog">●</span><div class="x"><b>Qualification layer — specced, build next</b><small>Stage 0–1 filters half-wired via LeadMagic; AI stage to build</small></div></div>
+    </div>
+    <div class="card">
+      <h3>🖥️ Dashboard &amp; integrations</h3>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">Operator dashboard at <b>/marketing</b> — pool analytics, builder, dry-run</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x">Malcolm login + role-based access</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x"><b>Instantly</b> — 88 active mailboxes, all warming, send code verified</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x"><b>LeadMagic + ZeroBounce</b> — verification keys live</div></div>
+      <div class="item"><span class="badge b-done">✓</span><div class="x"><b>GHL FS + CS</b> — CRM routing</div></div>
+      <div class="item"><span class="badge b-todo">○</span><div class="x">Reply-handling webhook — to build</div></div>
+    </div>
+  </div>
+
+  <!-- Roadmap -->
+  <h2>The road forward</h2>
+  <div class="lead">Re-sequenced to reflect a review of how top operators build cold email in Claude Code (full notes in <code>docs/CLAUDE-COLD-EMAIL-LEARNINGS.md</code>). Qualification leads; deliverability, compliance, and copy hardening gate the first send.</div>
+  <div class="ownkey">
+    <span><span class="own T">T</span> Theodore — decisions &amp; accounts</span>
+    <span><span class="own M">M</span> Malcolm — operator &amp; copy</span>
+    <span><span class="own B">B</span> Build — engineering (us)</span>
+  </div>
+
+  <div class="phase p1">
+    <div class="ph-head"><div class="ph-num">1</div><div><div class="ph-title">Build the qualification layer</div><div class="ph-goal">Narrow the raw 187K to leads we should actually email — correct brand, current owner, right fit. The gate before any quality send.</div></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Stage 0–1 filters.</b><small>US-only, geography, employees ≤ 50, age ≥ 3yr, industry — from data we have + LeadMagic enrichment (already half-wired).</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Stage 2 — AI qualification</b> (the Clay AI columns).<small>Current-owner-active · franchise-vs-private (brand) · owner-US · PE/public exclusion. The highest-value piece.</small></div></div>
+    <div class="step"><span class="own T">T</span><div class="body"><b>AI prompts decision.</b><small>I write equivalents, or you screenshot the 2–3 Clay column configs to replicate them verbatim.</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Stage 3 + qualification stamp.</b><small>Revenue ≤ $25M / locations ≤ 25 on the short list; a <code>qualified</code> result on each lead + a pre-send gate.</small></div></div>
+    <div class="step"><span class="own T">T</span><div class="body"><b>Confirm the open items.</b><small>$25M vs the old $20M; column-by-column diff against the Clay export.</small></div></div>
+  </div>
+
+  <div class="phase p2">
+    <div class="ph-head"><div class="ph-num">2</div><div><div class="ph-title">Harden &amp; first real send</div><div class="ph-goal">Close the gap between "built" and "a live campaign went out clean, compliant, and replies came back." Hardened with what the top operators do.</div></div></div>
+    <div class="step"><span class="own M">M</span><div class="body"><b>Review &amp; finalize the copy</b> — with the upgrades.<small>Email 1 = soft pain-probe, never sells · anti-AI-tell scrub (no em-dashes / random bold / "it's not X, it's Y") · per-segment pain words (FS franchise-resale ≠ CS private-business) · <b>seller-tuned breakup</b> ("no rush, I'll check back") — NOT the SaaS "point me to the right person" referral.</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Re-verify the send segment fresh.</b><small>The 187K is a years-old dedup — re-run it through LeadMagic→ZeroBounce before sending, don't trust the 90-day window. <b>3% bounce = hard stop.</b></small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Compliance baked into the templates.</b><small>CAN-SPAM: a physical postal address + a working opt-out line in every email; STOP replies feed suppression. Legal, not optional.</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Code-enforced pre-send gate</b> (beside the safety switch).<small>One hard checklist: bounce &lt;3% · warmup ≥95 · SPF/DKIM/DMARC pass · tracking OFF · plain-text · spintax · variants ready · address + opt-out present.</small></div></div>
+    <div class="step"><span class="own T">T</span><div class="body"><b>Reconnect the 3 dead mailboxes</b> in Instantly.</div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Reply-handling webhook.</b><small>Inbound replies auto-classify → route to the right GHL. Last missing automation for two-way flow.</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Field + fallback test-add</b> before any bulk push.<small>Push one lead first, confirm every <code>{{variable}}</code> resolves with a fallback — the step that burns people at go-live.</small></div></div>
+    <div class="step"><span class="own T">T</span><div class="body"><b>First live send — controlled probe.</b><small>One small qualified segment (e.g. 200 FS-niche), flip the switch for that run only, watch deliverability + replies. The go/no-go moment.</small></div></div>
+  </div>
+
+  <div class="phase p3">
+    <div class="ph-head"><div class="ph-num">3</div><div><div class="ph-title">Make it self-serve for Malcolm</div><div class="ph-goal">So he builds, launches, and monitors campaigns from the browser — without us in the loop.</div></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>"Launch campaign" button</b> on the dashboard.<small>Wire the real send path to the operator API — today it can build + dry-run, but not launch.</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Live campaign monitoring.</b><small>Per-campaign sends, opens, replies, bounces pulled from Instantly — results, not just setup.</small></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Auto-refresh</b> — hourly snapshot cron so pool + qualification stats stay current on their own.</div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>ICP-as-hypothesis critic</b> in the audience builder.<small>Claude critiques a segment definition and proposes alternatives before Malcolm builds it — and keeps his original instinct as an A/B control.</small></div></div>
+    <div class="step"><span class="own M">M</span><div class="body"><b>Operator runbook.</b><small>Build a segment → qualify → pick a sequence → launch → read results → handle replies. Plus hygiene: name skills explicitly, file-persist campaign state for restarts.</small></div></div>
+  </div>
+
+  <div class="phase p4">
+    <div class="ph-head"><div class="ph-num">4</div><div><div class="ph-title">Scale the top of funnel</div><div class="ph-goal">When the 187K reactivation pool is worked through.</div></div></div>
+    <div class="step"><span class="own B">B</span><div class="body"><b>Net-new sourcing.</b><small>Add fresh-lead sourcing (Apollo-style) → through the same qualification funnel → keep the pipeline full.</small></div></div>
+  </div>
+
+  <!-- Go-live gate -->
+  <h2>Before the first real send</h2>
+  <div class="gate">
+    <h3>🚦 Go-live gate — all true before we flip <code>CEO_DRY_RUN=false</code></h3>
+    <ul>
+      <li>The segment ran through the <b>qualification layer</b> — correct brand, current owner, fits the caps</li>
+      <li><b>Compliance:</b> every email carries a physical address + a working opt-out line (CAN-SPAM)</li>
+      <li>Copy approved by Malcolm — email 1 doesn't sell, anti-AI-tell pass done</li>
+      <li>Mailboxes warmed (score ≥ 95), 3 dead boxes reconnected; <b>SPF/DKIM/DMARC pass</b>; tracking OFF + plain-text</li>
+      <li>That exact segment <b>re-verified fresh</b>, bounce rate &lt; 3% (hard stop)</li>
+      <li>Field + fallback test-add passed (no broken variables)</li>
+      <li>Reply webhook live so responses route to the CRM, not a black hole</li>
+      <li>Suppression confirmed against current GHL (no one already in a conversation)</li>
+      <li>Start small — one segment, one brand, watch it land before scaling</li>
+    </ul>
+  </div>
+
+  <footer>
+    Cold Email System · Franchise Sellers &amp; Company Sellers · operated by Malcolm via <b>dashboard.franchisesellers.com/marketing</b><br>
+    Status snapshot — generated this session. Engine is dry-run-gated; nothing sends until the go-live gate is cleared.
+  </footer>
+
+</div>
+</body>
+</html>

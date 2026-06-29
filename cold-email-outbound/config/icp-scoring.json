@@ -1,0 +1,29 @@
+{
+  "_comment": "Human-readable mirror of ICP scoring in engine/config.py + engine/scoring.py. Source of truth is the Python; this documents the model + tuning surface.",
+  "threshold": 60,
+  "weights": {
+    "demographic_tenure": 0.40,
+    "behavioral_situational": 0.40,
+    "firmographic": 0.20
+  },
+  "phase1_proxies": {
+    "demographic_tenure": "decision-maker title (owner/founder/president/franchisee), name completeness, LinkedIn presence",
+    "behavioral_situational": "cross-source verification count, Clay-waterfall enrichment, phone present",
+    "firmographic": "industry fit (strong verticals boost, excluded verticals cap at 25), company present"
+  },
+  "phase2_3_signals_to_add": [
+    "owner age (PDL) -> demographic_tenure",
+    "tenure in business/system -> demographic_tenure",
+    "job-change detection (PDL) -> behavioral_situational",
+    "M&A activity in vertical (news API + Claude) -> behavioral_situational",
+    "LinkedIn bio language (transitioning/advising/etc) -> behavioral_situational"
+  ],
+  "strong_verticals": [
+    "hvac", "home services", "home health", "senior care", "manufacturing",
+    "distribution", "professional services", "automotive", "wellness",
+    "fitness", "food and beverage", "consumer services", "restaurants", "franchise"
+  ],
+  "excluded_verticals": [
+    "professional services - legal", "e-commerce", "technology", "software", "saas", "information technology"
+  ]
+}

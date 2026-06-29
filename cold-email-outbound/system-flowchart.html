@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cold Email Outbound — System Architecture</title>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<style>
+  :root {
+    --fs-red: #dc2626;
+    --cs-blue: #3b82f6;
+    --claude-orange: #f59e0b;
+    --external-gray: #6b7280;
+    --data-green: #10b981;
+    --decision-yellow: #eab308;
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-light: #334155;
+    --border: #475569;
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --text-dimmer: #64748b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 24px; margin-bottom: 32px; }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .subtitle { color: var(--text-dim); font-size: 15px; }
+  .brand-strip { display: inline-block; margin-right: 16px; }
+  .brand-strip.fs { color: var(--fs-red); font-weight: 600; }
+  .brand-strip.cs { color: var(--cs-blue); font-weight: 600; }
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+  }
+  h3 { font-size: 15px; font-weight: 600; margin: 16px 0 8px; color: var(--text); }
+
+  /* TL;DR */
+  .tldr {
+    background: var(--panel);
+    border-left: 3px solid var(--claude-orange);
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .tldr strong { color: var(--claude-orange); }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--panel);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 13px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 8px; }
+  .dot { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+  .dot.claude { background: var(--claude-orange); }
+  .dot.external { background: var(--external-gray); }
+  .dot.data { background: var(--data-green); }
+  .dot.decision { background: var(--decision-yellow); }
+  .dot.brand-fs { background: var(--fs-red); }
+  .dot.brand-cs { background: var(--cs-blue); }
+
+  /* Mermaid container */
+  .diagram-wrap {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .mermaid {
+    text-align: center;
+    background: transparent;
+  }
+
+  /* Per-layer detail table */
+  .layers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .layer {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--claude-orange);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  .layer.external { border-left-color: var(--external-gray); }
+  .layer.data { border-left-color: var(--data-green); }
+  .layer-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .layer-num {
+    color: var(--text-dimmer);
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'SF Mono', Menlo, monospace;
+  }
+  .layer-title { font-size: 15px; font-weight: 600; }
+  .layer-tools {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .layer-tools span {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 4px;
+    font-weight: 500;
+  }
+  .tag-claude { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+  .tag-external { background: rgba(107, 114, 128, 0.2); color: #cbd5e1; }
+  .tag-data { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+  .layer-body { color: var(--text-dim); font-size: 13px; line-height: 1.55; }
+
+  /* Tools matrix table */
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-dim); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  td.tool-name { font-weight: 600; }
+  .status-existing { color: var(--data-green); }
+  .status-add { color: var(--claude-orange); }
+  .status-drop { color: var(--fs-red); }
+
+  /* Phases */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .phase {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+  }
+  .phase-num {
+    display: inline-block;
+    background: var(--claude-orange);
+    color: #0f172a;
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .phase h3 { margin-top: 0; font-size: 15px; }
+  .phase ul { margin: 8px 0 0; padding-left: 18px; color: var(--text-dim); font-size: 13px; }
+  .phase li { margin-bottom: 4px; }
+
+  /* Decisions */
+  .decisions {
+    background: rgba(234, 179, 8, 0.08);
+    border: 1px solid rgba(234, 179, 8, 0.3);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .decisions h2 { border: none; margin-top: 0; color: #facc15; }
+  .decisions ol { margin: 0; padding-left: 20px; font-size: 13px; }
+  .decisions li { margin-bottom: 6px; color: var(--text-dim); }
+  .decisions li strong { color: var(--text); }
+
+  /* Footer */
+  footer { color: var(--text-dimmer); font-size: 12px; text-align: center; margin-top: 48px; border-top: 1px solid var(--border); padding-top: 16px; }
+  footer a { color: var(--claude-orange); text-decoration: none; }
+
+  @media (max-width: 900px) {
+    .phases { grid-template-columns: 1fr; }
+    .layer-tools { display: block; margin-left: 0; margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Cold Email Outbound — System Architecture</h1>
+  <div class="subtitle">
+    <span class="brand-strip fs">● Franchise Sellers</span>
+    <span class="brand-strip cs">● Company Sellers</span>
+    <span style="color:var(--text-dimmer)">· v1 — 2026-05-21 · Companion to <a href="SYSTEM-DESIGN.md" style="color:var(--claude-orange);text-decoration:none">SYSTEM-DESIGN.md</a></span>
+  </div>
+</header>
+
+<div class="tldr">
+  <strong>Claude Code orchestrates a 10-layer pipeline.</strong> Pulls leads from existing archives + new sourcing APIs → enriches through a waterfall → scores + dedupes + suppresses against 5 sources → generates signal-anchored copy in 3-step sequences → sends through Instantly → classifies every reply via the Claude API → routes positives to the matching destination (GHL CRM for sellers, Buyer Manager pipeline for buyers, referral nurture for partners). <strong>The system runs multiple campaign streams in parallel</strong> — seller cold (FS niche + FS broad + CS), buyer reactivation, referral partner outreach, and event-tied micro-campaigns. Each stream shares the same engine (sourcing, enrichment, suppression, sending, classification) but has its own templates, ICP filter, list source, and reply-routing destination.
+</div>
+
+<h2>Campaign streams (first-class concept — system runs them in parallel)</h2>
+
+<table>
+  <thead>
+    <tr><th>Stream</th><th>Audience</th><th>List source</th><th>Template family</th><th>Reply routes to</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="tool-name">seller_cold_fs_niche</td><td>Franchisees of a specific named system</td><td>Tier A FS pool, filtered by system</td><td>"We helped a [system] franchisee sell for more than they thought possible..."</td><td>GHL FS workspace</td></tr>
+    <tr><td class="tool-name">seller_cold_fs_broad</td><td>Franchisees, multi-system, signal-anchored</td><td>Tier A FS pool by ICP score</td><td>Generic franchisee + signal anchor</td><td>GHL FS workspace</td></tr>
+    <tr><td class="tool-name">seller_cold_cs</td><td>Independent business owners by industry</td><td>Tier A CS pool by industry × size</td><td>Industry peer social proof (rebuilt — no AI-paragraph fillers)</td><td>GHL CS workspace</td></tr>
+    <tr><td class="tool-name">buyer_reactivation</td><td>Prior franchise-buy / business-buy inquirers</td><td>Airtable Active Contacts with buyer flag</td><td>"The franchise business you looked at..." / "your business for sale inquiry"</td><td>Buyer Manager (Yvonne)</td></tr>
+    <tr><td class="tool-name">referral_partner_advisor</td><td>CPAs, attorneys, wealth managers, CEPAs</td><td>Airtable Business Advisors + Dropbox WestCo</td><td>"Where do you send clients with valuation questions?"</td><td>Theodore direct + light nurture</td></tr>
+    <tr><td class="tool-name">referral_partner_zor</td><td>Franchise HQ (franchisor side)</td><td>Dropbox Franchisor research + Airtable Franchisors</td><td>Partnership / referral framing</td><td>Theodore direct + zor workflow</td></tr>
+    <tr><td class="tool-name">event_pre</td><td>Confirmed attendees of upcoming event</td><td>Event-specific list, filtered to registrants</td><td>"Are you attending [event]? Look for us..."</td><td>Theodore direct + meeting booking</td></tr>
+    <tr><td class="tool-name">event_post</td><td>Confirmed attendees, post-event</td><td>Same event list</td><td>"Great connecting at [event] — follow-up..."</td><td>Theodore direct + meeting booking</td></tr>
+  </tbody>
+</table>
+
+<p style="color:var(--text-dim);font-size:13px;margin-top:12px">
+<strong>Shared across all streams:</strong> the suppression engine (5-source union), sending infrastructure (Instantly mailbox pool with brand-walls), and reply classifier (Claude API per message).<br/>
+<strong>Distinct per stream:</strong> template library, ICP filter, list source, routing destination on positive reply.<br/>
+<strong>Operating principle:</strong> the engine is the same; the <code>campaign_type</code> field on each contact tells the system which template to apply and where to route the reply.
+</p>
+
+<div class="legend">
+  <div class="legend-item"><span class="dot claude"></span> Claude Code (orchestration)</div>
+  <div class="legend-item"><span class="dot external"></span> External tool (paid)</div>
+  <div class="legend-item"><span class="dot data"></span> Data layer / archive</div>
+  <div class="legend-item"><span class="dot decision"></span> Decision point</div>
+  <div class="legend-item"><span class="dot brand-fs"></span> FS-only</div>
+  <div class="legend-item"><span class="dot brand-cs"></span> CS-only</div>
+</div>
+
+<h2>The pipeline</h2>
+
+<div class="diagram-wrap">
+<div class="mermaid">
+flowchart TB
+
+  subgraph SOURCING["① SOURCING"]
+    direction TB
+    ARCH[("Existing archive<br/>~660K rows")]:::data
+    APOLLO["Apollo<br/>(Phase 2+)"]:::external
+    PUB["Public records<br/>FDDs · state registries"]:::external
+    SIG["Signal feeds<br/>(Phase 3+)<br/>PDL · News API"]:::external
+  end
+
+  SOURCING --> ENRICH
+
+  subgraph ENRICH["② ENRICHMENT WATERFALL"]
+    direction LR
+    AP2["Apollo<br/>firmographic"]:::external
+    PDL["PDL / Datagma<br/>owner age + tenure"]:::external
+    HUNTER["Hunter / Snov / Findymail<br/>email finder"]:::external
+    VERIFY["NeverBounce / MillionVerifier<br/>final verifier"]:::external
+    CLAUDEAI["Claude API<br/>signal extraction"]:::claude
+    AP2 --> PDL --> HUNTER --> VERIFY --> CLAUDEAI
+  end
+
+  ENRICH --> DATA
+
+  subgraph DATA["③ DATA LAYER"]
+    direction TB
+    AIRTABLE[("Airtable<br/>(Phase 1+)<br/>or RevyOps")]:::data
+  end
+
+  DATA --> SCORE
+
+  SCORE["④ Dedupe + ICP Score<br/>(threshold ≥ 60)"]:::claude
+
+  SCORE --> SUPP
+
+  subgraph SUPP["⑤ SUPPRESSION (3-layer)"]
+    direction TB
+    L_A["Layer A — Pre-send filter<br/>5 source union<br/>~250K rows of suppression"]:::claude
+    L_B["Layer B — Instantly global block list<br/>(synced every 4hr)"]:::claude
+    L_C["Layer C — Live Instantly settings<br/>stop_on_reply / stop_on_auto_reply"]:::external
+    L_A --> L_B --> L_C
+  end
+
+  SUPP --> COPY
+
+  subgraph COPY["⑥ COPY GENERATION"]
+    direction TB
+    TEMPL["Template library<br/>(hand-written, system-named)"]:::claude
+    SPIN["Spintax variants<br/>≥ 50% variation"]:::claude
+    SIGNAL["Per-row signal anchor<br/>via Claude API"]:::claude
+    OFFER["Offer rotation<br/>(OOV control + variants)"]:::claude
+    TEMPL --> SPIN --> SIGNAL --> OFFER
+  end
+
+  COPY --> SEND
+
+  subgraph SEND["⑦ SENDING"]
+    direction TB
+    INSTANT["Instantly<br/>brand-tagged campaigns"]:::external
+    DOMAINS["~30 domains/brand<br/>25-30 sends/mailbox/day"]:::external
+    INSTANT --- DOMAINS
+  end
+
+  SEND --> ENGAGE
+
+  subgraph ENGAGE["⑧ ENGAGEMENT TRACKING"]
+    direction TB
+    WEBHOOK["Instantly webhooks<br/>sent · reply · bounce · unsub"]:::external
+    POLL["Claude Code poll<br/>writes to data layer"]:::claude
+    WEBHOOK --> POLL
+  end
+
+  ENGAGE --> CLASS
+
+  CLASS["⑨ Reply classification<br/>(Claude API, per message)<br/>11 categories + extracted entities"]:::claude
+
+  CLASS --> DECIDE{"⑩ Route?"}
+
+  DECIDE -->|"positive_meeting_ready<br/>positive_curious<br/>meeting_accepted"| ROUTE
+  DECIDE -->|"wrong_intent<br/>buyer_side"| BUYER["Yvonne / Buyer Manager<br/>pipeline"]:::data
+  DECIDE -->|"objection_not_now<br/>positive_with_timeline"| COOLDOWN["Cooldown<br/>+ re-engage scheduled"]:::claude
+  DECIDE -->|"unsubscribe<br/>objection_not_interested<br/>hard_bounce"| SUPPRESS["Permanent<br/>suppression"]:::claude
+  DECIDE -->|"out_of_office<br/>auto_responder"| RETRY["Retry on<br/>return date"]:::claude
+  DECIDE -->|"referral"| NEW["New record<br/>warm intro flag"]:::claude
+
+  subgraph ROUTE["⑩ CRM ROUTING"]
+    direction LR
+    GHL_FS[("GHL FS<br/>workspace")]:::brand_fs
+    GHL_CS[("GHL CS<br/>workspace")]:::brand_cs
+  end
+
+  ROUTE -.->|brand=FS| GHL_FS
+  ROUTE -.->|brand=CS| GHL_CS
+
+  COOLDOWN -.->|after timer| SCORE
+  RETRY -.->|after date| SEND
+  NEW -.->|new lead| SCORE
+
+  classDef claude fill:#f59e0b,stroke:#d97706,color:#0f172a,font-weight:600
+  classDef external fill:#6b7280,stroke:#4b5563,color:#f1f5f9,font-weight:500
+  classDef data fill:#10b981,stroke:#059669,color:#0f172a,font-weight:600
+  classDef brand_fs fill:#dc2626,stroke:#991b1b,color:#fff,font-weight:600
+  classDef brand_cs fill:#3b82f6,stroke:#1d4ed8,color:#fff,font-weight:600
+</div>
+</div>
+
+<h2>The 10 layers — one-line summary each</h2>
+
+<div class="layers">
+
+  <div class="layer">
+    <div class="layer-head">
+      <span class="layer-num">01</span>
+      <span class="layer-title">Sourcing</span>
+      <span class="layer-tools">
+        <span class="tag-data">archive</span><span class="tag-external">Apollo (P2)</span><span class="tag-external">public records</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Phase 1 reactivation pulls entirely from the existing ~660K-row archive (Clay + Airtable + FS SAVE! + Dropbox). Phase 2+ adds Apollo for new firmographic sourcing. Phase 3 adds signal feeds (PDL job changes, news-API M&A detection, LinkedIn bio signals).
+    </div>
+  </div>
+
+  <div class="layer external">
+    <div class="layer-head">
+      <span class="layer-num">02</span>
+      <span class="layer-title">Enrichment Waterfall</span>
+      <span class="layer-tools">
+        <span class="tag-external">Apollo → PDL → Hunter → Verifier</span><span class="tag-claude">Claude API</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Cheapest first. Apollo for firmographic, PDL or Datagma for owner age + tenure + job-change signals, Hunter/Snov/Findymail for email finder waterfall, NeverBounce/MillionVerifier for final pre-send gate. Claude API adds per-row signal extraction (M&A, "why now"). Skip entirely in Phase 1 — the archive already carries Clay's 6-provider waterfall enrichment.
+    </div>
+  </div>
+
+  <div class="layer data">
+    <div class="layer-head">
+      <span class="layer-num">03</span>
+      <span class="layer-title">Data Layer</span>
+      <span class="layer-tools">
+        <span class="tag-data">Airtable (P1)</span><span class="tag-data">RevyOps (deferred)</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Airtable's Active Contacts (18,931 × 48 cols) already cross-references Clay + Instantly + Pipedrive — it's a proto-RevyOps. <strong>Phase 1 recommendation:</strong> keep Airtable. Defer RevyOps decision until Phase 2 when scale + cost evidence is real. Records carry brand, ICP score, enrichment, suppression flags, campaign history, reply classification, re-engage date.
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-head">
+      <span class="layer-num">04</span>
+      <span class="layer-title">Dedupe + ICP Scoring</span>
+      <span class="layer-tools">
+        <span class="tag-claude">Claude Code</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Match by email + LinkedIn URL against data layer. Score 0–100 (40% demographic + tenure, 40% behavioral + situational, 20% firmographic). Threshold ≥ 60 to enter sequencing. Brand auto-assignment from data signals when not pre-tagged.
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-head">
+      <span class="layer-num">05</span>
+      <span class="layer-title">3-Layer Suppression</span>
+      <span class="layer-tools">
+        <span class="tag-claude">pre-send filter</span><span class="tag-external">Instantly block list</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      <strong>Layer A:</strong> pre-send filter unions 5+ sources — Clay Franchisee Block List (22K) + Dropbox DNU Master (172K) + Airtable Archived Contacts (38K) + Pipedrive 2022 (4K) + SMS Blast (12K) + in-CRM records (from crm-snapshot) + active cooldowns. <strong>Layer B:</strong> Instantly global block list synced every 4hr by Claude Code. <strong>Layer C:</strong> Live Instantly settings (stop_on_reply, stop_on_auto_reply). Gross suppression input ~250K; net unique ~150–200K. Reactivation pool will be substantially smaller than headline 660K.
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-head">
+      <span class="layer-num">06</span>
+      <span class="layer-title">Copy Generation (Spintax + Signal Anchoring)</span>
+      <span class="layer-tools">
+        <span class="tag-claude">Claude API</span><span class="tag-claude">templates</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Hand-written 3-step template based on the winning historical pattern: <em>"We helped a [specific franchise] franchisee sell for more than they thought possible — and faster than they expected."</em> 55–90 words. 3 subject variants per step. ≥50% content variation via spintax. AI fills surgical variables only ({{firstName}}, {{franchise_system}}, optional {{signal_anchor}}) — never full-paragraph generation. Offer rotation tests OOV control vs alternatives one at a time.
+    </div>
+  </div>
+
+  <div class="layer external">
+    <div class="layer-head">
+      <span class="layer-num">07</span>
+      <span class="layer-title">Sending</span>
+      <span class="layer-tools">
+        <span class="tag-external">Instantly</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      One Instantly org, brand-tagged campaigns. ~30 sending domains per brand × 2–3 mailboxes each ≈ 60–90 sending addresses per brand. Cold cap 25–30 sends/mailbox/day. Continuous warmup permanently on. Brand walls enforced — FS prospects only see FS sending domains.
+    </div>
+  </div>
+
+  <div class="layer external">
+    <div class="layer-head">
+      <span class="layer-num">08</span>
+      <span class="layer-title">Engagement Tracking</span>
+      <span class="layer-tools">
+        <span class="tag-external">Instantly webhooks</span><span class="tag-claude">Claude Code listener</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Webhooks fire for sent / replied / bounced / unsubscribed. Claude Code listener writes back to data layer. <strong>Open + click tracking disabled by default</strong> — 2026 research shows pixel tracking flags as commercial mail. Track replies + opportunities only.
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-head">
+      <span class="layer-num">09</span>
+      <span class="layer-title">Reply Classification</span>
+      <span class="layer-tools">
+        <span class="tag-claude">Claude API per message</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Every inbound reply runs through Claude API → 11 categories: <code>positive_meeting_ready</code>, <code>positive_curious</code>, <code>positive_with_timeline_objection</code>, <code>objection_not_now</code> (extracts date), <code>objection_not_interested</code>, <code>wrong_person</code>, <code>wrong_intent_buyer_side</code>, <code>unsubscribe</code>, <code>out_of_office</code> (extracts return date), <code>referral</code> (extracts name), <code>meeting_accepted</code>. <strong>The biggest gap-fix vs. the prior engine</strong> — historically only 30% of replies were classifiable; this gets to 100%.
+    </div>
+  </div>
+
+  <div class="layer">
+    <div class="layer-head">
+      <span class="layer-num">10</span>
+      <span class="layer-title">CRM Routing</span>
+      <span class="layer-tools">
+        <span class="tag-claude">routing logic</span><span class="tag-external">GHL FS</span><span class="tag-external">GHL CS</span>
+      </span>
+    </div>
+    <div class="layer-body">
+      Positive replies → matching GHL workspace (brand-tagged routing, never cross). Discovery Call workflow / OOV Intake workflow triggered by classification. Cooldowns + retries scheduled by Claude Code. Buyer-side intent routes to Yvonne's Buyer Manager pipeline, not cold-suppression. Closed-lost → 12mo cooldown. Closed-won → permanent customer flag.
+    </div>
+  </div>
+
+</div>
+
+<h2>Build phases</h2>
+
+<div class="phases">
+
+  <div class="phase">
+    <span class="phase-num">PHASE 1</span>
+    <h3>Build framework + probe all streams (weeks 1–4)</h3>
+    <ul>
+      <li><strong>Build the framework that supports all stream types</strong> as first-class concepts</li>
+      <li>Ship 500-record probes across <em>all</em> major streams in parallel: seller cold FS niche, seller cold CS, buyer reactivation, referral partner advisor, event pre-touch</li>
+      <li>Per-stream success gates (see metrics table below)</li>
+      <li>Build suppression engine, per-stream template library v1, reply classifier with per-stream routing</li>
+      <li><strong>No net-new sourcing yet.</strong> Reactivate the existing ~660K archive across all streams</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <span class="phase-num">PHASE 2</span>
+    <h3>Net-new sourcing (weeks 5–8)</h3>
+    <ul>
+      <li>Wire Apollo + enrichment waterfall</li>
+      <li>Sourcing pipeline producing ≥ 500 leads/week</li>
+      <li>Scale send volume to 6K/month</li>
+      <li>Refine ICP scoring with Phase 1 outcomes</li>
+      <li><strong>Decision point:</strong> Airtable scaling check → migrate to RevyOps if needed</li>
+    </ul>
+  </div>
+
+  <div class="phase">
+    <span class="phase-num">PHASE 3</span>
+    <h3>Intent-signal + scale (months 2+)</h3>
+    <ul>
+      <li>PDL job-change feeds micro-campaigns</li>
+      <li>News-API + Claude detects M&A → triggers vertical micro-campaigns</li>
+      <li>10–25 small targeted campaigns/month vs 1–2 big</li>
+      <li>Scale to 10K+/month</li>
+      <li>Move toward semi-autonomous campaign generation (Anthropic Managed Agents pattern)</li>
+    </ul>
+  </div>
+
+</div>
+
+<h2>Tools matrix</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tool</th>
+      <th>Role</th>
+      <th>Status</th>
+      <th>Phase</th>
+      <th>Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="tool-name">Claude Code</td><td>All orchestration — sourcing pulls, enrichment, suppression, copy generation, sending, reply classification, routing</td><td class="status-existing">✓ Existing</td><td>1+</td><td>Anthropic API usage</td></tr>
+    <tr><td class="tool-name">Instantly</td><td>Sending only</td><td class="status-existing">✓ Existing</td><td>1+</td><td>$$$ existing subscription</td></tr>
+    <tr><td class="tool-name">Anthropic API</td><td>Per-row signal extraction + reply classification</td><td class="status-existing">✓ Existing</td><td>1+</td><td>$50–150/mo usage</td></tr>
+    <tr><td class="tool-name">Airtable</td><td>Data layer (proto-RevyOps already in place)</td><td class="status-existing">✓ Existing</td><td>1+</td><td>$$ existing</td></tr>
+    <tr><td class="tool-name">GHL FS workspace</td><td>Post-conversion CRM (Franchise Sellers)</td><td class="status-existing">✓ Existing</td><td>1+</td><td>$$ existing</td></tr>
+    <tr><td class="tool-name">GHL CS workspace</td><td>Post-conversion CRM (Company Sellers)</td><td class="status-existing">✓ Existing</td><td>1+</td><td>$$ existing</td></tr>
+    <tr><td class="tool-name">Email Verifier</td><td>Final pre-send bounce gate</td><td class="status-add">⚠ Confirm provider</td><td>1</td><td>$50–100/mo</td></tr>
+    <tr><td class="tool-name">Apollo</td><td>Net-new firmographic + contact sourcing</td><td class="status-add">+ Add Phase 2</td><td>2+</td><td>$300–600/mo</td></tr>
+    <tr><td class="tool-name">Hunter / Snov / Findymail</td><td>Email finder waterfall (suggest Findymail)</td><td class="status-add">+ Add Phase 2</td><td>2+</td><td>$100–200/mo</td></tr>
+    <tr><td class="tool-name">PDL or Datagma</td><td>Deep person enrichment + job-change signals (suggest PDL)</td><td class="status-add">+ Add Phase 2</td><td>2+</td><td>$200–500/mo</td></tr>
+    <tr><td class="tool-name">RevyOps</td><td>(deferred — only if Airtable insufficient at scale)</td><td class="status-add">… Defer</td><td>2 eval</td><td>$$$ if added</td></tr>
+    <tr><td class="tool-name">Clay</td><td>—</td><td class="status-drop">✗ Drop after archive verified</td><td>—</td><td><strong>Save $349–799/mo</strong></td></tr>
+  </tbody>
+</table>
+
+<h2>Skills library</h2>
+
+<p style="color:var(--text-dim);font-size:13px;margin-top:8px">Reusable Claude Code Skills invocable via prompts (following the Salesforge / Forge MCP pattern). Each lives at <code>cold-email-outbound/skills/&lt;name&gt;.md</code>.</p>
+
+<table>
+  <thead>
+    <tr><th>Skill</th><th>What it does</th><th>Phase</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="tool-name">source-leads</td><td>Pull from Apollo + archive matching ICP criteria</td><td>1+</td></tr>
+    <tr><td class="tool-name">enrich-batch</td><td>Run enrichment waterfall on a batch</td><td>2+</td></tr>
+    <tr><td class="tool-name">dedupe-and-score</td><td>Match against data layer, compute ICP score</td><td>1</td></tr>
+    <tr><td class="tool-name">suppress-and-filter</td><td>Apply 3-layer suppression</td><td>1</td></tr>
+    <tr><td class="tool-name">generate-sequence-variants</td><td>Produce spintax variants from template + ICP segment</td><td>1</td></tr>
+    <tr><td class="tool-name">pre-launch-audit</td><td>Verify campaign config before activation</td><td>1</td></tr>
+    <tr><td class="tool-name">push-to-instantly</td><td>Create campaign + push leads</td><td>1</td></tr>
+    <tr><td class="tool-name">classify-reply</td><td>Classify a single reply (Claude API) — extract entities</td><td>1</td></tr>
+    <tr><td class="tool-name">route-positive</td><td>Push positive replies into matching GHL</td><td>1</td></tr>
+    <tr><td class="tool-name">mailbox-health-check</td><td>Weekly check on sending domain reputation</td><td>1+</td></tr>
+    <tr><td class="tool-name">campaign-performance-report</td><td>Weekly per-campaign positive % summary</td><td>1+</td></tr>
+    <tr><td class="tool-name">cooldown-reactivation</td><td>Find prospects whose cooldown is up + re-queue</td><td>1+</td></tr>
+  </tbody>
+</table>
+
+<h2>Phase 1 success gates — per stream</h2>
+
+<table>
+  <thead>
+    <tr><th>Stream</th><th>Positive reply % target</th><th>Investigate below</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="tool-name">seller_cold_fs_niche</td><td><strong>6%</strong></td><td>3%</td></tr>
+    <tr><td class="tool-name">seller_cold_cs</td><td><strong>3%</strong></td><td>1%</td></tr>
+    <tr><td class="tool-name">buyer_reactivation</td><td><strong>10%</strong></td><td>5%</td></tr>
+    <tr><td class="tool-name">referral_partner_advisor</td><td><strong>4%</strong></td><td>2%</td></tr>
+    <tr><td class="tool-name">event_pre</td><td><strong>8%</strong></td><td>4%</td></tr>
+  </tbody>
+</table>
+
+<p style="color:var(--text-dim);font-size:12px;margin-top:8px">Conservative targets. Some streams have historically over-performed these (buyer reactivation up to 22%, event-tied up to 9%); we don't set historical ceiling as the target.</p>
+
+<h2>System-wide gates (all streams)</h2>
+
+<table>
+  <thead>
+    <tr><th>Metric</th><th>Target</th><th>Halt / investigate</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Bounce rate (any campaign)</td><td><strong>&lt; 2%</strong></td><td>&gt; 5% halt</td></tr>
+    <tr><td>Unsubscribe rate</td><td><strong>&lt; 2%</strong></td><td>&gt; 5% halt + re-eval copy</td></tr>
+    <tr><td>Classifier coverage (non-`other`)</td><td><strong>&gt; 60%</strong></td><td>&lt; 40% refine prompts</td></tr>
+    <tr><td>Time from reply → routing</td><td><strong>&lt; 5 min</strong></td><td>&gt; 15 min investigate</td></tr>
+    <tr><td>Cross-brand routing errors</td><td><strong>0</strong></td><td>any &gt; 0 = halt</td></tr>
+  </tbody>
+</table>
+
+<div class="decisions">
+  <h2>⚠ Open decisions — settle before Phase 1 starts</h2>
+  <ol>
+    <li><strong>Airtable vs. RevyOps</strong> — recommend Airtable for Phase 1, defer RevyOps to a Phase 2 eval point</li>
+    <li><strong>PDL vs. Datagma</strong> for deep enrichment — recommend PDL (bigger DB, more established)</li>
+    <li><strong>Hunter vs. Snov vs. Findymail</strong> for email finder — recommend Findymail (highest accuracy on B2B work emails in recent benchmarks)</li>
+    <li><strong>Email verifier provider</strong> — Theodore action: confirm which provider was used previously and reactivate</li>
+    <li><strong>No-reply cooldown duration</strong> — default 60 days (confirm)</li>
+    <li><strong>Closed-lost cooldown duration</strong> — default 12 months (confirm)</li>
+    <li><strong>Step 3 (soft close) email design</strong> — draft + test</li>
+    <li><strong>4 Notion discrepancies</strong> — still pending (FS pricing onboarding fee, Toolkit multi-location pricing, brand-age framing, Xponential special pricing). Resolve before seller-cold copy ships.</li>
+  </ol>
+</div>
+
+<h2>What's grounded in research vs. opinion</h2>
+
+<p style="color:var(--text-dim);font-size:13px">Sources informing this design:</p>
+<ul style="color:var(--text-dim);font-size:13px;line-height:1.7">
+  <li><strong>Your historical campaign data</strong> — 30 campaigns analyzed in <a href="INSTANTLY-CAMPAIGN-RETROSPECTIVE.md" style="color:var(--claude-orange);text-decoration:none">INSTANTLY-CAMPAIGN-RETROSPECTIVE.md</a> drove the template choice, sequence length, buyer-side prioritization, and the "no full-AI copy" rule.</li>
+  <li><strong>Your existing data archive</strong> — 660K rows across Clay/Airtable/FS SAVE!/Dropbox catalogued in <a href="PHASE-0-DATABASE-AUDIT.md" style="color:var(--claude-orange);text-decoration:none">PHASE-0-DATABASE-AUDIT.md</a> drove the suppression model (5 sources merged) and the Phase 1 reactivation-first approach.</li>
+  <li><strong>2026 public Claude Code outbound implementations</strong> — Salesforge's <em>"How I Use Claude Code to Automate My Entire Cold Email Operation"</em> (MCP-bridge pattern, 7-skill library), Databar.ai's <em>"Cold Email in 2026"</em> (micro-campaign velocity, 10–15% top reply rates), Anthropic's <em>claude-agent-sdk-demos/email-agent</em> (Client ↔ Agent ↔ Backend pattern with IMAP), Ben Reed's RevyOps framework on LinkedIn (data layer separation principle).</li>
+  <li><strong>2026 deliverability research</strong> — Verified lists 2× reply rate of unverified; spintax ≥ 50% recommended; open-tracking pixel hurts inbox placement (so we disable by default).</li>
+</ul>
+
+<footer>
+  Cold Email Outbound · v1 system design · 2026-05-21<br/>
+  Full design rationale in <a href="SYSTEM-DESIGN.md">SYSTEM-DESIGN.md</a> · Historical retrospective in <a href="INSTANTLY-CAMPAIGN-RETROSPECTIVE.md">INSTANTLY-CAMPAIGN-RETROSPECTIVE.md</a> · Database audit in <a href="PHASE-0-DATABASE-AUDIT.md">PHASE-0-DATABASE-AUDIT.md</a>
+</footer>
+
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    themeVariables: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif',
+      fontSize: '14px',
+      primaryColor: '#1e293b',
+      primaryTextColor: '#e2e8f0',
+      primaryBorderColor: '#475569',
+      lineColor: '#64748b',
+      tertiaryColor: '#0f172a',
+      mainBkg: '#1e293b',
+      secondBkg: '#334155',
+      tertiaryBkg: '#475569'
+    },
+    flowchart: {
+      htmlLabels: true,
+      curve: 'basis',
+      nodeSpacing: 50,
+      rankSpacing: 60,
+      padding: 12
+    }
+  });
+</script>
+
+</body>
+</html>

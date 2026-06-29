@@ -1,0 +1,17 @@
+[Unit]
+Description=Marketing Platform Operator API (audiences, preview, campaign dry-run)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/cold-email-outbound
+Environment=CEO_DRY_RUN=true
+ExecStart=/root/cold-email-outbound/.venv/bin/uvicorn dashboard.api:app --host 127.0.0.1 --port 8083 --workers 2
+Restart=on-failure
+RestartSec=3
+StandardOutput=append:/var/log/marketing-api.log
+StandardError=append:/var/log/marketing-api.log
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,82 @@
+{
+  "_comment": "Stream registry. The engine's authoritative stream config lives in engine/models.py (STREAM_BRAND) + engine/pipeline.py (STREAM_TEMPLATE). This JSON is the human-readable reference + tuning surface; keep in sync if you add a stream.",
+  "streams": {
+    "seller_cold_fs_niche": {
+      "brand": "FS",
+      "template": "seller_cold_fs_niche.md",
+      "source": "tier-a-fs (filtered by franchise system)",
+      "routing": "GHL FS workspace",
+      "uses_seller_icp": true,
+      "phase1_positive_target_pct": 6,
+      "phase1_investigate_below_pct": 3,
+      "notes": "Needs curated system lists (e.g. pooled senior-care), not raw company names."
+    },
+    "seller_cold_fs_broad": {
+      "brand": "FS",
+      "template": "seller_cold_fs_broad.md",
+      "source": "tier-a-fs (by ICP score)",
+      "routing": "GHL FS workspace",
+      "uses_seller_icp": true,
+      "phase1_positive_target_pct": 4,
+      "phase1_investigate_below_pct": 2
+    },
+    "seller_cold_cs": {
+      "brand": "CS",
+      "template": "seller_cold_cs.md",
+      "source": "tier-a-cs (by industry x size)",
+      "routing": "GHL CS workspace",
+      "uses_seller_icp": true,
+      "phase1_positive_target_pct": 3,
+      "phase1_investigate_below_pct": 1,
+      "notes": "REBUILT template — replaces the broken {{Paragraph One}} AI-paragraph approach."
+    },
+    "buyer_reactivation": {
+      "brand": "FS",
+      "template": "buyer_reactivation.md",
+      "source": "DEFERRED — no cold source. Theodore 2026-06-07: buyers always stayed in the GHL CRM, never in Airtable/archives. CRM buyers are in_crm-suppressed anyway. To run buyer re-engagement later, wire a GHL dormant-buyer pull (warm, not cold). Not active in Phase 1.",
+      "routing": "Buyer Manager (Yvonne) pipeline",
+      "uses_seller_icp": false,
+      "active_phase1": false,
+      "phase1_positive_target_pct": 10,
+      "phase1_investigate_below_pct": 5
+    },
+    "referral_partner_advisor": {
+      "brand": "CS",
+      "template": "referral_partner_advisor.md",
+      "source": "tier-c (Business Advisors)",
+      "routing": "Theodore direct + light nurture",
+      "uses_seller_icp": false,
+      "phase1_positive_target_pct": 4,
+      "phase1_investigate_below_pct": 2,
+      "notes": "Low content variation — add spintax before scaling."
+    },
+    "referral_partner_zor": {
+      "brand": "FS",
+      "template": "referral_partner_zor.md",
+      "source": "tier-c (Franchisors)",
+      "routing": "Theodore direct + zor workflow",
+      "uses_seller_icp": false,
+      "phase1_positive_target_pct": 3,
+      "phase1_investigate_below_pct": 1
+    },
+    "event_pre": {
+      "brand": "FS",
+      "template": "event_pre.md",
+      "source": "event attendee list (confirmed registrants only)",
+      "routing": "Theodore direct + meeting booking",
+      "uses_seller_icp": false,
+      "phase1_positive_target_pct": 8,
+      "phase1_investigate_below_pct": 4,
+      "notes": "Only works for CONFIRMED attendees. Broad blasts historically bombed."
+    },
+    "event_post": {
+      "brand": "FS",
+      "template": "event_post.md",
+      "source": "event attendee list",
+      "routing": "Theodore direct + meeting booking",
+      "uses_seller_icp": false,
+      "phase1_positive_target_pct": 8,
+      "phase1_investigate_below_pct": 4
+    }
+  }
+}
