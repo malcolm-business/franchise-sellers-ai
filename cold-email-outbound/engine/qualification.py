@@ -7,12 +7,12 @@ Three jobs: FILTER (eligible?), ROUTE (which brand?), via a cheap->expensive fun
   Stage 2  AI judgment          — current owner active? owner US-based? franchise-vs-
            (research + Claude)    private (brand)? no PE/public? + revenue band + franchise scale
 
-The brand-specific caps are CS-only (employees<=50, age>=3yr, revenue<=$25M) and the
-FS location cap (<=25). They are PASS-ON-UNKNOWN — a missing data point never drops a
-lead; only an explicit over-cap value does, and only when enforcement is on
-(config.QUALIFICATION['enforce_cs_caps']). Because the CS caps need the brand, they are
-applied in _derive AFTER the AI sets the brand. The FS location cap has no reliable
-per-owner data source, so it is a SOFT review flag, never an auto-drop.
+Thresholds follow Eric's ICP (locked 2026-06-29): a $1M revenue floor on BOTH brands (5+
+employees as the proxy when revenue is unknown); CS by industry, $1-10M revenue, age>=3yr,
+avoid construction/education/retail/real-estate-heavy; FS = franchisees of SYSTEMS with
+50-1000 locations, $1-5M revenue. All PASS-ON-UNKNOWN — a missing data point never drops a
+lead; only an explicit over/under-threshold value does, and only when enforcement is on
+(config.QUALIFICATION['enforce_caps']). Applied in _derive AFTER the AI sets the brand.
 
 Result is a Qualification object saved to the contacts row (qualification jsonb +
 qualified/qual_brand columns). Respects DRY_RUN: the batch funnel skips the paid AI step
@@ -153,23 +153,25 @@ Judge each:
 4. ownership: Privately held by an individual/small group, or PRIVATE-EQUITY owned, or a PUBLIC
    company? "private"/"pe_backed"/"public"/"unknown".
 5. revenue_band: Estimate the company's ANNUAL revenue band from the evidence (employee count is
-   a fair proxy). One of: "<$1M" / "$1-5M" / "$5-25M" / "$25-100M" / ">$100M" / "unknown".
+   a fair proxy). One of: "<$1M" / "$1-5M" / "$5-10M" / "$10-25M" / "$25M+" / "unknown".
    Estimate conservatively; answer "unknown" unless there is a real basis.
-6. franchise_scale: ONLY if business_type is "franchise" — roughly how many locations/units does
-   THIS owner operate? "single_or_small(<=25)" / "large_multi_unit(>25)" / "unknown". For a
-   non-franchise, answer "unknown".
+6. franchise_system_size: ONLY if business_type is "franchise" — roughly how many TOTAL locations
+   does the FRANCHISE BRAND/SYSTEM operate nationwide (the whole brand, NOT just this owner)?
+   "<50" / "50-1000" / ">1000" / "unknown". For a non-franchise, answer "unknown".
 
 Return STRICT JSON only, no prose:
 {"current_owner":{"verdict":"yes|no|unknown","reason":"<=14 words"},
  "owner_us_based":{"verdict":"yes|no|unknown","reason":"<=14 words"},
  "business_type":{"verdict":"franchise|private|unknown","reason":"<=14 words"},
  "ownership":{"verdict":"private|pe_backed|public|unknown","reason":"<=14 words"},
- "revenue_band":{"verdict":"<$1M|$1-5M|$5-25M|$25-100M|>$100M|unknown","reason":"<=14 words"},
- "franchise_scale":{"verdict":"single_or_small(<=25)|large_multi_unit(>25)|unknown","reason":"<=14 words"},
+ "revenue_band":{"verdict":"<$1M|$1-5M|$5-10M|$10-25M|$25M+|unknown","reason":"<=14 words"},
+ "franchise_system_size":{"verdict":"<50|50-1000|>1000|unknown","reason":"<=14 words"},
  "confidence":0.0-1.0}"""
 
-# Revenue bands that exceed the CS $25M ceiling.
-_REVENUE_OVER_CAP = {"$25-100M", ">$100M"}
+# Revenue-band sets mapped to Eric's ICP cutoffs (the AI's coarse bands -> thresholds).
+_REV_BELOW_FLOOR = {"<$1M"}                       # under the $1M floor (both brands)
+_FS_REV_OVER = {"$5-10M", "$10-25M", "$25M+"}     # over the FS $5M cap
+_CS_REV_OVER = {"$10-25M", "$25M+"}               # over the CS $10M cap
 
 
 def ai_judge(contact: Contact, context: str) -> dict:
@@ -204,7 +206,7 @@ def _derive(contact: Contact, v: dict, s1: Stage1, enforce_caps: bool | None = N
     disqualifiers fail; 'unknown' passes with lower confidence. CS caps apply here
     (brand is known) and are pass-on-unknown; the FS location cap is a soft review flag."""
     if enforce_caps is None:
-        enforce_caps = config.QUALIFICATION["enforce_cs_caps"]
+        enforce_caps = config.QUALIFICATION["enforce_caps"]
     cap = config.QUALIFICATION
 
     q = Qualification(stage0_pass=True, method="ai")
@@ -214,10 +216,10 @@ def _derive(contact: Contact, v: dict, s1: Stage1, enforce_caps: bool | None = N
     bt = (v.get("business_type") or {}).get("verdict", "unknown")
     own = (v.get("ownership") or {}).get("verdict", "unknown")
     rev = (v.get("revenue_band") or {}).get("verdict", "unknown")
-    fscale = (v.get("franchise_scale") or {}).get("verdict", "unknown")
+    fss = (v.get("franchise_system_size") or {}).get("verdict", "unknown")
     q.checks = {k: v.get(k, {}) for k in
                 ("current_owner", "owner_us_based", "business_type", "ownership",
-                 "revenue_band", "franchise_scale")}
+                 "revenue_band", "franchise_system_size")}
     q.checks["stage0"] = {"pass": True}
     q.checks["stage1"] = s1.checks
 
@@ -233,36 +235,58 @@ def _derive(contact: Contact, v: dict, s1: Stage1, enforce_caps: bool | None = N
 
     q.brand = "FS" if bt == "franchise" else "CS"
 
+    # universal FLOOR (Eric ICP): under $1M revenue drops; when revenue is unknown, fall
+    # back to a 5+ employee floor. Pass-on-unknown when neither signal is available.
+    if rev in _REV_BELOW_FLOOR:
+        q.checks["min_revenue"] = {"pass": False, "band": rev}
+        if enforce_caps:
+            q.failed_rule = "below_min_revenue"; return q
+        q.review_flags.append("below_min_revenue")
+    elif rev in ("", "unknown") and s1.employees is not None and s1.employees < cap["min_employees"]:
+        q.checks["min_employees"] = {"pass": False, "value": s1.employees}
+        if enforce_caps:
+            q.failed_rule = "below_min_employees"; return q
+        q.review_flags.append("below_min_employees")
+
     if q.brand == "CS":
         q.product = s1.product_hint or "full_service"
-        # employees <= 50 (pass-on-unknown)
-        if s1.employees is not None and s1.employees > cap["cs_employee_cap"]:
-            q.checks["cs_employees"] = {"pass": False, "value": s1.employees}
+        # avoid-industries (Eric): construction / education / retail / real-estate-heavy
+        blob = f"{contact.industry} {contact.sub_industry} {contact.company}".lower()
+        hit = next((kw for kw in cap["cs_avoid_industries"] if kw in blob), "")
+        if hit:
+            q.checks["cs_industry"] = {"pass": False, "avoid_match": hit}
             if enforce_caps:
-                q.failed_rule = "cs_too_many_employees"; return q
-            q.review_flags.append("cs_employees_over_cap")
+                q.failed_rule = "cs_avoid_industry"; return q
+            q.review_flags.append(f"cs_avoid_industry:{hit}")
         # business age >= 3yr (pass-on-unknown)
         if s1.age_years is not None and s1.age_years < cap["cs_min_age_years"]:
             q.checks["cs_age"] = {"pass": False, "value": s1.age_years}
             if enforce_caps:
                 q.failed_rule = "cs_too_young"; return q
             q.review_flags.append("cs_under_min_age")
-        # revenue <= $25M (AI band; SOFT — drop only on an unambiguous over-cap band)
-        if rev in _REVENUE_OVER_CAP:
+        # revenue <= $10M (AI band; drop only on an unambiguous over-cap band)
+        if rev in _CS_REV_OVER:
             q.checks["cs_revenue"] = {"pass": False, "band": rev}
             if enforce_caps:
                 q.failed_rule = "cs_revenue_over_cap"; return q
             q.review_flags.append("cs_revenue_over_cap")
-        if not contact.revenue_band and rev not in ("", "unknown"):
-            contact.revenue_band = rev
     else:  # FS
         q.product = "toolkit"
-        # franchise location cap — SOFT review flag only (no reliable per-owner unit
-        # data exists; the AI estimates scale from the profile). Never auto-drops.
-        if fscale in ("large_multi_unit(>25)", "large_multi_unit", ">25"):
-            q.checks["fs_locations"] = {"pass": None, "scale": fscale}
-            q.review_flags.append("fs_over_25_locations_review")
+        # franchise SYSTEM must have >=50 total locations (Eric: floor at 50, no top cap)
+        if fss == "<50":
+            q.checks["fs_system_size"] = {"pass": False, "size": fss}
+            if enforce_caps:
+                q.failed_rule = "fs_system_too_small"; return q
+            q.review_flags.append("fs_system_under_50")
+        # FS business revenue <= $5M (over $5M goes to a different M&A firm)
+        if rev in _FS_REV_OVER:
+            q.checks["fs_revenue"] = {"pass": False, "band": rev}
+            if enforce_caps:
+                q.failed_rule = "fs_revenue_over_cap"; return q
+            q.review_flags.append("fs_revenue_over_cap")
 
+    if not contact.revenue_band and rev not in ("", "unknown"):
+        contact.revenue_band = rev
     q.qualified = True
     return q
 

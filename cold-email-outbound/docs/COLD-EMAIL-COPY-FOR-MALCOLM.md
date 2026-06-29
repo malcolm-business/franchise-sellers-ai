@@ -6,7 +6,32 @@ We've drafted the first round of cold-email sequences for both brands (Franchise
 
 Nothing sends until you sign off. The system treats every email as a draft awaiting your approval.
 
-**New: a full best-practices reference.** Alongside this checklist there is now a [Broker Cold-Email Copywriting Playbook](BROKER-COPY-PLAYBOOK.md). It is the deeper "why" behind every rule here, plus a swipe library (subjects, openers, CTAs, breakups) and the seller psychology, all researched from current 2026 sources and filtered against our voice rules. Use this guide for the quick pass, and the Playbook when you want the reasoning or raw material. It is yours to tweak and add to. The one fix it puts above all others: **every current template leans on an unprovable "sold for more than they expected" claim. Replace it with a credibility statement we can stand behind (Eric's confirmed 27 years, confidentiality, our process). That is the single most important change before go-live.** (Per-segment language comes later, after Eric's ICP.)
+**New: a full best-practices reference.** Alongside this checklist there is now a [Broker Cold-Email Copywriting Playbook](BROKER-COPY-PLAYBOOK.md). It is the deeper "why" behind every rule here, plus a swipe library (subjects, openers, CTAs, breakups) and the seller psychology, all researched from current 2026 sources and filtered against our voice rules. Use this guide for the quick pass, and the Playbook when you want the reasoning or raw material. It is yours to tweak and add to. The one fix it puts above all others: **every current template leans on an unprovable "sold for more than they expected" claim. Replace it with a credibility statement we can stand behind (Eric's confirmed 28 years, confidentiality, our process). That is the single most important change before go-live.** (Per-segment language comes later, after Eric's ICP.)
+
+---
+
+## 1b. Who we're targeting + how we pitch (Eric's ICP, locked 2026-06-29)
+
+Eric defined the ideal seller. Write to THIS person.
+
+**Who we want**
+- **Franchise Sellers:** franchisees of established systems (the brand has ~50 to 1,000+ locations), with a business doing **$1–5M in revenue** and **5+ employees**. Over $5M is too big for us.
+- **Company Sellers:** independent owners in **home services, home health** (Eric's favorite), service businesses, wholesale distribution, light manufacturing, and auto service. **$1–10M in revenue**, in business 3+ years. We do NOT target construction, education, retail, or real-estate-heavy businesses (car washes, storage, dealerships).
+- **Both:** profitable. Revenue over **$1M** is the line Eric cares about most.
+
+**The angle that lands (Eric's word): trust.**
+- We have a **real, proven process**, **28 years** doing this, **nationwide**.
+- **Our fee model is aligned with the owner:** a **small upfront onboarding fee, and the bulk of our fee comes only when we actually sell the business.** Do NOT write "only paid if we sell" — that is not accurate. Frame it as: most of what we earn depends on getting them sold, so we are on the same side.
+- We **work alongside their existing accountant, attorney, and advisors**, not around them.
+
+**Objections to disarm (Eric):**
+- They don't know the process, or think they have too much / too little time.
+- They think they **already have a buyer** (a son, daughter, or key employee). Usually they don't.
+- Many **don't even know a business broker exists** — they assume they'd just go to their accountant or attorney. Awareness is half the battle.
+
+**What makes them ready (use as gentle context, never pressure):** retirement, burnout, a health event or death, divorce, a partnership split, market timing, or an unsolicited offer landing in their lap.
+
+The targeting rules above are now live in the qualification engine. What you sharpen in the copy is the per-segment *language* (the words a home-health owner uses are not the words a franchisee uses).
 
 ---
 
@@ -107,7 +132,7 @@ A concrete starting to-do, organized by brand and stream. Three streams are live
 
 ### FS · Broad (franchise owners, any system)
 
-- **The "27 years" credential is confirmed, use it.** The opener cites "our broker president has 27 years in this space." Eric is at 27 years (Theodore confirmed 2026-06-28), so 27 is correct to ship. If you prefer a rounder number for tone, "25 years" is also fine (he is past it, so it stays accurate). Pick whichever reads best.
+- **The "28 years" credential is confirmed, use it.** The opener cites our broker president's years in the business. Eric's ICP puts it at **28 years** (Theodore locked this 2026-06-29; supersedes the earlier "27"). 28 is correct to ship. A rounder "25 years" is also accurate if it reads better. Pick whichever lands.
 - This is the broadest, least-personalized stream by design (no system name). Decide whether a fully generic first email is acceptable, or whether it needs one genuinely specific hook.
 - The casual CTA ("Worth a quick look?") is good, but it follows a long, formal offer sentence. Tighten the offer line so the tone matches.
 
@@ -124,7 +149,7 @@ A concrete starting to-do, organized by brand and stream. Three streams are live
 The [full Playbook](BROKER-COPY-PLAYBOOK.md) has the detail and the swipe library. The essentials for this audience, which is different from generic cold email because selling a business is a once-in-a-lifetime, emotional, confidential decision:
 
 - **Lead with the owner's curiosity, not the sale.** Make the implied ask "do you know what it's worth?" not "do you want to sell?" Only about 15% of owners have ever had a valuation, so the worth question is live for almost everyone, while the sell question triggers defenses.
-- **Credibility beats outcome claims.** Trust is the biggest driver of replies here. Swap "sold for more than they expected" for what we can prove: 27 years, confidentiality, our process. This is the #1 fix.
+- **Credibility beats outcome claims.** Trust is the biggest driver of replies here. Swap "sold for more than they expected" for what we can prove: 28 years, confidentiality, our process. This is the #1 fix.
 - **Name confidentiality early.** An owner's first fear is that staff, customers, or competitors find out. One line ("stays completely between us, nothing happens without your say-so") defuses it.
 - **Frame the OOV honestly.** A free, no-obligation broker's market opinion, "not a formal appraisal," yours to keep whether you ever sell or not. Never promise an exact or guaranteed value.
 - **Timing, not interest, is the blocker.** Most owners are 2 to 7 years out. A "not yet" is the start of a multi-year relationship, so give them the "plan early gives you options" reframe and a soft breakup that keeps the door open.

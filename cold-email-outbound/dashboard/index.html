@@ -365,7 +365,7 @@ function renderEmail(s){
     ['pass','Cold-domain allow-list enforced','Only approved lookalike domains can cold-send — never the main brand domain or staff inboxes','pass'],
     [d.available?(d.ok?'pass':'fail'):'pend','Sending domains healthy', d.available?`${d.domains||0} domains · ${d.problems||0} open issue(s) · warmup below floor: ${d.warmup_below_floor??'—'}`:'Monitor status not loaded', d.available?(d.ok?'pass':'fail'):'pend'],
     ['pend','Copy approved','Awaiting Malcolm\'s review of the campaign copy','pend'],
-    ['pend','ICP confirmed','Awaiting Eric\'s refinement of the ideal-customer profile per brand','pend'],
+    ['pend','ICP received','Eric\'s ICP is in (2026-06-29): FS = 50-1000-location systems, $1-5M · CS = $1-10M by industry · $1M revenue floor. Confirm per-campaign targeting before each send.','pend'],
     ['fail','Master switch is LIVE', s.mode==='LIVE'?'Sending is enabled':'Held in DRY-RUN — nothing sends','dry'],
   ];
   const icon={pass:'✓',fail:'✕',pend:'…',dry:'⏸'};

@@ -44,7 +44,7 @@ Output: a candidate template in `templates/<stream>.md` for human review — nev
   (`config.COMPLIANCE`). Subject lines must be honest (no deceptive pretext).
 
 ### Broker-specific rubric (selling-a-business outreach)
-- **Credibility over result claims.** No unprovable outcome ("sold for more than they expected", "6x", "40% over asking"). Use what we can stand behind: Eric's confirmed 27 years, confidentiality, our process.
+- **Credibility over result claims.** No unprovable outcome ("sold for more than they expected", "6x", "40% over asking"). Use what we can stand behind: 28 years, confidentiality, our process, and the aligned fee model (small upfront, bulk on the sale — never "only paid if we sell").
 - **Lead with valuation curiosity, not the sale.** Implied ask is "do you know what it's worth?", not "do you want to sell?"
 - **Confidentiality named early.** One line that staff/customers/competitors won't find out, nothing happens without their say-so.
 - **OOV framed honestly.** A free, no-obligation broker's market opinion, "not a formal appraisal", no exact/guaranteed value.

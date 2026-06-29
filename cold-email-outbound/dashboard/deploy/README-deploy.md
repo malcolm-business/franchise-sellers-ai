@@ -113,6 +113,23 @@ Verified live (curl, every user×dashboard): report blocks all non-leadership;
 marketing/sales allow david+malcolm, block rich; toolkit/buyers/full-service allow
 everyone. New individual passwords default to `Franchise#1` (set on droplet only).
 
+### ✅ Confirmed shared/team logins (re-verified live 2026-06-29)
+
+| Login | Password | Reaches | Does NOT reach |
+|---|---|---|---|
+| **`team`** | `Franchise#1` | the **ops dashboards**: toolkit, buyer-manager, full-service, shared, api | marketing, sales, report |
+| **`support`** | `Franchise#1` | **everything EXCEPT report** (in internal + ops tiers): marketing, sales, toolkit, buyer-manager, full-service, shared, api | report |
+| **`leadership`** | (leadership pw) | report, staff-report, + everything below it | — |
+
+Curl-verified 2026-06-29: `team:Franchise#1` → /toolkit 200, /marketing 401, /report 401; `support:Franchise#1` → /marketing 200, /toolkit 200.
+
+Actual usernames per tier (`cut -d: -f1`, 2026-06-29):
+- **leadership:** leadership
+- **internal:** david, leadership, malcolm, support
+- **ops:** alicea, david, laura, leadership, malcolm, rich, support, team, templa, yvonne
+
+To let the one `team` login also reach marketing/sales: `htpasswd -b /etc/nginx/.htpasswd-internal team 'Franchise#1'` (no `-c`, no reload needed).
+
 ## Operator API (FastAPI) — DEPLOYED 2026-06-07
 
 The dashboard's interactive backend (audience builder + campaign dry-run).

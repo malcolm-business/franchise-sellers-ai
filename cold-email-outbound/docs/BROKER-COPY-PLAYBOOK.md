@@ -67,7 +67,8 @@ The winning cold email in 2026 is a short plain-text note from a real person who
 
 ## 7. Credibility over result claims
 
-- Replace unprovable result claims with **credibility statements you can stand behind**: years of experience (Eric's 27 years is confirmed), confidentiality, your process, and qualitative buyer demand ("hundreds of buyer inquiries each month").
+- Replace unprovable result claims with **credibility statements you can stand behind**: years of experience (28 years, per Eric), confidentiality, your process, and qualitative buyer demand ("hundreds of buyer inquiries each month").
+- **Fee model is a trust point, stated accurately.** A **small upfront onboarding fee, with the bulk of the fee tied to actually selling the business.** Frame it as alignment ("most of what we earn depends on getting you sold"). Do NOT claim "only paid if we sell" or "success-based only" — there is an upfront fee, so that is inaccurate.
 - "Sold for more than they expected" is unverifiable, reads like every other cold email, and on a regulated high-trust sale it invites skepticism. About 70 to 80% of listed businesses never close, so a sharp outcome number reads as either a lie or the thing that will eventually disappoint. **This exact claim is in all three of our live templates. Swapping it is the single most important fix before go-live.**
 - Trust is the biggest driver of replies in owner and M&A outreach. Decision-makers skip about 36% of emails for lacking trust signals. Earn it with checkable specifics, not outcome promises.
 - Credibility also means being an obviously real, findable human at a real firm. A faceless "acquisition group" with a parked domain is the textbook scam profile owners are trained to delete. Name who you are, the brand, and your specificity to their world.
@@ -144,7 +145,7 @@ Use these as raw material, not as final copy. The strongest ones are marked. Any
 
 | Use | Angle | Why |
 |---|---|---|
-| ✅ The #1 fix | `Our broker president has spent 27 years helping owners through this, always confidentially.` | The compliant replacement for "sold for more than they expected." 27 years is confirmed. Confidentiality plus experience are checkable trust anchors. |
+| ✅ The #1 fix | `Our broker president has spent 28 years helping owners through this, always confidentially.` | The compliant replacement for "sold for more than they expected." 28 years is confirmed. Confidentiality plus experience are checkable trust anchors. |
 | ✅ Strong | `Anything you share stays completely between us. Nothing happens, and no one finds out, without your say-so.` | Answers the owner's number-one silent fear before they have to ask. A hallmark of the legitimate broker. |
 | ✅ Strong | `Even if selling is years away, knowing your number now just gives you options. The owners who plan early get to choose their timing instead of being forced into it.` | The "plan early = options" reframe. Separates knowing from doing and disarms "I'm not ready." |
 | ✅ Strong | `I can put together a no-obligation opinion of what your business could sell for in today's market. It's a broker's market opinion, not a formal appraisal, and there's no cost or commitment.` | Frames the OOV as an opinion the owner keeps and names what it is not. Keeps it truthful and low-commitment. |
@@ -168,7 +169,7 @@ Use these as raw material, not as final copy. The strongest ones are marked. Any
 
 ## 12. The pre-launch fix list (quick reference)
 
-**The single most important fix:** every live template leans on "sold for more than they expected / more than they thought possible." Replace it with a credibility statement we can stand behind (Eric's confirmed 27 years, confidentiality, our process). Do this before any live send.
+**The single most important fix:** every live template leans on "sold for more than they expected / more than they thought possible." Replace it with a credibility statement we can stand behind (Eric's confirmed 28 years, confidentiality, our process). Do this before any live send.
 
 **Top do's**
 1. Email 1 is a conversation-opener under 80 words: one sentence about them, one soft question, no offer dump, no link.
@@ -206,7 +207,7 @@ These are the gaps the research can't close on its own. They are why the ICP ste
 
 1. **Real signal data.** The strongest opener (a true signal in the first line, worth roughly 5x) needs sourced signals: tenure, owner age 55+, named franchise system, a recent local comparable sale, a leadership change. Today the signal line is stripped from every email because no data fills it. **The ICP defines which signals we can actually source.**
 2. **Per-brand audience language.** We know FS is franchisee concerns and CS is independent-owner concerns, but we need Eric's vetted phrasing for each. A short "words FS owners use vs words CS owners use" glossary would let each stream sound native.
-3. **Confirmed proof points** to replace the unprovable claim. We have Eric's 27 years and "confidential process." More checkable specifics (businesses sold, years in business per brand, the shape of the buyer network) would strengthen the credibility swap.
+3. **Confirmed proof points** to replace the unprovable claim. We have Eric's 28 years and "confidential process." More checkable specifics (businesses sold, years in business per brand, the shape of the buyer network) would strengthen the credibility swap.
 4. **The buyer-demand figure.** The roughly 250 to 400 inquiries per month number is unconfirmed and possibly brand-specific. Keep it qualitative until Theodore or Eric confirms and splits it FS vs CS.
 5. **Per-brand physical address** for the CAN-SPAM footer (auto-inserted, but verify each brand's correct registered address).
 6. **OOV state-specific framing.** "Broker's opinion of value, not a formal appraisal" is the safe national default. If FS or CS operate in states with specific opinion-of-value language rules, a one-time check with counsel is worth it.

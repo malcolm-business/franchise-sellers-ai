@@ -11,7 +11,7 @@
 **Shipped today (2026-06-28) — the "experience the system + copy" layer:**
 - **Interactive campaign SIMULATOR** live at `/marketing/simulator.html` (🎮 button on the dashboard + a button in the Send & monitor card). Self-contained sandbox, walks the full create → monitor → maintain lifecycle with test inputs. Nothing sends; the switch never reaches LIVE.
 - **`docs/OPERATING-MODEL.md`** (what runs in Claude vs the dashboard + the weekly cadence) and **`docs/TESTING-AND-SPINTAX-SOP.md`** (how Malcolm/Theodore start a campaign with an A/B test + the read-and-update timing).
-- **`docs/BROKER-COPY-PLAYBOOK.md`** — researched best-practices + swipe library + seller psychology (70+ 2026 sources), integrated into `docs/COLD-EMAIL-COPY-FOR-MALCOLM.md` and the `improve-copy` skill rubric. **#1 copy fix flagged: replace the unprovable "sold for more than they expected" line in all 3 live templates with a credibility statement (Eric's confirmed 27 years, confidentiality, our process).**
+- **`docs/BROKER-COPY-PLAYBOOK.md`** — researched best-practices + swipe library + seller psychology (70+ 2026 sources), integrated into `docs/COLD-EMAIL-COPY-FOR-MALCOLM.md` and the `improve-copy` skill rubric. **#1 copy fix flagged: replace the unprovable "sold for more than they expected" line in all 3 live templates with a credibility statement (28 years, confidentiality, our process).**
 - **`docs/CLAUDE-VS-DASHBOARD.pdf`** — long-term "run it from the dashboard" vision (answer: yes, ~80% becomes one-click, a thin slice stays Claude-assisted by design).
 - **Copy Preview Pack** now linked on the dashboard (③ Campaign copy) and has a "what this is / why" explainer at the top. 27-years credential confirmed in the copy guide.
 
@@ -21,7 +21,11 @@
 3. **Malcolm approves copy** (he has the preview pack + copy guide + playbook; handoff message sent 06-28).
 4. Theodore flips `CEO_DRY_RUN=false` on a SMALL batch (~200-300, one brand), watch bounce<3% / unsub<2% / replies for 48h, then ramp.
 
-**Waiting on:** Malcolm = copy review by Thursday (the #1 fix + strip em dashes + differentiate subjects). Eric = ICP form (sharpens targeting + per-segment language; NOT a blocker for the first send). Theodore = the live flip.
+**2026-06-29 UPDATE — Eric's ICP LOCKED.** FS = franchisees of SYSTEMS with 50-1,000 locations + $1-5M rev (>$5M too big); CS = $1-10M rev by industry (target home health/services, light mfg, wholesale dist, auto service; AVOID construction/education/retail/real-estate-heavy); **$1M revenue floor BOTH brands** (5+ emp proxy when rev unknown); **28 years** (not 27); fee = small upfront onboarding + bulk on success commission (NOT "only paid if we sell"). **Rules updated in `engine/config.QUALIFICATION` + `qualification.py`** (10/10 scenario test passed) and **copy guide + playbook + improve-copy rubric updated**. ⚠ The 1,429 in Neon were qualified under the OLD caps → **NEXT: re-qualify the pool against the new ICP** (Theodore wants to see how far it shrinks; held until he gives the go). Full ICP in memory `project_cold_email_qualification`.
+
+**Also shipped 2026-06-29:** dashboard pre-send gate now shows the ICP is in + snapshot refreshed (live); Malcolm notified via Slack (the updates + ICP received); team dashboard logins confirmed (`team`/`Franchise#1` = ops dashboards; `support`/`Franchise#1` = all except report — full table in `dashboard/deploy/README-deploy.md`). All pushed to GitHub.
+
+**Waiting on:** Malcolm = copy review by Thursday (the #1 fix + strip em dashes + differentiate subjects). Theodore = the live flip + the go to re-qualify the pool.
 
 ---
 

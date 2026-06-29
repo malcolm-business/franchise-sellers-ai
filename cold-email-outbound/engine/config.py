@@ -225,13 +225,28 @@ VERIFICATION = {
 # ────────────────────────────────────────────────────────────────────────────
 
 QUALIFICATION = {
-    "enforce_cs_caps": True,        # hard-gate CS employees<=50 + age>=3yr (pass-on-unknown)
-    "cs_employee_cap": 50,          # CS: over this = too big (rule #3)
-    "cs_min_age_years": 3,          # CS: under this = no real financials yet (rule #9)
-    "cs_revenue_cap_label": "$25M", # CS: over this = too big (rule #2, AI-estimated band, SOFT)
-    "fs_location_cap": 25,          # FS: over this = too big (rule #4, AI soft review-flag only)
+    # Eric's ICP — LOCKED 2026-06-29 (overrides the old Clay-table caps). PASS-ON-UNKNOWN:
+    # a missing data point never drops a lead; only an explicit over/under-threshold value
+    # does, and only when enforcement is on. Turn enforce_caps off to MEASURE coverage first.
+    "enforce_caps": True,
+    # Floor — BOTH brands. Revenue is primary; employees is the proxy when revenue is unknown.
+    "min_revenue_label": "$1M",      # under $1M revenue = drop (Eric: ">$1M and we're golden")
+    "min_employees": 5,              # 5+ employees; the floor proxy when revenue is unknown
+    # FS — franchise SYSTEM size (Theodore confirmed: the brand's TOTAL locations, NOT the
+    # owner's own unit count). Floor at 50, no hard cap on top.
+    "fs_system_min_locations": 50,
+    "fs_system_max_locations": 1000,  # soft top only (Eric: "maybe not a cap on the top")
+    "fs_revenue_cap_label": "$5M",    # FS business over $5M = too big (goes to an M&A firm)
+    # CS — independent business by industry
+    "cs_revenue_cap_label": "$10M",   # CS over $10M = too big
+    "cs_min_age_years": 3,            # under this = no real financials yet
+    # CS avoid-industries (Eric): construction / education / retail / real-estate-heavy.
+    # Substring match on industry + sub_industry + company; hard-drop for CS (pass-on-blank).
+    "cs_avoid_industries": ["construction", "education", "retail", "car wash",
+                            "self storage", "storage unit", "rv storage", "dealership",
+                            "real estate"],
     # CS routing: bigger qualified private business -> Full Service (the focus);
-    # smaller -> Toolkit (deprioritized). Tunable; employees below this -> toolkit.
+    # smaller -> Toolkit. Employees below this -> toolkit.
     "cs_toolkit_employee_threshold": 10,
     # The company-lookup enrichment provider (Stage 1). LeadMagic today; the
     # test-then-evaluate rule says swap if coverage proves insufficient.

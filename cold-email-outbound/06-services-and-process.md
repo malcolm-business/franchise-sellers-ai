@@ -117,7 +117,7 @@ Seller gift, satisfaction survey, referral ask, content/social posting.
 
 These are the points to weave into outbound messaging:
 
-**Founder experience.** Eric Payne, founder, has 27 years of brokerage experience. This is the lead credibility marker — not brand age. The brands themselves are 5–10 years old, but that's not a number to feature.
+**Founder experience.** Eric Payne, founder, has **28 years** of brokerage experience (per Eric's ICP, locked 2026-06-29; supersedes the earlier "27"). This is the lead credibility marker — not brand age. The brands themselves are 5–10 years old, but that's not a number to feature.
 
 **Solution flexibility.** Two real service tiers — Full Service (commission) and Toolkit (flat fee). Most competitors offer only one. The Toolkit option in particular is a differentiator for sellers who don't want commission economics on smaller deals.
 
