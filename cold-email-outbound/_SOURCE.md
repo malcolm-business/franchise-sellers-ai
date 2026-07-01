@@ -8,9 +8,11 @@ copy work. It is **not** the source of truth.
 - **Copied from commit:** `44a2596eb55a6bb2c05433d6f2c38018ff1e2453` (re-pulled 2026-06-29; brought in Eric's ICP + updated copy guide. Originally copied from `ad5bb22`.)
 - **Copied on:** 2026-06-29
 
-After each re-pull, Malcolm's three revised seller templates are re-applied from
-`_malcolm-revisions/` over `templates/`. Ted did not modify the seller templates
-through `44a2596`, so re-applying was a clean overwrite with no reconciliation.
+**Decision (2026-07-01): test Ted's ORIGINAL seller copy first.** `templates/` now holds
+Ted's proven originals (restored from `44a2596`). Malcolm's revised versions are held in
+`_malcolm-revisions/` as the A/B **challenger** — to be tested against Ted's original after
+a first small batch (control-vs-challenger, per the marketing-module spec §4a). Ted did not
+modify the seller templates through `44a2596`.
 
 Ted is actively building this engine on that branch, so this copy **will drift** from his
 source over time. Before relying on the engine code, configs, or templates, re-check the

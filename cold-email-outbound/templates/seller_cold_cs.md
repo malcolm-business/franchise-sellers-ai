@@ -1,26 +1,24 @@
 ---
 stream: seller_cold_cs
 brand: CS
-description: Independent business owners by industry. REBUILT — replaces the broken {{Paragraph One}} {{Paragraph Two}} AI-paragraph template that historically sat at 0.7-3%. Opens with a segment-level valuation hook + credibility (27 yrs, confidentiality) + a real signal anchor.
+description: Independent business owners by industry. REBUILT — replaces the broken {{Paragraph One}} {{Paragraph Two}} AI-paragraph template that historically sat at 0.7-3%. Uses industry-peer social proof + a real signal anchor.
 subjects:
-  - what's {{company}} worth?
-  - planning your next move?
-  - thinking about what's next?
+  - Quick question {{firstName}}
+  - {{firstName}}, thoughts?
+  - {{firstName}}, thinking about what's next?
 delays_days: [1, 4, 6]
 default_offer: oov
 ---
 ## STEP 1
 Hey {{firstName}},
 
-Most owners in {{industry_lower}} have never had a clear sense of what their business is worth.
-
-That's what we do, quietly and with 28 years behind it.
+We help {{audience_descriptor}} value and sell their businesses. We recently helped another owner in {{industry_lower}} sell for more than they expected — clean process, fully confidential.
 
 {{signal_anchor}}
 
 {{offer_cta}}
 
-{{RANDOM | Worth a quick conversation? | Worth a quick chat? | Open to it?}}
+Worth a quick conversation?
 
 {{sender_name}}
 {{brand_name}}
@@ -30,9 +28,11 @@ If this is not relevant to you, simply reply with 'no'
 ## STEP 2
 Hey {{firstName}},
 
-Bumping this up. If you've ever wondered what {{company}} could sell for, a no-obligation opinion of value is a quiet way to find out.
+As a business owner, I know emails get buried — bumping this up.
 
-{{RANDOM | Want to take a look? | Worth a look? | Open to it?}}
+If you've ever wondered what {{company}} could be worth, a complimentary opinion of value is a no-pressure way to find out. No obligation, fully confidential.
+
+Want to take a look?
 
 {{sender_name}}
 {{brand_name}}
@@ -40,9 +40,9 @@ Bumping this up. If you've ever wondered what {{company}} could sell for, a no-o
 ## STEP 3
 {{firstName}},
 
-{{RANDOM | Last note | One more then I'll stop | Closing the loop}}. If selling isn't on your mind right now, no worries at all.
+{{RANDOM | Last note | One more then I'll stop | Closing the loop}} — if selling isn't on your mind right now, no worries at all.
 
-Whenever it is, knowing your number ahead of time makes every decision easier.
+Whenever it is, knowing your number ahead of time makes every decision easier. We're here when you want it.
 
 {{sender_name}}
 {{brand_name}}
