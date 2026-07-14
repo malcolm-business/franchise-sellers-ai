@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Meta Ads</title>
+<style>
+  /* Theme mirrors dashboard/index.html so the tab looks native. */
+  :root{--bg:#0b1020;--card:#141b2e;--card2:#1b2540;--line:#26314e;--ink:#e8edf7;--mut:#8896b5;
+        --fs:#ef4444;--cs:#3b82f6;--grn:#22c55e;--amb:#f59e0b;--red:#ef4444;--acc:#2563eb}
+  body.light{--bg:#f4f6fb;--card:#ffffff;--card2:#eef2fa;--line:#d5dced;--ink:#1a2338;--mut:#5a6684}
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;padding:2px 2px 18px}
+  .meta{color:var(--mut);font-size:12px;margin:0 0 14px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--grn);display:inline-block;margin-right:5px;vertical-align:middle}
+  h2.sec{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:20px 0 10px;font-weight:700}
+  .grid{display:grid;gap:10px}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+  .split{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .tile .n{font-size:20px;font-weight:700}
+  .tile .l{color:var(--mut);font-size:11px;margin-top:2px}
+  .brand{border-left:3px solid var(--line)}
+  .brand.fs{border-left-color:var(--fs)} .brand.cs{border-left-color:var(--cs)}
+  .brand .h{font-size:13px;font-weight:700;margin-bottom:8px}
+  .brand .h .tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:999px;margin-left:6px;color:#fff}
+  .tag.fs{background:var(--fs)} .tag.cs{background:var(--cs)}
+  .brow{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0;border-bottom:1px dashed var(--line)}
+  .brow:last-child{border-bottom:none}
+  .brow .k{color:var(--mut)}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);font-size:12.5px;white-space:nowrap}
+  th{color:var(--mut);font-weight:600;background:#111830}
+  body.light th{background:#eef2fa}
+  th:first-child,td:first-child{text-align:left}
+  tr:last-child td{border-bottom:none}
+  .pill{padding:3px 9px;border-radius:999px;font-weight:600;font-size:10.5px}
+  .pill.ok{background:rgba(34,197,94,.15);color:#4ade80;border:1px solid rgba(34,197,94,.4)}
+  .pill.warn{background:rgba(245,158,11,.16);color:#fbbf24;border:1px solid rgba(245,158,11,.4)}
+  .pill.off{background:rgba(136,150,181,.14);color:var(--mut);border:1px solid var(--line)}
+  .bdot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:middle}
+  .bdot.fs{background:var(--fs)} .bdot.cs{background:var(--cs)}
+  .muted{color:var(--mut)}
+  .createcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;color:var(--mut)}
+  .na{color:#5b6883;font-style:italic;font-size:11px}
+</style>
+</head>
+<body>
+  <div id="root"><div class="createcard">Loading Meta Ads data…</div></div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const money = (n) => (n==null? "—" : "$" + Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}));
+const num   = (n) => Number(n||0).toLocaleString();
+const pct   = (n) => (Number(n||0)).toFixed(2) + "%";
+const BR = { FS:{name:"Franchise Sellers",cls:"fs"}, CS:{name:"Company Sellers",cls:"cs"} };
+
+function ago(iso){
+  try{
+    const secs = (Date.now() - new Date(iso).getTime())/1000;
+    if (secs < 90) return "just now";
+    if (secs < 5400) return Math.round(secs/60) + " min ago";
+    if (secs < 129600) return Math.round(secs/3600) + " hr ago";
+    return Math.round(secs/86400) + " d ago";
+  }catch(e){ return ""; }
+}
+function statusPill(s){
+  const u = (s||"").toUpperCase();
+  if (u === "ACTIVE" || u === "ENABLED") return '<span class="pill ok">active</span>';
+  if (u === "PAUSED")  return '<span class="pill warn">paused</span>';
+  return '<span class="pill off">'+(s||"").toLowerCase()+'</span>';
+}
+function tile(label, val){ return `<div class="tile"><div class="n">${val}</div><div class="l">${label}</div></div>`; }
+
+function brandCard(key, b){
+  if (!b) return "";
+  const m = BR[key] || {name:key, cls:""};
+  return `<div class="tile brand ${m.cls}">
+    <div class="h">${m.name}<span class="tag ${m.cls}">${key}</span></div>
+    <div class="brow"><span class="k">Spend</span><span>${money(b.spend)}</span></div>
+    <div class="brow"><span class="k">Results</span><span>${num(b.conversions)}</span></div>
+    <div class="brow"><span class="k">Cost / result</span><span>${b.cost_per_conversion==null?'<span class="na">n/a</span>':money(b.cost_per_conversion)}</span></div>
+    <div class="brow"><span class="k">Clicks</span><span>${num(b.clicks)}</span></div>
+    <div class="brow"><span class="k">CTR</span><span>${pct(b.ctr)}</span></div>
+  </div>`;
+}
+
+function render(ads){
+  if (!ads || !ads.available){
+    $("root").innerHTML = `<div class="createcard">Meta Ads isn't connected yet. Once the Meta (Facebook/Instagram) ad account credentials are live, campaign performance appears here.${ads&&ads.needs&&ads.needs.length?'<br><span class="na">Missing: '+ads.needs.join(', ')+'</span>':''}</div>`;
+    fit(); return;
+  }
+  const t = ads.totals || {};
+  const bs = ads.brand_split || {};
+  const camps = (ads.campaigns || []).slice().sort((a,b)=> (b.spend||0)-(a.spend||0));
+
+  const meta = `<div class="meta">
+    <span><span class="dot"></span>${ads.source||"live"}</span>
+    <span>Last ${ads.window_days||30} days</span>
+    <span>${(ads.accounts||[]).length} account${(ads.accounts||[]).length===1?"":"s"}</span>
+    ${ads.pulled_at?`<span>updated ${ago(ads.pulled_at)}</span>`:""}
+  </div>`;
+
+  const kpis = `<div class="grid kpis">
+    ${tile("Spend", money(t.spend))}
+    ${tile("Results", num(t.conversions))}
+    ${tile("Cost / result", money(t.cost_per_conversion))}
+    ${tile("Clicks", num(t.clicks))}
+    ${tile("Impressions", num(t.impressions))}
+    ${tile("CTR", pct(t.ctr))}
+    ${tile("Avg CPC", money(t.cpc))}
+  </div>`;
+
+  const split = (bs.FS || bs.CS) ? `<h2 class="sec">By brand</h2>
+    <div class="grid split">${brandCard("FS", bs.FS)}${brandCard("CS", bs.CS)}</div>` : "";
+
+  const rows = camps.length ? camps.map(c=>{
+    const bm = BR[c.brand] ? c.brand : "";
+    return `<tr>
+      <td>${bm?`<span class="bdot ${BR[c.brand].cls}"></span>`:""}${c.campaign||""}</td>
+      <td>${c.brand||""}</td>
+      <td>${statusPill(c.status)}</td>
+      <td>${money(c.spend)}</td>
+      <td>${num(c.impressions)}</td>
+      <td>${num(c.clicks)}</td>
+      <td>${pct(c.ctr)}</td>
+      <td>${money(c.cpc)}</td>
+      <td>${num(c.conversions)}</td>
+      <td>${c.cost_per_conversion==null?'<span class="na">n/a</span>':money(c.cost_per_conversion)}</td>
+    </tr>`;
+  }).join("") : `<tr><td colspan="10" class="muted" style="text-align:center;padding:18px">No campaigns in this window.</td></tr>`;
+
+  const table = `<h2 class="sec">Campaigns</h2>
+    <table><thead><tr>
+      <th>Campaign</th><th>Brand</th><th>Status</th><th>Spend</th><th>Impr.</th>
+      <th>Clicks</th><th>CTR</th><th>Avg CPC</th><th>Results</th><th>Cost/result</th>
+    </tr></thead><tbody>${rows}</tbody></table>`;
+
+  $("root").innerHTML = meta + kpis + split + table;
+  fit();
+}
+
+// Same-origin: size our own iframe to content, and mirror the parent's light/dark theme.
+// The tab starts hidden (display:none) where scrollHeight is 0, so we only resize once we
+// have real height, and poll so it corrects the moment the tab is shown (the ResizeObserver
+// alone can miss the display:none -> visible transition).
+let _lastH = 0;
+function fit(){
+  try{
+    if (!window.frameElement) return;
+    const h = document.body.scrollHeight;
+    if (h > 10 && h !== _lastH){ window.frameElement.style.height = h + "px"; _lastH = h; }
+  }catch(e){}
+}
+try{ new ResizeObserver(()=>fit()).observe(document.body); }catch(e){}
+setInterval(fit, 500);
+function syncTheme(){
+  try{
+    const light = window.parent && window.parent.document.body.classList.contains("light");
+    document.body.classList.toggle("light", !!light);
+  }catch(e){}
+}
+try{
+  const pb = window.parent && window.parent.document.body;
+  if (pb) new MutationObserver(()=>{ syncTheme(); fit(); }).observe(pb, {attributes:true, attributeFilter:["class"]});
+}catch(e){}
+
+async function load(){
+  syncTheme();
+  try{
+    const r = await fetch("marketing-snapshot.json", {cache:"no-store"});
+    const data = await r.json();
+    render(data.meta);
+  }catch(e){
+    $("root").innerHTML = `<div class="createcard">Couldn't load the snapshot.<br><span class="na">${e.message}</span></div>`;
+    fit();
+  }
+}
+window.addEventListener("resize", fit);
+load();
+</script>
+</body>
+</html>
