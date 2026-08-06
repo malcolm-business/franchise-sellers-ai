@@ -9,6 +9,50 @@ Newest entry on top.
 
 ---
 
+## 2026-08-04 (Ted confirmed) — box-config lane row is now IN the canonical doc
+
+Ted **added the box-level-config lane row** to the shared `DASHBOARD-DEPLOY-RULES.md` (Ownership
+lanes table, right under the shared-files row):
+
+> Box-level config — sysctl, swap, systemd units or drop-ins on any service, nginx, kernel
+> tunables, plan resizes → both owners; post in the Slack DM before changing, not after.
+
+He left a short context note under the table referencing Malcolm's two changes (both kept), so it
+reads as context not a rule from nowhere. This rule is now **official + shared**, not just in
+Malcolm's hub. Ted is also curious what `memory.events` shows **warm** on listings-api later this
+week — covered by the scheduled `listings-api-cap-recheck` task (fires 2026-08-04 ~2:50pm MDT);
+relay the result to Ted when it runs.
+
+---
+
+## 2026-08-04 (later) — Ted's reply: cap sizing, box-config lane, DROPLET-OPS.md
+
+Ted **approved** both changes (swap + `listings-api` memory cap) — keep them. The swap closed a
+gap their capacity watchdog had been alarming on since the July resize. Follow-ups:
+
+- **`MemoryHigh=1G` on `listings-api` may be too tight once the cache warms.** `load_master()`
+  holds the parsed 24 MB master at ~100–300 MB/worker × `--workers 2` = **200–600 MB of cache**
+  before uvicorn baseline + generation context. Above `MemoryHigh` the kernel throttles and
+  **evicts that cache first** → re-slows the triage modal the cache was built to fix (and swap
+  makes the re-parse slower). Re-measure **warm** (after real triage opens):
+  `systemctl show listings-api -p MemoryCurrent -p MemoryPeak; cat /sys/fs/cgroup/system.slice/listings-api.service/memory.events` — non-zero `high` = cap biting. Fix = `MemoryHigh=2G` **or**
+  drop to 1 worker (2.3 GB available). *Checked 2026-08-04 16:29Z: high=0, peak 102 MB — but cache still COLD (service ~1h old, no real load yet).*
+- **Mental-model corrections:** **MariaDB is Ted's** (backs 6 WordPress staging sites for FS/CS
+  rebuilds). **No mail server on the box** — outbound is Resend API (Ted) + Instantly (Malcolm),
+  both external — so the cap/swap protect the **worker crons + MariaDB + the PUBLIC client review
+  portal**, not a "mail server." **`listings-api` :8086 serves the only public unauthenticated
+  route (`/listing-review/`)** — if the cap ever OOM-kills 8086 that's **client-facing**, so don't
+  run it too tight.
+- **NEW box-config coordination rule (Ted's ask):** box-level config — sysctl, swap, systemd
+  units/drop-ins on ANY service, nginx, kernel tunables, plan resizes → both owners; **post in the
+  Slack DM BEFORE changing, not after.** (Today's swap + cap were changed then notified; going
+  forward, notify first.) Ted will add this lane row to the shared `DASHBOARD-DEPLOY-RULES.md` once
+  Malcolm says OK.
+- **New authoritative box writeup:** `crm-snapshot/docs/DROPLET-OPS.md` (every unit, port, owner,
+  cron overlaps, resize runbook).
+
+---
+
 ## 2026-08-04 — listings.html drift + backend CI gap + social overlap
 
 Ted's message (relayed by Malcolm) distilled into rules:

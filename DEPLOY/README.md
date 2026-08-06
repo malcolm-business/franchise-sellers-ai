@@ -28,6 +28,7 @@ Every drift incident (2026-07-09, 2026-07-23, 2026-08-04) came from breaking thi
 2. **The CI itself (ground truth of behavior):** `.github/workflows/deploy.yml` + `cold-email-outbound/deploy/deploy-from-git.sh`.
 3. **This runbook** = the operational how-to, kept in sync with #1/#2. If this ever disagrees with the repo doc, **the repo doc wins — fix this file.**
 4. **Ted's updates:** folded into [`TED-UPDATES.md`](TED-UPDATES.md) (dated). Never act on a raw pasted message — integrate it here once, then every session reads the integrated version.
+5. **Box reference (Ted, authoritative):** `crm-snapshot/docs/DROPLET-OPS.md` — every unit/port/owner, cron overlaps, resize runbook.
 
 ---
 
@@ -91,6 +92,7 @@ Now it's persistent: every future session reads the integrated rules, never the 
 - ❌ Never deploy from uncommitted or unpulled state.
 - ❌ Never `--force` a deploy without Ted's Slack ack.
 - ❌ Never write to `/var/www/dashboard/index.html` (the **landing hub**) or any bare file at `/var/www/dashboard/`, or any sibling dashboard folder. All marketing deploys live under `/var/www/dashboard/marketing/` only.
+- ❌ Never change **box-level config** (sysctl, swap, systemd units/drop-ins on ANY service, nginx, kernel tunables, droplet plan resizes) without **posting in the Slack DM to Ted FIRST** — it's the same shared blast radius as shared files, coordinate *before* not after. *(Ted's rule, 2026-08-04; now official in the canonical `DASHBOARD-DEPLOY-RULES.md`.)*
 - ❌ Never trust a session's memory of deploy state — verify against git + droplet live.
 - ❌ If the landing hub title ever changes: **STOP, tell Ted, do not self-fix.**
 
