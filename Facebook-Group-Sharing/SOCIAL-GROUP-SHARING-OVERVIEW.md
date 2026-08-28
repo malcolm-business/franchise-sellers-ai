@@ -18,7 +18,7 @@ _Last updated: 2026-08-28._
 
 **Who does what.** AI finds, vets, joins, and logs the groups, matches listings to the right groups, and drafts every post. Humans do the posting and sending. Nothing is automated: Meta shut off the Facebook Groups API in April 2024, so joining and posting are done by hand through a logged-in browser signed in as the Franchise Sellers Page.
 
-**Where we are today** is in section 3, and the full step-by-step method for each part is in the playbook. This README is the plan and the map; the playbook is the detailed how-to; the state directories are the live data.
+**Where we are today** is in section 3, and the full step-by-step method for each part is in the playbook. This overview is the plan and the map; the playbook is the detailed how-to; the state directories are the live data.
 
 ---
 
@@ -27,7 +27,7 @@ All live in **`AI Folders/Facebook-Group-Sharing/`** (this folder holds the enti
 
 | File | What it is | Use it for |
 |---|---|---|
-| **SOCIAL-GROUP-SHARING-README.md** (this file) | Master index + handoff | Orientation, status, rules, gate taxonomy |
+| **SOCIAL-GROUP-SHARING-OVERVIEW.md** (this file) | Master index + handoff | Orientation, status, rules, gate taxonomy |
 | **SOCIAL-GROUP-SHARING-PLAYBOOK.md** | The process SOP (state-agnostic) | HOW to find/vet/join (§3-6), the post mechanics (§6B), the weekly sharing workflow (§8), roles (§9), rollout order (§7) |
 | **SOCIAL-GROUP-SHARING-TX-DIRECTORY.md** | Texas groups we're in | Which TX groups + their posting gates |
 | **SOCIAL-GROUP-SHARING-CA-DIRECTORY.md** | California groups we're in | Same, CA |
@@ -63,7 +63,7 @@ The directories in this folder add the *context* Facebook doesn't store: geo sco
 This project is designed to keep growing. It does not stop when a state is "done"; we keep adding groups and refreshing the details over time. Here is how it stays current, and who keeps it current.
 
 **What gets updated, and where:**
-- **New groups joined:** log each one in that state's `-DIRECTORY.md` (name, geo, audience, members, activity, posting-gate status, fit, angle) and add its link to `SOCIAL-GROUP-SHARING-MASTER-LINKS.md`. Bump the running counts in this README (section 3), the directory header, and the memory node to match.
+- **New groups joined:** log each one in that state's `-DIRECTORY.md` (name, geo, audience, members, activity, posting-gate status, fit, angle) and add its link to `SOCIAL-GROUP-SHARING-MASTER-LINKS.md`. Bump the running counts in this overview (section 3), the directory header, and the memory node to match.
 - **New states:** when we move to the next state on the rollout list, it gets its own `-DIRECTORY.md` built with the same rules, and it is added to the file list (section 2) and the status table (section 3).
 - **New info on an existing group:** anything we learn later (a posting gate we hit, a rule change, whether a post landed well) goes in that group's row or notes in its directory.
 - **Refresh:** the top states are revisited periodically as new groups appear.
@@ -124,9 +124,9 @@ There is **no "share this listing" button**. A listing goes in as a **post we co
 6. **Join by clicking the ref, bottom-to-top within a batch.** A "Join"->"Visit" flip shifts the rows below it, so clicking upward avoids the ~1-in-4 first-click miss. Re-read the page for fresh coordinates after any miss.
 7. Dismiss any participant-questions dialog with **"Not now"** (never submit).
 8. **Pace: ~20-25 joins/day, hard cap ~30 per 12 hours.** Verify the day's count at `facebook.com/groups/joins/`.
-9. **Log every join** in the state directory with the full schema (name, geo, audience, members, activity, post-status + gate note, fit, angle note), and update the memory node + this README's status table.
+9. **Log every join** in the state directory with the full schema (name, geo, audience, members, activity, post-status + gate note, fit, angle note), and update the memory node + this overview's status table.
 
 ---
 
 ## 9. One-line summary to paste into a handoff
-> "Continue the FB group-sharing project (as the Franchise Sellers Page). Read `AI Folders/Facebook-Group-Sharing/SOCIAL-GROUP-SHARING-README.md` first. State of play: TX/CA/GA done, FL nearly done (finish Orlando/Panhandle/Naples), then Indiana. ~159 groups joined; live list at facebook.com/groups/joins/. Follow the hard guardrails and the gate taxonomy in the README."
+> "Continue the FB group-sharing project (as the Franchise Sellers Page). Read `AI Folders/Facebook-Group-Sharing/SOCIAL-GROUP-SHARING-OVERVIEW.md` first. State of play: TX/CA/GA done, FL nearly done (finish Orlando/Panhandle/Naples), then Indiana. ~159 groups joined; live list at facebook.com/groups/joins/. Follow the hard guardrails and the gate taxonomy in the overview."

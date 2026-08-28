@@ -1,6 +1,6 @@
 # Facebook Group Sharing — Playbook (SOP)
 
-> **New here / handing this off?** Start with **`SOCIAL-GROUP-SHARING-README.md`** (the master index) — it has the current status, the file map, the guardrails, and the posting-gate taxonomy. This playbook is the process detail it points to.
+> **New here / handing this off?** Start with **`SOCIAL-GROUP-SHARING-OVERVIEW.md`** (the master index) — it has the current status, the file map, the guardrails, and the posting-gate taxonomy. This playbook is the process detail it points to.
 
 The rules and criteria for finding, vetting, and joining Facebook groups where we share business listings, and (later) how we post to them. State-agnostic: this governs the process; each state has its own working directory of actual groups.
 
@@ -12,7 +12,7 @@ The rules and criteria for finding, vetting, and joining Facebook groups where w
 ## 1. Purpose
 Get FS business-for-sale listings in front of entrepreneurial, business-minded audiences at low cost, as a **supplemental reach channel**. Honest expectation: Facebook groups are a top-of-funnel awareness play, not a primary source of serious buyers (those cluster on BizBuySell, brokers, our own funnel). We do it because it's cheap and each post takes minutes. Prioritize conversion over raw volume.
 
-**This is a living, ongoing project.** We keep adding new groups to the system over time and keep the state directories updated in the repo as we go. The plan and rules below stay the same; the set of groups grows. See the README's "Ongoing maintenance & ownership" section for how the repo is kept current on handoff.
+**This is a living, ongoing project.** We keep adding new groups to the system over time and keep the state directories updated in the repo as we go. The plan and rules below stay the same; the set of groups grows. See the overview's "Ongoing maintenance & ownership" section for how the repo is kept current on handoff.
 
 ## 2. Hard guardrails (never break)
 - **Join and post AS the Franchise Sellers Page** (verify the account before any action: the composer should read "What's on your mind, Franchise Sellers?").
