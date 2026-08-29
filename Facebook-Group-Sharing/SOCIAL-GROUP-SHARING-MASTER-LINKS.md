@@ -1,8 +1,8 @@
 # Facebook Group Sharing — MASTER LINKS (every group we're in, with URL)
 
-Complete, direct-URL list of all **159 groups** the Franchise Sellers Page belongs to, pulled from `facebook.com/groups/joins/` on 2026-08-28. This is the self-contained link source for the whole project: a session can jump straight to any group to post without opening Facebook's joined-groups page. Grouped by state; the per-state directory files (`-TX-`, `-CA-`, `-GA-`, `-FL-DIRECTORY.md`) hold the posting-gate / fit / angle context for each. Where two groups share a name, a member-count hint is added; the URL is always the true identifier.
+Complete, direct-URL list of all **184 groups** the Franchise Sellers Page belongs to (originally pulled from `facebook.com/groups/joins/` on 2026-08-28; Florida extended to 44 and Indiana started at 10 on 2026-08-29). This is the self-contained link source for the whole project: a session can jump straight to any group to post without opening Facebook's joined-groups page. Grouped by state; the per-state directory files (`-TX-`, `-CA-`, `-GA-`, `-FL-DIRECTORY.md`) hold the posting-gate / fit / angle context for each. Where two groups share a name, a member-count hint is added; the URL is always the true identifier.
 
-**Counts:** Texas 32 · California 41 (incl. 3 national business-for-sale rooms) · Georgia 44 · Florida 29 · Franchise cluster 12 · Managed 1 = **159**.
+**Counts:** Texas 32 · California 41 (incl. 3 national business-for-sale rooms) · Georgia 44 · Florida 44 · Indiana 10 · Franchise cluster 12 · Managed 1 = **184**.
 
 ---
 
@@ -130,7 +130,7 @@ _Includes 3 national business-for-sale rooms counted in CA's roster._
 - [Small Town Business -North Augusta](https://www.facebook.com/groups/1109761502694103/)
 - [The Augusta Business Network (posting gated: proves-local-residency, likely non-postable)](https://www.facebook.com/groups/Augustabus/)
 
-## Florida (29)
+## Florida (44)
 _Also embedded in the FL directory's own links appendix._
 - [Florida Business Networking (170K)](https://www.facebook.com/groups/FloridaBusinessNetworking/)
 - [Florida Small Business Network (151K)](https://www.facebook.com/groups/floridasmallbusinessnetwork/)
@@ -161,6 +161,33 @@ _Also embedded in the FL directory's own links appendix._
 - [North Florida Small Business Group (8.2K)](https://www.facebook.com/groups/255848322618824/)
 - [Lakewood Ranch, Waterside & Sarasota Business Owners (11K)](https://www.facebook.com/groups/544137753850173/)
 - [Sarasota County Small Businesses (8.4K)](https://www.facebook.com/groups/623525324448957/)
+- [Central Florida Local Business (29K)](https://www.facebook.com/groups/centralfloridalocalbiz/)
+- [Naples FL Networking (20K)](https://www.facebook.com/groups/NaplesFLNetworking/)
+- [West Palm Beach Business Networking (19K)](https://www.facebook.com/groups/814769458533736/)
+- [Central Florida Small Business Network (16K)](https://www.facebook.com/groups/469542416589157/)
+- [Pinellas Small Business (15K, St Pete/Clearwater)](https://www.facebook.com/groups/482784946910389/)
+- [Pensacola Small Business Networking (14K)](https://www.facebook.com/groups/520425081471986/)
+- [Naples Florida Business networking (13K)](https://www.facebook.com/groups/844088513185642/)
+- [Venice Florida Small Business (9.7K)](https://www.facebook.com/groups/228493301812382/)
+- [West Palm Beach Small Business Owners (9.2K)](https://www.facebook.com/groups/234959006552324/)
+- [Pensacola small business (9.1K)](https://www.facebook.com/groups/Pensacolasmallbusiness/)
+- [Tallahassee Area Small Businesses (7.5K)](https://www.facebook.com/groups/453710591366388/)
+- [Fort Myers & Southwest Florida Business Networking (3.8K)](https://www.facebook.com/groups/170113931937890/)
+- [NAPLES FLORIDA CONNECT (3K)](https://www.facebook.com/groups/730427786400045/)
+- [Florida Business For Sale (2K)](https://www.facebook.com/groups/681066489302723/)
+- [Tallahassee Small Business & services Network (544)](https://www.facebook.com/groups/1089671193625563/)
+
+## Indiana (10)
+- [Indiana Small Business Owners (30K)](https://www.facebook.com/groups/indianasmallbusinessowners/)
+- [Jobs, Opportunities & Small Business in Indianapolis Indiana (10K)](https://www.facebook.com/groups/jobs.opps.sml.biz.indy/)
+- [Fort Wayne Small Businesses (8.8K)](https://www.facebook.com/groups/fwfixit/)
+- [Indianapolis Entrepreneur Group (6.2K)](https://www.facebook.com/groups/678013349058285/)
+- [Small Business Shoutout- Fort Wayne & Surrounding Area (6K)](https://www.facebook.com/groups/1045192819282548/)
+- [Small Business Services in Columbus, Indiana (5.6K)](https://www.facebook.com/groups/barthcobusservicesIN/)
+- [Indy Small Business Support Group (3.8K)](https://www.facebook.com/groups/969557300098543/)
+- [NWI SMALL BUSINESSES (3K)](https://www.facebook.com/groups/880695673633690/)
+- [Small Business Networking & Referrals -Indiana (2.6K)](https://www.facebook.com/groups/142312752067617/)
+- [South Bend Small Business Network (873)](https://www.facebook.com/groups/274579450273168/)
 
 ## Franchise cluster (12) — pre-existing, on-brand, dormant
 _The Page was already in these when the project started; on-brand for franchise resale, worth reviving._
@@ -182,4 +209,4 @@ _The Page was already in these when the project started; on-brand for franchise 
 
 ---
 
-_Total: 159. Refresh this file when new joins are made, or re-scrape `facebook.com/groups/joins/`._
+_Total: 184. Refresh this file when new joins are made, or re-scrape `facebook.com/groups/joins/`._

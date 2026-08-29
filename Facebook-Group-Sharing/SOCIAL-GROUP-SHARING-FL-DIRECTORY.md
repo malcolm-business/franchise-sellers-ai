@@ -2,7 +2,7 @@
 
 Florida is a **deep-coverage** state (6 listings, trailing 12mo). Target: statewide + every major metro (Miami/South FL, Orlando, Tampa Bay, Jacksonville, SWFL) + FL business-for-sale. National business-for-sale rooms already joined from TX/CA. Governed by `SOCIAL-GROUP-SHARING-PLAYBOOK.md`. Joined AS the Franchise Sellers Page.
 
-**Status:** **29 joined.** Day 1 (2026-08-27) = 4 (kickoff: SWFL, South FL, statewide business-for-sale, North FL); Day 2 (2026-08-28) = 25. South FL/Miami DEEP, plus Tampa Bay, SWFL, Jacksonville (4 rooms), Sarasota/Gulf Coast, Orlando/Central FL, and the big statewide rooms (170K/151K/118K/64K). Light spots remain: Orlando depth, the Panhandle (Pensacola/Tallahassee), Naples (see NEXT-UP). Page total ≈159.
+**Status:** **44 joined — FLORIDA COMPLETE.** Day 1 (2026-08-27) = 4; Day 2 (2026-08-28) = 25; Day 3 (2026-08-29) = 15 (Naples, Panhandle Pensacola + Tallahassee, more Orlando/Central FL, Gulf Coast Venice + Pinellas/St Pete, Palm Beach). Every metro/region covered: South FL/Miami (deep), Tampa Bay + Pinellas, SWFL + Fort Myers, Jacksonville, Sarasota/Venice/Gulf Coast, Orlando/Central FL, Naples, Pensacola, Tallahassee, Palm Beach, and the big statewide rooms. Page total ≈174. Next state = Indiana.
 
 ---
 
@@ -64,6 +64,32 @@ Approx. combined reach added Day 2: **~900K-1M** across 20 groups. **Running FL 
 
 ---
 
+## Day 3 (2026-08-29) — Naples, Panhandle (Pensacola/Tallahassee), more Orlando, Gulf Coast, Palm Beach
+
+| Group | Geo | Audience | Members | Posts/day | Post status | Fit | Note |
+|---|---|---|---|---|---|---|---|
+| Central Florida Local Business | metro-Orlando/Central-FL | general-business | 29K | 90+ | open | A | Big active Central FL/Orlando room. |
+| Naples FL Networking | metro-Naples | general-business | 20K | 20+ | open | B | Naples networking. |
+| West Palm Beach Business Networking | metro-Palm-Beach | general-business | 19K | 90+ | open | A | Big active Palm Beach room. |
+| Central Florida Small Business Network | metro-Orlando/Central-FL | general-business | 16K | 90+ | open | A | Orlando/Central FL, very active. |
+| Pinellas Small Business | metro-Tampa-Bay (Pinellas/St Pete) | general-business | 15K | 90+ | open | A | St. Petersburg/Clearwater side of Tampa Bay. |
+| Pensacola Small Business Networking | metro-Pensacola (Panhandle) | general-business | 14K | 90+ | open | A | Pensacola anchor, very active. |
+| Naples Florida Business networking | metro-Naples | general-business | 13K | 90+ | open | A | Naples anchor. |
+| Venice Florida Small Business | metro-Sarasota (Gulf Coast/Venice) | general-business | 9.7K | 40+ | open | B | Venice / south Sarasota county. |
+| West Palm Beach Small Business Owners | metro-Palm-Beach | general-business | 9.2K | 70+ | open | B | Palm Beach owners. |
+| Pensacola small business | metro-Pensacola (Panhandle) | general-business | 9.1K | 80+ | open | A | Second Pensacola room. |
+| Tallahassee Area Small Businesses | metro-Tallahassee (Panhandle) | general-business | 7.5K | 5 | approval-needed (rules: business-posts-only, 1/day, be clear) | B | Tallahassee area; posting-gated, low activity. |
+| Fort Myers & Southwest Florida Business Networking | metro-SWFL (Fort Myers) | general-business | 3.8K | 60+ | open | B | Fort Myers / SWFL networking. |
+| NAPLES FLORIDA CONNECT | metro-Naples | general-business | 3K | 30+ | open | B | Naples connect room. |
+| Florida Business For Sale | statewide-FL | business-for-sale | 2K | 7 | open | B | FL business-for-sale board; low activity but on-intent. |
+| Tallahassee Small Business & services Network | metro-Tallahassee (Panhandle) | general-business | 544 | 10 | open | B | Small, but the Tallahassee-specific anchor. |
+
+Approx. reach added Day 3: ~150K. **Running FL total: 44 groups.** Panhandle (Pensacola + Tallahassee), Naples, more Orlando/Central FL, and Gulf Coast now covered. **Florida is complete.**
+
+**Skipped Day 3 (logged):** SWFL Naples/Fort Myers/Cape Coral Community 88K, Naples Florida Living 30K, Naples Marketplace 47K (community/marketplace, consumers not buyers); SWFL Business Advertising, Naples Business Advertising & Marketing, Promote Your Business Palm Beach, Business Promotions Jacksonville (ad-dumps); South Florida Business Networking 51K, Pembroke Pines, Small Business in Broward, Support Small Business SF, Palm Beach County Business Group, South Florida Business Connect (South FL already deep); Lee County Small Businesses 10K (SWFL covered; situational).
+
+---
+
 ## SKIPPED / not-Florida (logged so we don't re-consider)
 - Florida Small Business Owners (852 members, 6/day) — too small + low activity.
 - USA Small Business Owners Meets (50K) / Small Business Owners Community (129K, `/smallbusinessownersph/` = **Philippines**) — no FL geo / off-target; national coverage already held from TX/CA.
@@ -72,14 +98,10 @@ Approx. combined reach added Day 2: **~900K-1M** across 20 groups. **Running FL 
 
 ---
 
-## NEXT-UP QUEUE (continue Florida here)
-Done: South FL/Miami (deep), Tampa Bay, SWFL, Jacksonville (4 rooms), Sarasota/Gulf Coast, Orlando/Central FL, statewide backbone (5 giant rooms). Remaining light spots (~half a short day to finish FL):
-1. **Orlando depth** — "Orlando entrepreneurs / business network" (Orlando is genuinely thin on FB; searches recycle South FL — try "Central Florida business", "Lake Mary / Winter Garden business").
-2. **The Panhandle** — "Pensacola business", "Tallahassee small business", "Panama City business".
-3. **Naples** — "Naples FL business" (SWFL has 3 rooms; add a Naples-specific one).
-4. Optional: revisit Central FL Small Business Owners (join-by-request) only if a Central FL listing needs it.
+## FLORIDA COMPLETE
+All metros and regions covered (44 groups): South FL/Miami (deep), Tampa Bay + Pinellas/St Pete, SWFL + Fort Myers, Jacksonville, Sarasota/Venice/Gulf Coast, Orlando/Central FL, Naples, Pensacola, Tallahassee, Palm Beach, and the statewide giants. Pensacola and Tallahassee are small Panhandle markets and are now anchored; no meaningful FL gaps remain. **Only revisit to refresh** as new rooms appear.
 
-After Florida → **Indiana** (moderate coverage, 4 listings), new `SOCIAL-GROUP-SHARING-IN-DIRECTORY.md`.
+**Now up next → Indiana** (moderate coverage, 4 listings): new `SOCIAL-GROUP-SHARING-IN-DIRECTORY.md`, built with the same rules. Order after that (playbook §7): Colorado, Ohio, Tennessee, then the 2-listing states, then the 1-listing states.
 
 ---
 
@@ -117,5 +139,20 @@ Direct URLs to every FL group we've joined, so a session can navigate straight t
 | Jacksonville Small Business Group (6.4K) | https://www.facebook.com/groups/301961126872415/ |
 | Lakewood Ranch, Waterside & Sarasota Business Owners (11K) | https://www.facebook.com/groups/544137753850173/ |
 | Sarasota County Small Businesses (8.4K) | https://www.facebook.com/groups/623525324448957/ |
+| Central Florida Local Business (29K) | https://www.facebook.com/groups/centralfloridalocalbiz/ |
+| Naples FL Networking (20K) | https://www.facebook.com/groups/NaplesFLNetworking/ |
+| West Palm Beach Business Networking (19K) | https://www.facebook.com/groups/814769458533736/ |
+| Central Florida Small Business Network (16K) | https://www.facebook.com/groups/469542416589157/ |
+| Pinellas Small Business (15K) | https://www.facebook.com/groups/482784946910389/ |
+| Pensacola Small Business Networking (14K) | https://www.facebook.com/groups/520425081471986/ |
+| Naples Florida Business networking (13K) | https://www.facebook.com/groups/844088513185642/ |
+| Venice Florida Small Business (9.7K) | https://www.facebook.com/groups/228493301812382/ |
+| West Palm Beach Small Business Owners (9.2K) | https://www.facebook.com/groups/234959006552324/ |
+| Pensacola small business (9.1K) | https://www.facebook.com/groups/Pensacolasmallbusiness/ |
+| Tallahassee Area Small Businesses (7.5K) | https://www.facebook.com/groups/453710591366388/ |
+| Fort Myers & Southwest Florida Business Networking (3.8K) | https://www.facebook.com/groups/170113931937890/ |
+| NAPLES FLORIDA CONNECT (3K) | https://www.facebook.com/groups/730427786400045/ |
+| Florida Business For Sale (2K) | https://www.facebook.com/groups/681066489302723/ |
+| Tallahassee Small Business & services Network (544) | https://www.facebook.com/groups/1089671193625563/ |
 
-_All 29 FL groups linked. Going forward, each new join is logged with its URL here; earlier states (TX/CA/GA) get their links back-filled from `facebook.com/groups/joins/`._
+_All 44 FL groups linked. Going forward, each new join is logged with its URL here; earlier states (TX/CA/GA) get their links back-filled from `facebook.com/groups/joins/`._
