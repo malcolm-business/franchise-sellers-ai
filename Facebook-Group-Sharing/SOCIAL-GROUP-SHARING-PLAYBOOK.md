@@ -4,7 +4,7 @@
 
 The rules and criteria for finding, vetting, and joining Facebook groups where we share business listings, and (later) how we post to them. State-agnostic: this governs the process; each state has its own working directory of actual groups.
 
-- **Working group lists (all in this `AI Folders/Facebook-Group-Sharing/` folder):** `SOCIAL-GROUP-SHARING-TX-DIRECTORY.md` (Texas, 32 joined), `SOCIAL-GROUP-SHARING-CA-DIRECTORY.md` (California, 41 joined), `SOCIAL-GROUP-SHARING-GA-DIRECTORY.md` (Georgia, 44 joined — COMPLETE), `SOCIAL-GROUP-SHARING-FL-DIRECTORY.md` (Florida, 44 joined — COMPLETE), and `SOCIAL-GROUP-SHARING-IN-DIRECTORY.md` (Indiana, 10 joined — in progress). Each new state gets its own directory here. Page total ≈184 groups.
+- **Working group lists (all in this `AI Folders/Facebook-Group-Sharing/` folder):** `SOCIAL-GROUP-SHARING-TX-DIRECTORY.md` (Texas, 32 joined), `SOCIAL-GROUP-SHARING-CA-DIRECTORY.md` (California, 41 joined), `SOCIAL-GROUP-SHARING-GA-DIRECTORY.md` (Georgia, 44 joined — COMPLETE), `SOCIAL-GROUP-SHARING-FL-DIRECTORY.md` (Florida, 44 — COMPLETE), `SOCIAL-GROUP-SHARING-IN-DIRECTORY.md` (Indiana, 18 — target met), and `SOCIAL-GROUP-SHARING-CO-DIRECTORY.md` (Colorado, 17 — target met). Each new state gets its own directory here. Next state = Ohio. Page total ≈209 groups.
 - **Related:** Meta paid ads playbook, social caption/carousel SOPs, buyer-blast playbook.
 
 ---

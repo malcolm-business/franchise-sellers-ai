@@ -33,15 +33,16 @@ All live in **`AI Folders/Facebook-Group-Sharing/`** (this folder holds the enti
 | **SOCIAL-GROUP-SHARING-CA-DIRECTORY.md** | California groups we're in | Same, CA |
 | **SOCIAL-GROUP-SHARING-GA-DIRECTORY.md** | Georgia groups we're in (**COMPLETE**) | Same, GA |
 | **SOCIAL-GROUP-SHARING-FL-DIRECTORY.md** | Florida groups we're in (**COMPLETE**) | Same, FL |
-| **SOCIAL-GROUP-SHARING-IN-DIRECTORY.md** | Indiana groups we're in (**in progress**) | Same, IN |
-| **SOCIAL-GROUP-SHARING-MASTER-LINKS.md** | Direct FB URL for all 184 groups, bucketed by state | Jump straight to a group to post; the self-contained link source |
+| **SOCIAL-GROUP-SHARING-IN-DIRECTORY.md** | Indiana groups we're in (**target met**) | Same, IN |
+| **SOCIAL-GROUP-SHARING-CO-DIRECTORY.md** | Colorado groups we're in (**target met**) | Same, CO |
+| **SOCIAL-GROUP-SHARING-MASTER-LINKS.md** | Direct FB URL for all 209 groups, bucketed by state | Jump straight to a group to post; the self-contained link source |
 | Claude memory: `project_fb_group_sharing` | Condensed running state | Quick recall inside a Claude session |
 
 **The live membership list with clickable links** is always on Facebook itself: **`facebook.com/groups/joins/`** ("All groups you've joined (N)"), signed in as the Franchise Sellers Page. That's the source of truth for what we're in.
 
 The directories in this folder add the *context* Facebook doesn't store: geo scope, audience fit, posting-gate requirements, and the per-group angle. They're keyed by **group name + member count** (member count disambiguates same-name groups, e.g. the three different "Florida Business Networking" rooms). Each directory also carries a **"Group links (for posting / handoff)" appendix** with the direct FB URL for every group, so a session can jump straight to a group to post without opening the joined-groups page.
 
-- **URL status: DONE — all 184 groups are linked.** `SOCIAL-GROUP-SHARING-MASTER-LINKS.md` in this folder is the complete list of every group with its direct URL, bucketed by state (TX/CA/GA/FL + franchise cluster). Florida also carries its links inline in its own directory. Every new join going forward gets logged with its URL. (The live `facebook.com/groups/joins/` page stays the source of truth if the master file ever drifts.)
+- **URL status: DONE — all 209 groups are linked.** `SOCIAL-GROUP-SHARING-MASTER-LINKS.md` in this folder is the complete list of every group with its direct URL, bucketed by state (TX/CA/GA/FL + franchise cluster). Florida also carries its links inline in its own directory. Every new join going forward gets logged with its URL. (The live `facebook.com/groups/joins/` page stays the source of truth if the master file ever drifts.)
 
 ---
 
@@ -53,11 +54,12 @@ The directories in this folder add the *context* Facebook doesn't store: geo sco
 | California | 41 | done | refresh only |
 | Georgia | 44 | **COMPLETE** | none (Macon has no dedicated FB group; covered via Middle-GA + statewide) |
 | Florida | 44 | **COMPLETE** | all metros covered incl. Panhandle (Pensacola/Tallahassee), Naples, Gulf Coast |
-| Indiana | 10 | in progress | statewide + Indianapolis, Fort Wayne, NW Indiana, South Bend, Columbus; Evansville/Bloomington next |
+| Indiana | 18 | target met | statewide + Indianapolis, Fort Wayne, NW Indiana, Evansville, Lafayette, South Bend, Southern/north-central IN |
+| Colorado | 17 | target met | statewide + Denver, Colorado Springs, Northern CO (Fort Collins/Greeley), Pueblo |
 | + national + franchise cluster | ~13 | standing | national business-for-sale rooms + a dormant on-brand franchise cluster (listed in the TX/CA dirs) |
-| **Page total** | **≈184** | | |
+| **Page total** | **≈209** | | |
 
-**Rollout order (by our listing volume, playbook §7):** TX ✅ -> CA ✅ -> GA ✅ -> FL ✅ -> **Indiana (in progress)** -> Colorado -> Ohio -> Tennessee -> the 2-listing states -> the 1-listing states. Each new state gets its own `-DIRECTORY.md` built with the same rules.
+**Rollout order (by our listing volume, playbook §7):** TX ✅ -> CA ✅ -> GA ✅ -> FL ✅ -> Indiana ✅ -> Colorado ✅ -> **Ohio (next)** -> Tennessee -> the 2-listing states -> the 1-listing states. Each new state gets its own `-DIRECTORY.md` built with the same rules.
 
 ---
 
@@ -131,4 +133,4 @@ There is **no "share this listing" button**. A listing goes in as a **post we co
 ---
 
 ## 9. One-line summary to paste into a handoff
-> "Continue the FB group-sharing project (as the Franchise Sellers Page). Read `AI Folders/Facebook-Group-Sharing/SOCIAL-GROUP-SHARING-OVERVIEW.md` first. State of play: TX/CA/GA/FL all done, Indiana in progress (10 so far). ~184 groups joined; live list at facebook.com/groups/joins/. Follow the hard guardrails and the gate taxonomy in the overview."
+> "Continue the FB group-sharing project (as the Franchise Sellers Page). Read `AI Folders/Facebook-Group-Sharing/SOCIAL-GROUP-SHARING-OVERVIEW.md` first. State of play: TX/CA/GA/FL/IN/CO all done, Ohio next. ~209 groups joined; live list at facebook.com/groups/joins/. Follow the hard guardrails and the gate taxonomy in the overview."
