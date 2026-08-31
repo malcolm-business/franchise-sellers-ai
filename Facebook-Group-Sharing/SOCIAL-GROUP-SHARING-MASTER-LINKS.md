@@ -1,8 +1,8 @@
 # Facebook Group Sharing — MASTER LINKS (every group we're in, with URL)
 
-Complete, direct-URL list of all **209 groups** the Franchise Sellers Page belongs to (originally pulled from `facebook.com/groups/joins/` on 2026-08-28; Florida extended to 44 and Indiana started on 2026-08-29; Indiana finished at 18 and Colorado added at 17 on 2026-08-30). This is the self-contained link source for the whole project: a session can jump straight to any group to post without opening Facebook's joined-groups page. Grouped by state; the per-state directory files (`-TX-`, `-CA-`, `-GA-`, `-FL-DIRECTORY.md`) hold the posting-gate / fit / angle context for each. Where two groups share a name, a member-count hint is added; the URL is always the true identifier.
+Complete, direct-URL list of all **234 groups** the Franchise Sellers Page belongs to (originally pulled from `facebook.com/groups/joins/` on 2026-08-28; grown through Florida, Indiana, and Colorado; Ohio added at 16 and Tennessee started at 9 on 2026-08-31). This is the self-contained link source for the whole project: a session can jump straight to any group to post without opening Facebook's joined-groups page. Grouped by state; the per-state directory files (`-TX-`, `-CA-`, `-GA-`, `-FL-DIRECTORY.md`) hold the posting-gate / fit / angle context for each. Where two groups share a name, a member-count hint is added; the URL is always the true identifier.
 
-**Counts:** Texas 32 · California 41 (incl. 3 national business-for-sale rooms) · Georgia 44 · Florida 44 · Indiana 18 · Colorado 17 · Franchise cluster 12 · Managed 1 = **209**.
+**Counts:** Texas 32 · California 41 (incl. 3 national business-for-sale rooms) · Georgia 44 · Florida 44 · Indiana 18 · Colorado 17 · Ohio 16 · Tennessee 9 · Franchise cluster 12 · Managed 1 = **234**.
 
 ---
 
@@ -216,6 +216,35 @@ _Also embedded in the FL directory's own links appendix._
 - [Small Business Pueblo County (2.5K)](https://www.facebook.com/groups/527129330740104/)
 - [Fort Collins Business Networking (2.1K)](https://www.facebook.com/groups/1463795828616973/)
 
+## Ohio (16)
+- [OHIO SMALL BUSINESS CONNECTIONS (34K)](https://www.facebook.com/groups/3093502694245558/)
+- [Central Ohio Small Business Group (26K)](https://www.facebook.com/groups/140904162724917/)
+- [Dayton Ohio Small Business Central (22K)](https://www.facebook.com/groups/339571259866047/)
+- [Small Businesses Of Cleveland Ohio (19K)](https://www.facebook.com/groups/976342309548811/)
+- [Small Business Ohio (16K)](https://www.facebook.com/groups/2509406035804899/)
+- [Ohio Small Business Networking (13K)](https://www.facebook.com/groups/ohiosmallbusinessnetworking/)
+- [Columbus Small Business Alliance (12K)](https://www.facebook.com/groups/1269919736438151/)
+- [Ohio Entrepreneurs and Business (9.3K)](https://www.facebook.com/groups/610197326926400/)
+- [Akron Area Small Business Networking Group (6.6K)](https://www.facebook.com/groups/188643795034268/)
+- [Small business's of Columbus and Surrounding area (6.3K)](https://www.facebook.com/groups/columbussmallbusiness/)
+- [Small Business Ohio (6.1K)](https://www.facebook.com/groups/ohiobusinesses/)
+- [Ohio Small Businesses (4.6K)](https://www.facebook.com/groups/1309252530346719/)
+- [Cleveland Small Businesses/ Side Hustles (3.3K)](https://www.facebook.com/groups/304128237071641/)
+- [Ohio Small business page (2.1K)](https://www.facebook.com/groups/1632793680802034/)
+- [Sylvania, Toledo, Perrysburg Small Business Group (1.5K)](https://www.facebook.com/groups/1337088830219826/)
+- [Small Businesses of Northeast Ohio (1.5K)](https://www.facebook.com/groups/2017818478766007/)
+
+## Tennessee (9)
+- [Memphis Small Business Owners (32K)](https://www.facebook.com/groups/2037838559781527/)
+- [Small Businesses of Tennessee (17K)](https://www.facebook.com/groups/shopsmalltennessee/)
+- [Nashville Entrepreneurs (15K)](https://www.facebook.com/groups/73842243143/)
+- [Entrepreneurs of Memphis (11K)](https://www.facebook.com/groups/4106108016131299/)
+- [Local Small Businesses of East Tennessee (10K)](https://www.facebook.com/groups/localsmallbusinessesofeasttn/)
+- [Support Small Business Knoxville, Oak Ridge (9.3K)](https://www.facebook.com/groups/1498206243602573/)
+- [Nashville Area Small Business Direct (6.2K)](https://www.facebook.com/groups/1569405209965554/)
+- [Incredible Business Networking - Greater Knoxville (5.3K)](https://www.facebook.com/groups/ibnknoxvilletn/)
+- [East TN Small Business Community (2.7K)](https://www.facebook.com/groups/smallsupportbigdreams/)
+
 ## Franchise cluster (12) — pre-existing, on-brand, dormant
 _The Page was already in these when the project started; on-brand for franchise resale, worth reviving._
 - [Franchise Business](https://www.facebook.com/groups/francisebusiness/)
@@ -236,4 +265,4 @@ _The Page was already in these when the project started; on-brand for franchise 
 
 ---
 
-_Total: 209. Refresh this file when new joins are made, or re-scrape `facebook.com/groups/joins/`._
+_Total: 234. Refresh this file when new joins are made, or re-scrape `facebook.com/groups/joins/`._
